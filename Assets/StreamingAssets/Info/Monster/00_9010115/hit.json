@@ -1,0 +1,23 @@
+{
+  "PerSize": {
+    "w": 164,
+    "h": 50
+  },
+  "Layout": {
+    "col": 1,
+    "row": 1
+  },
+  "Pivot": {
+    "x": 0.5,
+    "y": 0.5
+  },
+  "Count": 1,
+  "CenterBottom": {
+    "x": 82,
+    "y": 50
+  },
+  "Delay": [
+    -1
+  ],
+  "TotalTime": -1
+}
