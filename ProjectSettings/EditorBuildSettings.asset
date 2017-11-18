@@ -4,4 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scene/PrepareUI.unity
+    guid: c453d9308169c3d4fb0e2fc1c1b3bfd5
+  - enabled: 1
+    path: Assets/Scene/Fight.unity
+    guid: ec0d0e82ae16de34896befe782568ce3

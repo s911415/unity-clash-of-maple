@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: d6a978e19acc2fe42b904ec385a67878
+timeCreated: 1510981201
+licenseType: Pro
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: PingFang TC
+  fontNames:
+  - PingFang TC
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 34d14db6714552345ba97a99a3c0c637, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

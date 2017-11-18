@@ -1,0 +1,33 @@
+{
+  "Collider": {
+    "offset": {
+      "x": 2.8125,
+      "y": 2.0625
+    },
+    "size": {
+      "x": 3.0625,
+      "y": 2.875
+    }
+  },
+  "PerSize": {
+    "w": 90,
+    "h": 66
+  },
+  "Layout": {
+    "col": 1,
+    "row": 1
+  },
+  "Pivot": {
+    "x": 0.5,
+    "y": 0.5
+  },
+  "Count": 1,
+  "CenterBottom": {
+    "x": 45,
+    "y": 66
+  },
+  "Delay": [
+    600
+  ],
+  "TotalTime": 600
+}
