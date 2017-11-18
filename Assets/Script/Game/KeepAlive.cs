@@ -16,18 +16,5 @@ namespace NTUT.CSIE.GameDev.Game
         {
             DontDestroyOnLoad(this.gameObject);
         }
-
-        public void Update()
-        {
-            int a = 0;
-            a++;
-
-            foreach (GameObject f in UnityEngine.Object.FindObjectsOfType<GameObject>())
-            {
-                Debug.Log(f.name);
-            }
-
-            a = 0;
-        }
     }
 }

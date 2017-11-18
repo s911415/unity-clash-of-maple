@@ -1,18 +1,19 @@
 ﻿using NTUT.CSIE.GameDev.Game;
+using NTUT.CSIE.GameDev.Scene;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace NTUT.CSIE.GameDev.UI
 {
-    public class PlayerStatusPanel : CommonNetObject
+    public class PlayerStatusPanel : CommonObject
     {
         public int _id = -1;
+        public Player.Info _player;
         public GameObject _avatarObj, _nameObj, _inputObj, _statusObj, _readyObj;
         internal Image _avatar;
         internal Text _input;
@@ -28,79 +29,42 @@ namespace NTUT.CSIE.GameDev.UI
             _input = _inputObj.transform.GetChild(1).GetComponent<Text>();
             _statusText = _statusObj.GetComponent<Text>();
             _readyButton = _readyObj.GetComponent<Button>();
+            _readyButton.onClick .AddListener(SetReady);
         }
-
-        private string _lastSendName;
 
         private void Update()
         {
             SetNameView();
-
-            if (IsSelf)
-            {
-                if (_lastSendName != _input.text)
-                {
-                    this.CmdSetName(_id, _input.text);
-                    _lastSendName = _input.text;
-                }
-            }
-
-            if (isServer)
-            {
-                var playerInfo = Manager.GetPlayerAt(_id);
-                string name = playerInfo != null ? playerInfo.Name : "???";
-                Player.Info.STATUS status = playerInfo != null ? playerInfo.Status : Player.Info.STATUS.NONE;
-                RpcUpdatePlayerPanel(name, status);
-            }
-        }
-
-        [Command]
-        private void CmdSetName(int idx, string name)
-        {
-            Manager.GetPlayerAt(idx).SetUpName(name);
-        }
-
-        [ClientRpc]
-        private void RpcUpdatePlayerPanel(string name, Player.Info.STATUS status)
-        {
-            _input.text = name;
-
-            switch (status)
-            {
-                case Player.Info.STATUS.NONE:
-                    _statusText.text = "等待連線";
-                    break;
-
-                case Player.Info.STATUS.CONNECTED:
-                    _statusText.text = "準備中";
-                    break;
-
-                case Player.Info.STATUS.READY:
-                    _statusText.text = "Ready";
-                    break;
-            }
         }
 
         private void SetNameView()
         {
             var inpObj = _input.transform.parent.gameObject;
             var readyBtnObj = _readyButton.gameObject;
+            _nameText.text = _input.text;
             //Restore
             _nameText.gameObject.SetActive(true);
             inpObj.SetActive(true);
             readyBtnObj.SetActive(true);
 
             //
-            if (IsSelf)
+            if (_player.Status == Player.Info.STATUS.NONE)
             {
                 _nameText.gameObject.SetActive(false);
-                return;
+            }
+            else
+            {
+                inpObj.SetActive(false);
+                readyBtnObj.SetActive(false);
             }
 
-            inpObj.SetActive(false);
-            readyBtnObj.SetActive(false);
+            _statusText.text = _player.GetStatusString();
         }
 
-        private bool IsSelf => Storage.PlayerInfo != null&& _id == Storage.PlayerInfo.Id;
+        public void SetReady()
+        {
+            _player.SetStatus(Player.Info.STATUS.READY);
+            GetSceneLogic<PrepareUIScene>().OnPlayerNumberChanged();
+        }
     }
 }

@@ -5,30 +5,21 @@ using UnityEngine.Networking;
 
 namespace NTUT.CSIE.GameDev.Game
 {
-    public class Manager : CommonNetObject
+    public class Manager : CommonObject
     {
-        private Dictionary<int, Player.Info> _playerList;
+        public Player.Info[] _playerList;
 
-        private void Awake()
+        private void Start()
         {
-            _playerList = new Dictionary<int, Player.Info>();
-        }
-
-        internal void Attach(Player.Info info)
-        {
-            info.SetUpId(PlayerCount);
-            _playerList.Add(info.Id, info);
+            if (_playerList == null || _playerList.Length != 2)
+                throw new System.Exception("PlayerInfo not set.");
         }
 
         internal Player.Info GetPlayerAt(int i)
         {
-            if (!_playerList.ContainsKey(i))
-                return null;
-
             return _playerList[i];
         }
 
-        public int PlayerCount => _playerList.Count;
-        internal Dictionary<int, Player.Info> PlayerList => _playerList;
+        public int PlayerCount => _playerList.Length;
     }
 }
