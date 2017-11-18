@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace NTUT.CSIE.GameDev.Scene
 {
@@ -14,6 +15,7 @@ namespace NTUT.CSIE.GameDev.Scene
             if (ReadyPlayerNumber == 2)
             {
                 Debug.Log("All Ready");
+                SceneManager.LoadScene("Fight");
             }
         }
 

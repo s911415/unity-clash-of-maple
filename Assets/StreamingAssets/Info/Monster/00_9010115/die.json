@@ -1,7 +1,7 @@
 {
   "Collider": {
     "offset": {
-      "x": 6.875,
+      "x": 0.5,
       "y": 1.5625
     },
     "size": {
@@ -19,7 +19,7 @@
   },
   "Pivot": {
     "x": 0.5,
-    "y": 0.5
+    "y": 0
   },
   "Count": 8,
   "CenterBottom": {
