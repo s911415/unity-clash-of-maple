@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - GameCore
+  - ff
+  - Startbtn
   layers:
   - Default
   - TransparentFX
