@@ -11,6 +11,38 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1689960639664946}
   m_IsPrefabParent: 1
+--- !u!1 &1280836924198226
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4459066528881014}
+  - component: {fileID: 114016050660331970}
+  m_Layer: 0
+  m_Name: Player1Info
+  m_TagString: Player
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1480934583678344
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4827549670055176}
+  - component: {fileID: 114634361048321998}
+  m_Layer: 0
+  m_Name: Player2Info
+  m_TagString: Player
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1689960639664946
 GameObject:
   m_ObjectHideFlags: 0
@@ -19,7 +51,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4881575998013228}
-  - component: {fileID: 114152753783155852}
   - component: {fileID: 114807927115675216}
   - component: {fileID: 114604063456700294}
   m_Layer: 0
@@ -29,6 +60,32 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &4459066528881014
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1280836924198226}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 559, y: 312.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4881575998013228}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4827549670055176
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1480934583678344}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 559, y: 312.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4881575998013228}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4881575998013228
 Transform:
   m_ObjectHideFlags: 1
@@ -38,42 +95,24 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4459066528881014}
+  - {fileID: 4827549670055176}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114152753783155852
+--- !u!114 &114016050660331970
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1689960639664946}
+  m_GameObject: {fileID: 1280836924198226}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Script: {fileID: 11500000, guid: c1cd9e598d6b70741a6c3bee73ae3019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 66
-    i1: 44
-    i2: 132
-    i3: 220
-    i4: 246
-    i5: 172
-    i6: 86
-    i7: 68
-    i8: 41
-    i9: 118
-    i10: 243
-    i11: 163
-    i12: 75
-    i13: 122
-    i14: 231
-    i15: 27
-  m_ServerOnly: 1
-  m_LocalPlayerAuthority: 0
+  id: 0
 --- !u!114 &114604063456700294
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -85,6 +124,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a11d52c01f0314cb4c285fe7361fb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerList:
+  - {fileID: 114016050660331970}
+  - {fileID: 114634361048321998}
+--- !u!114 &114634361048321998
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1480934583678344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1cd9e598d6b70741a6c3bee73ae3019, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 1
 --- !u!114 &114807927115675216
 MonoBehaviour:
   m_ObjectHideFlags: 1

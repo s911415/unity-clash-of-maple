@@ -11,8 +11,6 @@ namespace NTUT.CSIE.GameDev.Game
         private void Awake()
         {
             if (this.Manager != null) { }
-
-            if (this.Storage != null) { }
         }
 
         private static Manager _manager;
@@ -37,6 +35,7 @@ namespace NTUT.CSIE.GameDev.Game
             }
         }
 
+        /*
         protected static Storage _storage;
         public Storage Storage
         {
@@ -58,6 +57,7 @@ namespace NTUT.CSIE.GameDev.Game
                 throw new MissingReferenceException("Cannot found GameStorage or Storage instance not found.");
             }
         }
+        */
 
         protected T GetSceneLogic<T>()  where T : BasicSceneLogic
         {
