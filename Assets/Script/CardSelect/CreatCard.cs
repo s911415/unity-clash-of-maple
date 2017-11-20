@@ -51,7 +51,7 @@ namespace NTUT.CSIE.GameDev.CardSelect
                 {
                     GameObject btn = (GameObject)Instantiate(prefab);
                     btn.GetComponent<Select>().SetNumber(threeCardSet[_gameDifficult - 1, i]);
-                    btn.GetComponent<Image>().sprite = Resources.Load<Sprite>("Card/" + threeCardSet[_gameDifficult - 1, i]);
+                    btn.GetComponent<Image>().sprite = Resources.Load<Sprite>("Card/Card" + threeCardSet[_gameDifficult - 1, i]);
                     btn.transform.SetParent(ParentPanel, false);
                 }
             }

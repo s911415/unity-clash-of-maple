@@ -42,12 +42,17 @@ namespace NTUT.CSIE.GameDev.CardSelect
             if (_total.Count == 6)
             {
                 string cardSet = null;
+                this.GetComponent<Image>().color = Color.white;
                 this.gameObject.GetComponent<Button>().interactable = true;
                 foreach (string tt in _total)
                     cardSet += tt;
                 Debug.Log(cardSet);
             }
-            this.gameObject.GetComponent<Button>().interactable = false;
+            else
+            {
+                this.GetComponent<Image>().color = Color.gray;
+                this.gameObject.GetComponent<Button>().interactable = false;
+            }
         }
     }
 }

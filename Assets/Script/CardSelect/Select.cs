@@ -53,9 +53,9 @@ namespace NTUT.CSIE.GameDev.CardSelect
         void Update()
         {
             if (selected)
-                this.GetComponent<Image>().color = Color.gray;
-            else
                 this.GetComponent<Image>().color = Color.white;
+            else
+                this.GetComponent<Image>().color = new Color(0.6f, 0.6f, 0.6f);
         }
     }
 }

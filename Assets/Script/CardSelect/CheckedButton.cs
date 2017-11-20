@@ -26,9 +26,9 @@ namespace NTUT.CSIE.GameDev.CardSelect
                 card.GetComponent<CreatCard>().SetGameDifficult(2);
             else if (this.GetComponent<Button>().name == "HardButton")
                 card.GetComponent<CreatCard>().SetGameDifficult(3);
-            this.GetComponent<Image>().color = Color.gray;
-            btn1.GetComponent<Image>().color = Color.white;
-            btn2.GetComponent<Image>().color = Color.white;
+            this.GetComponent<Image>().color = Color.white;
+            btn1.GetComponent<Image>().color = Color.gray;
+            btn2.GetComponent<Image>().color = Color.gray;
         }
         // Update is called once per frame
         void Update()
