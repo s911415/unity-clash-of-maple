@@ -14,21 +14,29 @@ namespace NTUT.CSIE.GameDev.Component
     {
         public int boundary = 50;
         public int speed = 5;
-        public GameObject referenceObject;
+        public GameObject referenceObject = null;
 
         private int _screenWidth;
         private int _screenHeight;
+        private Camera _camera;
 
 
         private void Start()
         {
             _screenWidth = Screen.width;
             _screenHeight = Screen.height;
+            _camera = gameObject.GetComponent<Camera>();
+
+            if (_camera == null)
+            {
+                throw new System.Exception("You cannot attach this script on non-camera object.");
+            }
         }
 
         private void Update()
         {
             Vector3 pos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            Vector3 orgPos = new Vector3(pos.x, pos.y, pos.z);
             bool anyChange = false;
 
             if (Input.mousePosition.x > _screenWidth - boundary)
@@ -58,6 +66,22 @@ namespace NTUT.CSIE.GameDev.Component
             if (anyChange)
             {
                 transform.position = pos;
+
+                if (referenceObject != null)
+                {
+                    Vector3 refPos = _camera.WorldToViewportPoint(referenceObject.transform.position);
+                    //var refSize = _camera.WorldToViewportPoint(referenceObject.renderer.);
+                    var p1 = referenceObject.transform.TransformPoint(0, 0, 0);
+                    var p2 = gameObject.transform.TransformPoint(1, 1, 0);
+                    Debug.Log("p1=" + p1 + "; p2 = " + p2);
+
+                    if (refPos.x > 0) pos.x = orgPos.x;
+
+                    if (refPos.y > 0) pos.z = orgPos.z;
+
+                    transform.position = pos;
+                    Debug.Log(refPos.ToString() + "; " + refSize.ToString());
+                }
             }
         }
 
