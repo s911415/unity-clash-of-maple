@@ -194,7 +194,6 @@ GameObject:
   - component: {fileID: 50870890}
   - component: {fileID: 50870889}
   - component: {fileID: 50870894}
-  - component: {fileID: 50870895}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -283,34 +282,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd920ba3b32ef6b40ba86b330685f8eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boundary: 50
+  boundary: 80
   speed: 20
   referenceObject: {fileID: 755741775}
---- !u!61 &50870895
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 50870888}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
 --- !u!1001 &94239735
 Prefab:
   m_ObjectHideFlags: 0

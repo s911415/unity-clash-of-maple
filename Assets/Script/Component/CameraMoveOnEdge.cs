@@ -70,17 +70,17 @@ namespace NTUT.CSIE.GameDev.Component
                 if (referenceObject != null)
                 {
                     Vector3 refPos = _camera.WorldToViewportPoint(referenceObject.transform.position);
-                    //var refSize = _camera.WorldToViewportPoint(referenceObject.renderer.);
-                    var p1 = referenceObject.transform.TransformPoint(0, 0, 0);
-                    var p2 = gameObject.transform.TransformPoint(1, 1, 0);
-                    Debug.Log("p1=" + p1 + "; p2 = " + p2);
+                    var refSize = _camera.WorldToViewportPoint(referenceObject.GetComponent<Collider>().bounds.size);
 
                     if (refPos.x > 0) pos.x = orgPos.x;
 
+                    if (refSize.x < 1) pos.x = orgPos.x;
+
                     if (refPos.y > 0) pos.z = orgPos.z;
 
+                    if (refSize.y < 1) pos.z = orgPos.z;
+
                     transform.position = pos;
-                    Debug.Log(refPos.ToString() + "; " + refSize.ToString());
                 }
             }
         }
