@@ -7,7 +7,21 @@ namespace NTUT.CSIE.GameDev.Game
 {
     public class Manager : CommonObject
     {
+        private static Manager _managerInstance = null;
         public Player.Info[] _playerList;
+
+        private void Awake()
+        {
+            if (_managerInstance != null)
+            {
+                this.gameObject.SetActive(false);
+            }
+            else
+            {
+                _managerInstance = this;
+                DontDestroyOnLoad(this.gameObject);
+            }
+        }
 
         private void Start()
         {
@@ -21,5 +35,6 @@ namespace NTUT.CSIE.GameDev.Game
         }
 
         public int PlayerCount => _playerList.Length;
+        public static Manager Instance => _managerInstance;
     }
 }
