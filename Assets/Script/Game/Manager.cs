@@ -8,6 +8,7 @@ namespace NTUT.CSIE.GameDev.Game
     public class Manager : CommonObject
     {
         private static Manager _managerInstance = null;
+        private static Monster.InfoCollection _monsterInfoCollection = null;
         public Player.Info[] _playerList;
 
         private void Awake()
@@ -20,6 +21,7 @@ namespace NTUT.CSIE.GameDev.Game
             {
                 _managerInstance = this;
                 DontDestroyOnLoad(this.gameObject);
+                Initialize();
             }
         }
 
@@ -34,7 +36,13 @@ namespace NTUT.CSIE.GameDev.Game
             return _playerList[i];
         }
 
+        private void Initialize()
+        {
+            _monsterInfoCollection = new Monster.InfoCollection();
+        }
+
         public int PlayerCount => _playerList.Length;
+        public Monster.InfoCollection MonsterInfoCollection => _monsterInfoCollection;
         public static Manager Instance => _managerInstance;
     }
 }
