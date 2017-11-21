@@ -7,6 +7,10 @@ TagManager:
   - GameCore
   - ff
   - Startbtn
+  - difficultBtn
+  - CreateBtn
+  - canvas
+  - Card
   layers:
   - Default
   - TransparentFX
@@ -16,7 +20,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - UI2
   - 
   - 
   - 
@@ -43,4 +47,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UI2
+    uniqueID: 1606051889
+    locked: 0
+  - name: UI
+    uniqueID: 2971675455
     locked: 0

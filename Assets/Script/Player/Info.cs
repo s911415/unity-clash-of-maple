@@ -20,6 +20,8 @@ namespace NTUT.CSIE.GameDev.Player
         private STATUS _status;
         public STATUS Status => _status;
 
+        private List<string> _cardIds = new List<string>();
+
         private void Start()
         {
             _status = STATUS.NONE;
@@ -36,6 +38,11 @@ namespace NTUT.CSIE.GameDev.Player
         {
             this._status = status;
             return this;
+        }
+
+        public void SetCardIds(List<string> list)
+        {
+            _cardIds.AddRange(list);
         }
 
         internal string GetStatusString()

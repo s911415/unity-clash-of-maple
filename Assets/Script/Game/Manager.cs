@@ -7,9 +7,13 @@ namespace NTUT.CSIE.GameDev.Game
 {
     public class Manager : CommonObject
     {
+        public static int DEFAULT_PLAYER_ID = 0;
+        public static int ROBOT_PLAYER_ID = 1;
+
         private static Manager _managerInstance = null;
         private static Monster.InfoCollection _monsterInfoCollection = null;
         public Player.Info[] _playerList;
+        private int _difficult;
 
         private void Awake()
         {
@@ -36,6 +40,10 @@ namespace NTUT.CSIE.GameDev.Game
             return _playerList[i];
         }
 
+        public void SetDifficult(int i)
+        {
+            this._difficult = i;
+        }
         private void Initialize()
         {
             _monsterInfoCollection = new Monster.InfoCollection();
