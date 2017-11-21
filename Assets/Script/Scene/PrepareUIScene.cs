@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace NTUT.CSIE.GameDev.Scene
 {
@@ -12,10 +13,21 @@ namespace NTUT.CSIE.GameDev.Scene
     {
         internal void OnPlayerNumberChanged()
         {
-            if (ReadyPlayerNumber == 2)
+            if (ReadyPlayerNumber == 1)
             {
                 Debug.Log("All Ready");
-                SceneManager.LoadScene("Fight");
+                SceneManager.LoadScene("ChooseCard");
+            }
+        }
+
+        public void OnReadyButtonClick()
+        {
+            var playerName = GameObject.Find("PlayerNameInput").GetComponent<InputField>().text.Trim();
+
+            if (playerName != "")
+            {
+                Manager.GetPlayerAt(0).SetName(playerName).SetStatus(Player.Info.STATUS.READY);
+                OnPlayerNumberChanged();
             }
         }
 
