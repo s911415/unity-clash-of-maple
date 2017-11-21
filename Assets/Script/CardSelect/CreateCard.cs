@@ -1,11 +1,13 @@
-﻿using System.Collections;
+﻿using NTUT.CSIE.GameDev.Game;
+using NTUT.CSIE.GameDev.Scene;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace NTUT.CSIE.GameDev.CardSelect
 {
-    public class CreatCard : MonoBehaviour
+    public class CreateCard : MonoBehaviour
     {
         public RectTransform ParentPanel;
         public GameObject prefab;
@@ -15,21 +17,26 @@ namespace NTUT.CSIE.GameDev.CardSelect
             { "00", "01", "02", "06", "07", "08", "10", null, null, null, null, null },
             { "00", "01", "02", "04", "06", "07", "08", "09", "10", "11", null, null },
             { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11" } };
-
+        //
+        public List<string> monsterInfo = new List<string>();
         // game mode 1 easy 2 normal 3 hard
-        private int _gameDifficult;
+        public int gameDifficult;
 
         // set difficult
         public void SetGameDifficult(int mode)
         {
             Clean();
-            _gameDifficult = mode;
+            gameDifficult = mode;
             Create();
         }
 
         void Start()
         {
             this.SetGameDifficult(1);
+            //
+            for (int i = 0; i < 20; i++)
+                monsterInfo.Add(i.ToString());
+            //
         }
 
         // Clean
@@ -47,12 +54,13 @@ namespace NTUT.CSIE.GameDev.CardSelect
 
             for (int i = 0; i < CARD_NUMBER; i++)
             {
-                if (threeCardSet[_gameDifficult - 1, i] != null)
+                if (threeCardSet[gameDifficult - 1, i] != null)
                 {
                     GameObject btn = (GameObject)Instantiate(prefab);
-                    btn.GetComponent<Select>().SetNumber(threeCardSet[_gameDifficult - 1, i]);
-                    btn.GetComponent<Image>().sprite = Resources.Load<Sprite>("Card/Card" + threeCardSet[_gameDifficult - 1, i]);
+                    btn.GetComponent<Select>().SetNumber(threeCardSet[gameDifficult - 1, i]);
+                    btn.GetComponent<Image>().sprite = Resources.Load<Sprite>("Card/Card" + threeCardSet[gameDifficult - 1, i]);
                     btn.transform.SetParent(ParentPanel, false);
+                    btn.GetComponent<Select>().flag = 0;
                 }
             }
         }

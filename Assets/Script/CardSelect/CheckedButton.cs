@@ -21,11 +21,11 @@ namespace NTUT.CSIE.GameDev.CardSelect
         {
             GameObject card = GameObject.Find("Card");
             if (this.GetComponent<Button>().name == "EasyButton")
-                card.GetComponent<CreatCard>().SetGameDifficult(1);
+                card.GetComponent<CreateCard>().SetGameDifficult(1);
             else if (this.GetComponent<Button>().name == "NormalButton")
-                card.GetComponent<CreatCard>().SetGameDifficult(2);
+                card.GetComponent<CreateCard>().SetGameDifficult(2);
             else if (this.GetComponent<Button>().name == "HardButton")
-                card.GetComponent<CreatCard>().SetGameDifficult(3);
+                card.GetComponent<CreateCard>().SetGameDifficult(3);
             this.GetComponent<Image>().color = Color.white;
             btn1.GetComponent<Image>().color = Color.gray;
             btn2.GetComponent<Image>().color = Color.gray;

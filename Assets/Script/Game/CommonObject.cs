@@ -61,7 +61,15 @@ namespace NTUT.CSIE.GameDev.Game
 
         protected T GetSceneLogic<T>()  where T : BasicSceneLogic
         {
-            return GameObject.Find("SceneLogic").GetComponent<T>();
+            var logicObj = GameObject.Find("SceneLogic");
+            if (logicObj == null)
+                throw new System.Exception("SceneLogic Not Found");
+
+            var component = logicObj.GetComponent<T>();
+            if (component == null)
+                throw new System.Exception("Target Logic Component Not Attached");
+
+            return component;
         }
     }
 }
