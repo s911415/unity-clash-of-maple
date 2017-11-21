@@ -1,4 +1,6 @@
 ﻿using NTUT.CSIE.GameDev.Game;
+using NTUT.CSIE.GameDev.Helper;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -6,42 +8,24 @@ using UnityEngine;
 
 namespace NTUT.CSIE.GameDev.Monster
 {
-    public class Info : CommonObject
+    [Serializable]
+    public class Info
     {
-        private const string MONSTER_FILE = "Info/Monster/list.json";
-        public string id;
-        private string  _name, _desc;
-        private int _level;
-        private static Dictionary<string, Info> _list = null;
+        [SerializeField]
+        private string id, name, desc;
+        [SerializeField]
+        private int level;
 
-        private static Dictionary<string, Info> GetList()
+        public Info()
         {
-            if (_list != null) return _list;
-
-            _list = new Dictionary<string, Info>();
-            string filePath = Path.Combine(Application.streamingAssetsPath, MONSTER_FILE);
-
-            if (File.Exists(filePath))
-            {
-                // Read the json from the file into a string
-                string dataAsJson = File.ReadAllText(filePath, System.Text.Encoding.UTF8);
-                // Pass the json to JsonUtility, and tell it to create a GameData object from it
-                return null;
-            }
-            else
-            {
-                throw new System.Exception("Monster file list not found");
-            }
+            id = name = desc = string.Empty;
+            level = 0;
         }
-
-        private void LoadJsonFile()
-        {
-        }
-
 
         public string ID => id;
-        public string Name => _name;
-        public string Description => _desc;
-        public int Level => _level;
+        public string Name => name;
+        public string Description => desc;
+        public int Level => level;
     }
+
 }
