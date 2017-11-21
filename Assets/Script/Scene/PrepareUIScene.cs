@@ -29,6 +29,22 @@ namespace NTUT.CSIE.GameDev.Scene
                 Manager.GetPlayerAt(0).SetName(playerName).SetStatus(Player.Info.STATUS.READY);
                 OnPlayerNumberChanged();
             }
+            else
+            {
+                new DialogBuilder()
+                .SetTitle("錯誤")
+                .SetContent("名稱不可以為空")
+                .SetIcon(Dialog.Icon.Info)
+                .SetYesBtnStatus(true)
+                .SetNoBtnStatus(true)
+                .SetClickListener(
+                    new Dialog.ConfirmDialogEventListener(
+                        () => Debug.Log("你點了確定"),
+                        () => Debug.Log("你點了取消")
+                    )
+                )
+                .Show(_window);
+            }
         }
 
         protected int ReadyPlayerNumber

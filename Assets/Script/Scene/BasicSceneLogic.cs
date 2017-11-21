@@ -8,5 +8,7 @@ namespace NTUT.CSIE.GameDev.Scene
 {
     public class BasicSceneLogic : CommonObject
     {
+        [SerializeField]
+        protected Canvas _window;
     }
 }
