@@ -11,6 +11,7 @@ namespace NTUT.CSIE.GameDev.Game
         public static int ROBOT_PLAYER_ID = 1;
 
         private static Manager _managerInstance = null;
+        private static Monster.InfoCollection _monsterInfoCollection = null;
         public Player.Info[] _playerList;
         private int _difficult;
 
@@ -24,6 +25,7 @@ namespace NTUT.CSIE.GameDev.Game
             {
                 _managerInstance = this;
                 DontDestroyOnLoad(this.gameObject);
+                Initialize();
             }
         }
 
@@ -41,10 +43,14 @@ namespace NTUT.CSIE.GameDev.Game
         public void SetDifficult(int i)
         {
             this._difficult = i;
-            Debug.Log(i);
+        }
+        private void Initialize()
+        {
+            _monsterInfoCollection = new Monster.InfoCollection();
         }
 
         public int PlayerCount => _playerList.Length;
+        public Monster.InfoCollection MonsterInfoCollection => _monsterInfoCollection;
         public static Manager Instance => _managerInstance;
     }
 }
