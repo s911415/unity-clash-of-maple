@@ -10,5 +10,6 @@ namespace NTUT.CSIE.GameDev.Scene
     {
         [SerializeField]
         protected Canvas _window;
+        public Canvas Window => _window;
     }
 }
