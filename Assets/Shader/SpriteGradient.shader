@@ -1,4 +1,4 @@
-﻿Shader "Sharder/SpriteGradient" {
+﻿Shader "Custom/SpriteGradient" {
     Properties {
         [PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
         _Color ("Top Color", Color) = (1, 1, 1, 1)
