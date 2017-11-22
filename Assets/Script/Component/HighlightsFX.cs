@@ -1,4 +1,5 @@
-﻿// original  source code from here : http://xroft666.blogspot.tw/2015/07/glow-highlighting-in-unity.html
+﻿// Reference: http://sammaru.blogspot.tw/2017/05/unity.html
+// original  source code from here : http://xroft666.blogspot.tw/2015/07/glow-highlighting-in-unity.html
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Rendering;

@@ -1,5 +1,5 @@
 // Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
+//Reference: http://sammaru.blogspot.tw/2017/05/unity.html
 
 Shader "Custom/MobileBlur"
 {

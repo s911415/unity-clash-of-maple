@@ -1,4 +1,6 @@
-﻿Shader "Custom/Highlight" {
+﻿//Reference: http://sammaru.blogspot.tw/2017/05/unity.html
+Shader "Custom/Highlight"
+{
 
     Properties {
         _MainTex("Main Texture", 2D) = "black" {}
