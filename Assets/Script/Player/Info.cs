@@ -45,6 +45,11 @@ namespace NTUT.CSIE.GameDev.Player
             _cardIds.AddRange(list);
         }
 
+        public List<string> GetCardIds()
+        {
+            return _cardIds;
+        }
+
         internal string GetStatusString()
         {
             switch (_status)

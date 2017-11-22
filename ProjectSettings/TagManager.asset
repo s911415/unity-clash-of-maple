@@ -11,6 +11,7 @@ TagManager:
   - CreateBtn
   - canvas
   - Card
+  - MapStatus
   layers:
   - Default
   - TransparentFX
