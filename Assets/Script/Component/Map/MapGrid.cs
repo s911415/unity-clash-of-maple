@@ -1,7 +1,9 @@
 ﻿using NTUT.CSIE.GameDev.Game;
+using NTUT.CSIE.GameDev.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace NTUT.CSIE.GameDev.Component.Map
 {
@@ -17,6 +19,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         protected void OnMouseDown()
         {
+            if (IsMouseOnGUI) return;
+
             Debug.Log(string.Format("Click Grid: ({0}, {1})", row, col));
             _generator.SetHighLight(this.row, this.col);
         }

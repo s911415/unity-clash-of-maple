@@ -2,13 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 
 namespace NTUT.CSIE.GameDev.Game
 {
     public class CommonObject : MonoBehaviour
     {
-        private void Awake()
+        protected virtual void Awake()
         {
             if (this.Manager != null) { }
         }
@@ -35,6 +36,8 @@ namespace NTUT.CSIE.GameDev.Game
             }
         }
 
+        protected virtual bool IsMouseOnGUI => EventSystem.current.IsPointerOverGameObject();
+
         /*
         protected static Storage _storage;
         public Storage Storage
@@ -59,13 +62,15 @@ namespace NTUT.CSIE.GameDev.Game
         }
         */
 
-        protected T GetSceneLogic<T>()  where T : BasicSceneLogic
+        protected virtual T GetSceneLogic<T>()  where T : BasicSceneLogic
         {
             var logicObj = GameObject.Find("SceneLogic");
+
             if (logicObj == null)
                 throw new System.Exception("SceneLogic Not Found");
 
             var component = logicObj.GetComponent<T>();
+
             if (component == null)
                 throw new System.Exception("Target Logic Component Not Attached");
 
