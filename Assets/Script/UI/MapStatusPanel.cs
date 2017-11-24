@@ -13,6 +13,7 @@ namespace NTUT.CSIE.GameDev.UI
     {
         List<string> _cardSet = new List<string>();
         public GameObject cardPrefab;
+        private HouseInfo _houseInfo = new HouseInfo();
         Sprite[] _buildingLevel = new Sprite[3];
         Transform picturePanel;
         Transform describePanel;
@@ -26,17 +27,17 @@ namespace NTUT.CSIE.GameDev.UI
         }
 
         // display about mapgrid
-        public void DisplayInfo(MapGrid selectedGrid)
+        public void DisplayInfo(HouseInfo houseInfo)
         {
+            _houseInfo = houseInfo;
             picturePanel = this.transform.Find("Picture");
             for (int i = 0; i < 3; i++)
                 picturePanel.transform.GetChild(i).gameObject.SetActive(true);
             describePanel = this.transform.Find("Describe");
-            picturePanel.Find("Image").GetComponent<Image>().sprite = _buildingLevel[selectedGrid.Type];
-            picturePanel.Find("Hp").GetComponent<Text>().text = selectedGrid.hp.ToString() + "/" + selectedGrid.maxHp.ToString();
-            picturePanel.Find("Name").GetComponent<Text>().text = selectedGrid.gridName.ToString();
-
-            switch (selectedGrid.Type)
+            picturePanel.Find("Image").GetComponent<Image>().sprite = _buildingLevel[_houseInfo.type];
+            picturePanel.Find("Hp").GetComponent<Text>().text = _houseInfo.hp.ToString() + "/" + _houseInfo.maxHp.ToString();
+            picturePanel.Find("Name").GetComponent<Text>().text = _houseInfo.name.ToString();
+            switch (_houseInfo.type)
             {
                 case 0:
                     this.Buy();
@@ -71,6 +72,7 @@ namespace NTUT.CSIE.GameDev.UI
 
         public void Upgrade()
         {
+            Debug.Log("This building is Card" + _houseInfo.monsterNumber + "'s Home.");
             this.CloseDescribePanel();
             describePanel.Find("Upgrade").gameObject.SetActive(true);
         }
