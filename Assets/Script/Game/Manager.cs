@@ -7,15 +7,18 @@ namespace NTUT.CSIE.GameDev.Game
 {
     public class Manager : CommonObject
     {
-        public static int DEFAULT_PLAYER_ID = 0;
-        public static int ROBOT_PLAYER_ID = 1;
+        public const int DEFAULT_PLAYER_ID = 0;
+        public const int ROBOT_PLAYER_ID = 1;
+        public const int REQUIRE_START_CARD_COUNT = 6;
 
         private static Manager _managerInstance = null;
         private static Monster.InfoCollection _monsterInfoCollection = null;
         public Player.Info[] _playerList;
-        private int _difficult;
 
-        private void Awake()
+        [SerializeField]
+        private Difficulty.Level _difficult = Game.Difficulty.Level.None;
+
+        protected override void Awake()
         {
             if (_managerInstance != null)
             {
@@ -35,12 +38,14 @@ namespace NTUT.CSIE.GameDev.Game
                 throw new System.Exception("PlayerInfo not set.");
         }
 
+        internal Player.Info[] Players => _playerList;
+
         internal Player.Info GetPlayerAt(int i)
         {
             return _playerList[i];
         }
 
-        public void SetDifficult(int i)
+        public void SetDifficult(Difficulty.Level i)
         {
             this._difficult = i;
         }
@@ -48,6 +53,8 @@ namespace NTUT.CSIE.GameDev.Game
         {
             _monsterInfoCollection = new Monster.InfoCollection();
         }
+
+        public Difficulty.Level Difficulty => _difficult;
 
         public int PlayerCount => _playerList.Length;
         public Monster.InfoCollection MonsterInfoCollection => _monsterInfoCollection;

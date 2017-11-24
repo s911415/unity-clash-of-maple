@@ -11,23 +11,29 @@ namespace NTUT.CSIE.GameDev.CardSelect
     {
         private List<string> _selectCardSet;
         private GameObject _difficultBtn;
+        private Image _image;
+        private Button _button;
 
         // Use this for initialization
         void Start()
         {
-            ResetCardSet();
             _difficultBtn = GameObject.FindGameObjectWithTag("CreateBtn");
+            _image = GetComponent<Image>();
+            _button = gameObject.GetComponent<Button>();
+            ResetCardSet();
         }
 
         // reset
         public void ResetCardSet()
         {
             _selectCardSet = new List<string>();
+            OnCardListChanged();
         }
 
         public void AddCard(string cardNumber)
         {
             _selectCardSet.Add(cardNumber);
+            OnCardListChanged();
         }
 
         public string GetCard(int index)
@@ -38,6 +44,7 @@ namespace NTUT.CSIE.GameDev.CardSelect
         public void RemoveCard(string cardNumber)
         {
             _selectCardSet.Remove(cardNumber);
+            OnCardListChanged();
         }
 
         public void OnClick()
@@ -47,23 +54,25 @@ namespace NTUT.CSIE.GameDev.CardSelect
             GetSceneLogic<ChooseCardSceneLogic>().OnClickStartButton();
         }
 
-        // Update is called once per frame
-        void Update()
+        protected void OnCardListChanged()
         {
-            if (_selectCardSet.Count == 6)
+            Debug.Log("Select Card: " + ((_selectCardSet.Count == 0) ? "Empty" : string.Join(", ", _selectCardSet)));
+
+            if (_selectCardSet.Count == Manager.REQUIRE_START_CARD_COUNT)
             {
-                string cardSet = null;
-                this.GetComponent<Image>().color = Color.white;
-                this.gameObject.GetComponent<Button>().interactable = true;
-                foreach (string tt in _selectCardSet)
-                    cardSet += tt;
-                Debug.Log(cardSet);
+                _image.color = Color.white;
+                _button.interactable = true;
             }
             else
             {
-                this.GetComponent<Image>().color = Color.gray;
-                this.gameObject.GetComponent<Button>().interactable = false;
+                _image.color = Color.gray;
+                _button.interactable = false;
             }
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
         }
     }
 }

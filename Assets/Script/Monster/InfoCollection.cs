@@ -1,5 +1,4 @@
-﻿using Assets.Script.Game;
-using NTUT.CSIE.GameDev.Game;
+﻿using NTUT.CSIE.GameDev.Game;
 using NTUT.CSIE.GameDev.Helper;
 using System;
 using System.Collections;
@@ -32,7 +31,7 @@ namespace NTUT.CSIE.GameDev.Monster
             List<Info> list = new List<Info>();
 
             foreach (var info in GetList().Values)
-                if (info.Level == level) list.Add(info);
+                if ((int)info.Level == level) list.Add(info);
 
             list.Sort((a, b) => a.ID.CompareTo(b.ID));
             _diffCardCache.Add(level, list);

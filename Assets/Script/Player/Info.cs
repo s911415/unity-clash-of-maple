@@ -9,17 +9,17 @@ namespace NTUT.CSIE.GameDev.Player
     {
         public enum STATUS
         {
-            NONE, CONNECTED, READY
+            NONE, CONNECTED, READY, SELECTING_CARD, FIGHT
         }
 
         public int id;
-
+        [SerializeField]
         private string _name;
         public string Name => _name;
-
+        [SerializeField]
         private STATUS _status;
         public STATUS Status => _status;
-
+        [SerializeField]
         private List<string> _cardIds = new List<string>();
 
         private void Start()
@@ -40,9 +40,11 @@ namespace NTUT.CSIE.GameDev.Player
             return this;
         }
 
-        public void SetCardIds(List<string> list)
+        public Info SetCardIds(IEnumerable<string> list)
         {
+            _cardIds.Clear();
             _cardIds.AddRange(list);
+            return this;
         }
 
         internal string GetStatusString()
