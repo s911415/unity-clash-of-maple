@@ -1,6 +1,7 @@
 ﻿using NTUT.CSIE.GameDev.Game;
 using NTUT.CSIE.GameDev.Scene;
 using NTUT.CSIE.GameDev.CardSelect;
+using NTUT.CSIE.GameDev.Component.Map;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,8 @@ namespace NTUT.CSIE.GameDev.UI
         List<string> _cardSet = new List<string>();
         public GameObject cardPrefab;
         Sprite[] _buildingLevel = new Sprite[3];
+        Transform picturePanel;
+        Transform describePanel;
         // Use this for initialization
         void Start()
         {
@@ -23,55 +26,72 @@ namespace NTUT.CSIE.GameDev.UI
         }
 
         // display about mapgrid
-        public void DisplayInfo(int type)
+        public void DisplayInfo(MapGrid selectedGrid)
         {
-            this.transform.Find("Picture").Find("Image").GetComponent<Image>().sprite = _buildingLevel[type];
-            if (type == 0) this.Buy();
-            else if (type == 1) this.Select();
-            else if (type == 2) this.Upgrade();
+            picturePanel = this.transform.Find("Picture");
+            for (int i = 0; i < 3; i++)
+                picturePanel.transform.GetChild(i).gameObject.SetActive(true);
+            describePanel = this.transform.Find("Describe");
+            picturePanel.Find("Image").GetComponent<Image>().sprite = _buildingLevel[selectedGrid.Type];
+            picturePanel.Find("Hp").GetComponent<Text>().text = selectedGrid.hp.ToString() + "/" + selectedGrid.maxHp.ToString();
+            picturePanel.Find("Name").GetComponent<Text>().text = selectedGrid.gridName.ToString();
+
+            switch (selectedGrid.Type)
+            {
+                case 0:
+                    this.Buy();
+                    break;
+                case 1:
+                    this.Select();
+                    break;
+                case 2:
+                    this.Upgrade();
+                    break;
+                default:
+                    Debug.Log("Type error");
+                    break;
+            }
         }
 
         // buy
         public void Buy()
         {
             this.CloseDescribePanel();
-            this.transform.Find("Describe").Find("Buy").gameObject.SetActive(true);
-            this.transform.Find("Describe").Find("Buy").Find("Image").GetComponent<Image>().sprite = _buildingLevel[1];
+            describePanel.Find("Buy").gameObject.SetActive(true);
+            describePanel.Find("Buy").Find("BuildImage").Find("Image").GetComponent<Image>().sprite = _buildingLevel[1];
         }
 
         public void Select()
         {
-            GameObject btn;
             this.CloseDescribePanel();
-            this.transform.Find("Describe").Find("Select").gameObject.SetActive(true);
-
-            foreach (string cardNumber in _cardSet)
-            {
-                btn = (GameObject)Instantiate(cardPrefab);
-                btn.GetComponent<Select>().SetNumber(cardNumber);
-                btn.GetComponent<Image>().sprite = Resources.Load<Sprite>("Card/Card" + cardNumber);
-                btn.transform.SetParent(this.transform.Find("Describe").Find("Select").transform, false);
-            }
+            describePanel.Find("Select").gameObject.SetActive(true);
+            for (int i = 0; i < 6; i++)
+                describePanel.Find("Select").GetChild(i).GetComponent<Image>().sprite = Resources.Load<Sprite>("Card/Card" + _cardSet[i]);
         }
 
         public void Upgrade()
         {
             this.CloseDescribePanel();
-            this.transform.Find("Describe").Find("Upgrade").gameObject.SetActive(true);
+            describePanel.Find("Upgrade").gameObject.SetActive(true);
         }
 
-        void CloseDescribePanel()
+        public void CloseDescribePanel()
         {
-            this.transform.Find("Describe").Find("Buy").gameObject.SetActive(false);
-            this.transform.Find("Describe").Find("Select").gameObject.SetActive(false);
-            this.transform.Find("Describe").Find("Upgrade").gameObject.SetActive(false);
+            describePanel.Find("Buy").gameObject.SetActive(false);
+            describePanel.Find("Select").gameObject.SetActive(false);
+            describePanel.Find("Upgrade").gameObject.SetActive(false);
         }
 
+        public void CloseAllPanel()
+        {
+            for (int i = 0; i < 3; i++)
+                picturePanel.transform.GetChild(i).gameObject.SetActive(false);
+            CloseDescribePanel();
+        }
         // Update is called once per frame
         void Update()
         {
 
         }
-
     }
 }

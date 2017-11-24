@@ -1,4 +1,5 @@
 ﻿using NTUT.CSIE.GameDev.Game;
+using NTUT.CSIE.GameDev.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -56,6 +57,18 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
             Renderer renderer = this[r, c].gameObject.GetComponent<Renderer>();
             _highlightFX.SetRenderer(renderer);
+        }
+
+        public void ShowInfoOnPanel()
+        {
+            GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().DisplayInfo(_mapGridArray[curRow, curCol]);
+        }
+
+        public void Building()
+        {
+            Debug.Log(string.Format("Click Grid: ({0}, {1})", curRow, curCol));
+            _mapGridArray[curRow, curCol].Type += 1;
+            GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().CloseAllPanel();
         }
 
         private void DeleteChild()
