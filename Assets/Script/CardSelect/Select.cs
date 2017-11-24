@@ -17,19 +17,21 @@ namespace NTUT.CSIE.GameDev.CardSelect
             this._number = number;
         }
 
-        // get number 
+        // get number
         public string GetNumber()
         {
             return _number;
         }
 
-        // onclick 
+        // onclick
         public void SelectCard()
         {
             GameObject[] allCard = null;
+
             if (flag == 1)
             {
                 allCard = GameObject.FindGameObjectsWithTag("Card");
+
                 foreach (GameObject go in allCard)
                 {
                     if (go.GetComponent<Select>().GetNumber() == _number && go.GetComponent<Select>().flag == 0)
@@ -38,15 +40,18 @@ namespace NTUT.CSIE.GameDev.CardSelect
                     }
                 }
             }
+
+            var startBtn = _startButton.GetComponent<StartButton>();
+
             if (selected)
             {
                 selected = false;
-                _startButton.GetComponent<StartButton>().RemoveCard(_number);
+                startBtn.RemoveCard(_number);
             }
             else
             {
                 selected = true;
-                _startButton.GetComponent<StartButton>().AddCard(_number);
+                startBtn.AddCard(_number);
             }
         }
 
@@ -86,18 +91,19 @@ namespace NTUT.CSIE.GameDev.CardSelect
                 v3.y += 35;
                 cloneObject.transform.localPosition = v3;
                 cloneObject.GetComponent<RectTransform>().sizeDelta = new Vector2(84f, 120f);
-                // cloneObject.GetComponent<Select>().enabled = false;                
+                // cloneObject.GetComponent<Select>().enabled = false;
                 cloneObject.transform.localScale = new Vector2(1f, 1f) * parameter;
             }
             else if (parameter == 1 && flag == 1)
             {
                 Destroy(this.gameObject);
-            }     
+            }
         }
 
         private void DeleteRedundancy()
         {
             GameObject[] allcard = GameObject.FindGameObjectsWithTag("Card");
+
             foreach (GameObject redundancy in allcard)
             {
                 if (redundancy.GetComponent<Select>().flag == 1)

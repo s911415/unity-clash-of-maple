@@ -11,29 +11,40 @@ namespace NTUT.CSIE.GameDev.Game
     {
         protected virtual void Awake()
         {
-            if (this.Manager != null) { }
+            GetManager();
+            Random.InitState(System.Guid.NewGuid().GetHashCode());
         }
 
         private static Manager _manager;
-        protected virtual Manager Manager
+        internal virtual Manager Manager
         {
             get
             {
-                if (_manager != null)
-                    return _manager;
+                var manager = GetManager();
 
-                var obj = GameObject.Find("GameManager");
-
-                if (obj != null)
-                {
-                    _manager = obj.GetComponent<Manager>();
-
-                    if (_manager != null)
-                        return _manager;
-                }
+                if (manager != null)
+                    return manager;
 
                 throw new MissingReferenceException("Cannot found GameManager or Manager instance not found.");
             }
+        }
+
+        private Manager GetManager()
+        {
+            if (_manager != null)
+                return _manager;
+
+            var obj = GameObject.Find("GameManager");
+
+            if (obj != null)
+            {
+                _manager = obj.GetComponent<Manager>();
+
+                if (_manager != null)
+                    return _manager;
+            }
+
+            return null;
         }
 
         protected virtual bool IsMouseOnGUI => EventSystem.current.IsPointerOverGameObject();

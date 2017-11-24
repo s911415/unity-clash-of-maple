@@ -14,7 +14,7 @@ namespace NTUT.CSIE.GameDev.Monster
         [SerializeField]
         private string id, name, desc;
         [SerializeField]
-        private int level;
+        private Difficulty.Level level;
 
         public Info()
         {
@@ -25,7 +25,7 @@ namespace NTUT.CSIE.GameDev.Monster
         public string ID => id;
         public string Name => name;
         public string Description => desc;
-        public int Level => level;
+        public Difficulty.Level Level => level;
     }
 
 }
