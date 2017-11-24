@@ -88,11 +88,12 @@ namespace NTUT.CSIE.GameDev.CardSelect
                 cloneObject.GetComponent<Select>().SetNumber(_number);
                 cloneObject.transform.SetParent(GameObject.FindGameObjectWithTag("canvas").transform); //修改父物件
                 Vector3 v3 = transform.localPosition;
-                v3.y += 35;
+                v3.y += 100;
                 cloneObject.transform.localPosition = v3;
                 cloneObject.GetComponent<RectTransform>().sizeDelta = new Vector2(84f, 120f);
+                cloneObject.GetComponent<Animator>().Play("CardAnimation");
                 // cloneObject.GetComponent<Select>().enabled = false;
-                cloneObject.transform.localScale = new Vector2(1f, 1f) * parameter;
+                //cloneObject.transform.localScale = new Vector2(1f, 1f) * parameter;
             }
             else if (parameter == 1 && flag == 1)
             {
