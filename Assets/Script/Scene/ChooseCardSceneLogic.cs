@@ -16,8 +16,9 @@ namespace NTUT.CSIE.GameDev.Scene
         private int _difficult;
         private List<string> _cardList = new List<string>();
 
-        protected void Start()
+        protected override void Awake()
         {
+            base.Awake();
             CheckPlayers();
 
             foreach (var player in Manager.Players)

@@ -1,5 +1,6 @@
 ﻿using NTUT.CSIE.GameDev.Component.Map;
 using NTUT.CSIE.GameDev.Game;
+using NTUT.CSIE.GameDev.Player.Honors;
 using NTUT.CSIE.GameDev.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,12 +19,12 @@ namespace NTUT.CSIE.GameDev.Scene
 
         public Player.Player GetPlayerAt(int i) => _players[i];
 
-        private void Start()
+        protected override void Awake()
         {
+            base.Awake();
             CheckMembers();
             InitMembers();
         }
-
 
         private void CheckMembers()
         {
@@ -45,17 +46,17 @@ namespace NTUT.CSIE.GameDev.Scene
         private void CheckPlayers()
         {
             //Check Player Enter Normaly
-            foreach (var p in Manager.Players)
+            foreach (var p in _players)
             {
                 CheckPlayer(p);
             }
         }
 
-        internal static void CheckPlayer(Player.Info p)
+        internal static void CheckPlayer(Player.Player p)
         {
-            ChooseCardSceneLogic.CheckPlayer(p);
+            ChooseCardSceneLogic.CheckPlayer(p.Info);
 
-            if (p.Status != Player.Info.STATUS.FIGHT)
+            if (p.Info.Status != Player.Info.STATUS.FIGHT)
             {
                 var cards = new List<Monster.Info>(p.Manager.MonsterInfoCollection.GetInfoListLessOrEqualToLevel(Difficulty.MAX_LEVEL));
                 cards.Sort((a, b) => Random.Range(-1, 2));
@@ -65,7 +66,8 @@ namespace NTUT.CSIE.GameDev.Scene
                 foreach (var info in cards)
                     cardsID.Add(info.ID);
 
-                p.SetCardIds(cardsID);
+                p.Info.SetCardIds(cardsID);
+                p.AddHonor(Honor.開發者模式);
             }
         }
         #endregion
@@ -97,7 +99,7 @@ namespace NTUT.CSIE.GameDev.Scene
                     break;
 
                 case Difficulty.Level.Demo:
-                    money = int.MaxValue;
+                    money = Player.Player.MAX_MONEY;
                     break;
             }
 
