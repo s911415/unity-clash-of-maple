@@ -51,7 +51,7 @@ namespace NTUT.CSIE.GameDev.Player
 
         private void OnMoneyChanged(int value)
         {
-            var text = String.Format("${0:#,##0,,}", value);
+            var text = String.Format("${0:#,##0}", value);
             _moneyText.text = text;
         }
 
