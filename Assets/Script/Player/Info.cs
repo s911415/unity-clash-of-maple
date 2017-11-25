@@ -22,15 +22,15 @@ namespace NTUT.CSIE.GameDev.Player
         [SerializeField]
         private List<string> _cardIds = new List<string>();
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _status = STATUS.NONE;
             _name = string.Empty;
         }
 
         internal Info SetName(string name)
         {
-            Debug.Log("Player Info start");
             this._name = name;
             return this;
         }

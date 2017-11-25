@@ -67,6 +67,7 @@ namespace NTUT.CSIE.GameDev.Scene
                     cardsID.Add(info.ID);
 
                 p.Info.SetCardIds(cardsID);
+                p.Info.SetStatus(Player.Info.STATUS.FIGHT);
                 p.AddHonor(Honor.開發者模式);
             }
         }
