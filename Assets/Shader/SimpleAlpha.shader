@@ -1,7 +1,7 @@
 ﻿Shader "Custom/SimpleAlpha" {
     Properties{
         _MainTex("Base", 2D) = "white" {}
-        _Color("Color", COlor) = (1, 1, 1, 1)
+        _Color("Color", Color) = (1, 1, 1, 1)
         _TransVal("Transparency Value", Range(0, 1)) = 0.5
     }
     SubShader{
