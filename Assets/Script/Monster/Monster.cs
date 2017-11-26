@@ -14,9 +14,9 @@ namespace NTUT.CSIE.GameDev.Monster
     {
         public int id;
         [SerializeField]
-        private Info _info;
+        protected Info _info;
         [SerializeField]
-        private int _hp;
+        protected int _hp;
 
         public enum Action
         {
@@ -34,14 +34,38 @@ namespace NTUT.CSIE.GameDev.Monster
             _hp = MAX_HP;
         }
 
-        public void Damage(int damage)
+        public virtual void Damage(int damage)
         {
             throw new NotImplementedException();
         }
 
-        public void Recovery(int recover)
+        public virtual void Recovery(int recover)
         {
             throw new NotImplementedException();
+        }
+
+        public virtual void Attack()
+        {
+        }
+
+        public virtual void Die()
+        {
+        }
+
+        public virtual void Skill1()
+        {
+        }
+
+        public virtual void Skill2()
+        {
+        }
+
+        public virtual void Walk()
+        {
+        }
+
+        public virtual void Idle()
+        {
         }
     }
 }
