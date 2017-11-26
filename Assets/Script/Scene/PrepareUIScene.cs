@@ -34,13 +34,11 @@ namespace NTUT.CSIE.GameDev.Scene
                 new DialogBuilder()
                 .SetTitle("錯誤")
                 .SetContent("名稱不可以為空")
-                .SetIcon(Dialog.Icon.Info)
+                .SetIcon(Dialog.Icon.Error)
                 .SetYesBtnStatus(true)
-                .SetNoBtnStatus(true)
                 .SetClickListener(
-                    new Dialog.ConfirmDialogEventListener(
-                        () => Debug.Log("你點了確定"),
-                        () => Debug.Log("你點了取消")
+                    new Dialog.MessageDialogEventListener(
+                        () => Debug.Log("你點了確定")
                     )
                 )
                 .Show(_window);
