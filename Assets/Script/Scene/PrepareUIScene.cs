@@ -39,6 +39,7 @@ namespace NTUT.CSIE.GameDev.Scene
                 .SetContent("名稱不可以為空")
                 .SetIcon(Dialog.Icon.Error)
                 .SetYesBtnStatus(true)
+                .AddOnBeforeDestroyListener(() => Debug.Log("123"))
                 .SetClickListener(
                     new Dialog.MessageDialogEventListener(
                         () => Debug.Log("你點了確定")
