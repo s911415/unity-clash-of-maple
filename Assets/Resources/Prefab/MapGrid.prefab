@@ -137,6 +137,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bd6ced35b9914d4f85171e9b06aff11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _nonSelectColor: {r: 0.4745098, g: 0.47843137, b: 0.15294118, a: 1}
+  _selectColor: {r: 0.58482194, g: 0.58965516, b: 0.18849634, a: 1}
   row: 0
   col: 0
   width: 10

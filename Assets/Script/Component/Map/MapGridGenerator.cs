@@ -14,7 +14,6 @@ namespace NTUT.CSIE.GameDev.Component.Map
         public int curCol, curRow;
         public float y;
         private MapGrid[,] _mapGridArray;
-        public HighlightsFX _highlightFX;
 
         private void Start()
         {
@@ -41,6 +40,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
                     mapGrid.col = c;
                     mapGrid.row = r;
                     mapGrid._generator = this;
+                    mapGrid.Selected = false;
                     int posX = c * step + halfStep, posY = r * step + halfStep;
                     grid.transform.localPosition = new Vector3(posX, y, posY);
                 }
@@ -49,14 +49,21 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         public void SetHighLight(int r, int c)
         {
+            if (this.curCol != EMPTY && this.curRow != EMPTY)
+            {
+                this[curRow, curCol].Selected = false;
+            }
+
             this.curCol = c;
             this.curRow = r;
-            _highlightFX.ClearOutlineData();
 
             if (r == EMPTY || c == EMPTY) return;
 
-            Renderer renderer = this[r, c].gameObject.GetComponent<Renderer>();
-            _highlightFX.SetRenderer(renderer);
+            this[curRow, curCol].Selected = true;
+        }
+
+        private void ClearAllSelect()
+        {
         }
 
         public void ShowInfoOnPanel()

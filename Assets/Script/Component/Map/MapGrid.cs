@@ -8,9 +8,12 @@ namespace NTUT.CSIE.GameDev.Component.Map
 {
     public class MapGrid : CommonObject
     {
+        [SerializeField]
+        private Color _nonSelectColor, _selectColor;
         public int row, col;
         public int width = 10;
         public List<Sprite> buildingImage = new List<Sprite>();
+        private Material _mat;
         /*
         0 空地 可選擇建造
         1 房屋 可選擇兵種
@@ -33,6 +36,12 @@ namespace NTUT.CSIE.GameDev.Component.Map
         public int monsterHp;
         public int monsterSpeed;
 
+        protected override void Awake()
+        {
+            base.Awake();
+            _mat = this.GetComponent<Renderer>().material;
+        }
+
         protected void Start()
         {
             this.SetGridInitial();
@@ -48,33 +57,50 @@ namespace NTUT.CSIE.GameDev.Component.Map
         protected void OnMouseDown()
         {
             if (IsMouseOnGUI) return;
-           // Debug.Log(string.Format("Click Grid: ({0}, {1})", row, col));
+
+            // Debug.Log(string.Format("Click Grid: ({0}, {1})", row, col));
             _generator.SetHighLight(this.row, this.col);
             _generator.ShowInfoOnPanel();
         }
 
         public int Type
-
         {
             set
             {
                 type = value;
                 gameObject.GetComponentInChildren<SpriteRenderer>().sprite = buildingImage[type];
+
                 if (type != 0)
                 {
                     hp = maxHp = 5000;
                     gridName = "建築1";
                 }
             }
-             get
+
+            get
             {
                 return type;
             }
-
         }
         private void Update()
         {
-            
+        }
+
+        public bool Selected
+        {
+            set
+            {
+                const string COLOR_TAG = "_Color";
+
+                if (value)
+                {
+                    _mat.SetColor(COLOR_TAG, _selectColor);
+                }
+                else
+                {
+                    _mat.SetColor(COLOR_TAG, _nonSelectColor);
+                }
+            }
         }
     }
 }
