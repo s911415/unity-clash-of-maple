@@ -57,9 +57,10 @@ namespace NTUT.CSIE.GameDev.Scene
         }
         private void EnterKey()
         {
-            if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
+            var Dialog = GameObject.Find("Dialog(Clone)");
+            if ((Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return)) && !Dialog)
             {
-                Debug.Log("Press enter.");
+                Debug.Log("You press enterkey.");
                 OnReadyButtonClick();
             }
         }
