@@ -57,7 +57,8 @@ namespace NTUT.CSIE.GameDev.Scene
         }
         private void EnterKey()
         {
-            var Dialog = GameObject.Find("Dialog(Clone)");
+            var Dialog = GameObject.FindGameObjectWithTag("Dialog");
+
             if ((Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return)) && !Dialog)
             {
                 Debug.Log("You press enterkey.");
