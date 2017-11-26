@@ -12,6 +12,7 @@ TagManager:
   - canvas
   - Card
   - MapStatus
+  - Dialog
   layers:
   - Default
   - TransparentFX
