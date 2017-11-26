@@ -19,7 +19,10 @@ namespace NTUT.CSIE.GameDev.Scene
                 SceneManager.LoadScene("ChooseCard");
             }
         }
-
+        void Update()
+        {
+            EnterKey();
+        }
         public void OnReadyButtonClick()
         {
             var playerName = GameObject.Find("PlayerNameInput").GetComponent<InputField>().text.Trim();
@@ -50,6 +53,15 @@ namespace NTUT.CSIE.GameDev.Scene
             get
             {
                 return Array.FindAll(Manager._playerList, p => p.Status == Player.Info.STATUS.READY).Length;
+            }
+        }
+        private void EnterKey()
+        {
+            var Dialog = GameObject.Find("Dialog(Clone)");
+            if ((Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return)) && !Dialog)
+            {
+                Debug.Log("You press enterkey.");
+                OnReadyButtonClick();
             }
         }
     }
