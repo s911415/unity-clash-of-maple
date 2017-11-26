@@ -2893,11 +2893,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
---- !u!102 &976806656 stripped
-TextMesh:
-  m_PrefabParentObject: {fileID: 102922813398135544, guid: 3dfc608e2cff12a469c5810850b0584d,
-    type: 2}
-  m_PrefabInternal: {fileID: 1200938488}
 --- !u!1 &978990190
 GameObject:
   m_ObjectHideFlags: 0
@@ -3458,11 +3453,6 @@ Prefab:
       propertyPath: _generator
       value: 
       objectReference: {fileID: 755741779}
-    - target: {fileID: 114529622339738320, guid: 3dfc608e2cff12a469c5810850b0584d,
-        type: 2}
-      propertyPath: _gridText
-      value: 
-      objectReference: {fileID: 976806656}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3dfc608e2cff12a469c5810850b0584d, type: 2}
   m_IsPrefabParent: 0
