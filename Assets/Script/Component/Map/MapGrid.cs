@@ -9,6 +9,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
     public class MapGrid : CommonObject
     {
         [SerializeField]
+        private TextMesh _gridText;
+        [SerializeField]
         private Color _nonSelectColor, _selectColor;
         public int row, col;
         public int width = 10;
@@ -52,6 +54,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
             type = 0;
             hp = maxHp = 0;
             gridName = "空地";
+            _gridText.text = "┌" + ToString() + "┐";
         }
 
         protected void OnMouseDown()
@@ -84,6 +87,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         }
         private void Update()
         {
+            _gridText.gameObject.SetActive(_generator.ShowGridText);
         }
 
         public bool Selected
@@ -101,6 +105,11 @@ namespace NTUT.CSIE.GameDev.Component.Map
                     _mat.SetColor(COLOR_TAG, _nonSelectColor);
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            return string.Format("({0}, {1})", row, col);
         }
     }
 }

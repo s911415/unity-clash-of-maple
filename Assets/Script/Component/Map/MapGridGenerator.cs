@@ -14,6 +14,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         public int curCol, curRow;
         public float y;
         private MapGrid[,] _mapGridArray;
+        public bool ShowGridText = true;
 
         private void Start()
         {

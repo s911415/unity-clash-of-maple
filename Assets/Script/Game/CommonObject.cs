@@ -41,7 +41,11 @@ namespace NTUT.CSIE.GameDev.Game
                 _manager = obj.GetComponent<Manager>();
 
                 if (_manager != null)
+                {
+                    if (!_manager.IsInit) _manager.Initialize();
+
                     return _manager;
+                }
             }
 
             return null;

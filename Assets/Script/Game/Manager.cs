@@ -13,6 +13,7 @@ namespace NTUT.CSIE.GameDev.Game
 
         private static Manager _managerInstance = null;
         private static Monster.InfoCollection _monsterInfoCollection = null;
+        private bool _initialized = false;
         public Player.Info[] _playerList;
 
         [SerializeField]
@@ -26,8 +27,6 @@ namespace NTUT.CSIE.GameDev.Game
             }
             else
             {
-                _managerInstance = this;
-                DontDestroyOnLoad(this.gameObject);
                 Initialize();
             }
         }
@@ -49,9 +48,13 @@ namespace NTUT.CSIE.GameDev.Game
         {
             this._difficult = i;
         }
-        private void Initialize()
+
+        public void Initialize()
         {
+            _managerInstance = this;
+            DontDestroyOnLoad(this.gameObject);
             _monsterInfoCollection = new Monster.InfoCollection();
+            _initialized = true;
         }
 
         public Difficulty.Level Difficulty => _difficult;
@@ -59,5 +62,6 @@ namespace NTUT.CSIE.GameDev.Game
         public int PlayerCount => _playerList.Length;
         public Monster.InfoCollection MonsterInfoCollection => _monsterInfoCollection;
         public static Manager Instance => _managerInstance;
+        public bool IsInit => _initialized;
     }
 }

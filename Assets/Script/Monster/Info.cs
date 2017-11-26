@@ -15,17 +15,23 @@ namespace NTUT.CSIE.GameDev.Monster
         private string id, name, desc;
         [SerializeField]
         private Difficulty.Level level;
+        [SerializeField]
+        private int hp, attack;
 
         public Info()
         {
             id = name = desc = string.Empty;
             level = 0;
+            hp = attack = 1;
         }
 
         public string ID => id;
         public string Name => name;
         public string Description => desc;
         public Difficulty.Level Level => level;
+
+        public int MaxHP => hp;
+        public int Attack => attack;
     }
 
 }
