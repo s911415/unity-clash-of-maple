@@ -9,10 +9,12 @@ namespace NTUT.CSIE.GameDev.UI
 {
     public class DialogBuilder
     {
+        private static List<Dialog> _dialogInstances = new List<Dialog>();
         private string _title, _content;
         private bool _yesBtn, _noBtn, _backDrop;
         private Dialog.Icon _icon;
         private Dialog.IDialogEventListener _listener;
+        private event Action _onBeforeDestroyEvent;
 
         public DialogBuilder()
         {
@@ -65,6 +67,12 @@ namespace NTUT.CSIE.GameDev.UI
             return this;
         }
 
+        public DialogBuilder AddOnBeforeDestroyListener(Action action)
+        {
+            this._onBeforeDestroyEvent += action;
+            return this;
+        }
+
         public DialogBuilder SetClickListener(Dialog.IDialogEventListener listener)
         {
             this._listener = listener;
@@ -85,8 +93,15 @@ namespace NTUT.CSIE.GameDev.UI
             dialog.showBackDrop = _backDrop;
             dialog.SetBackground(_icon);
             dialog.SetListener(_listener);
+            dialog.OnBeforeDestroy += _onBeforeDestroyEvent;
             dialogObj.transform.localPosition = Vector3.zero;
+            dialog.AddOnBeforeDestroyListener(() => _dialogInstances.Remove(dialog));
+            _dialogInstances.Add(dialog);
             return dialog;
         }
+
+        public static bool HasAnyDialog => _dialogInstances.Count == 0;
+
+        public static IReadOnlyList<Dialog> DialogList => _dialogInstances;
     }
 }

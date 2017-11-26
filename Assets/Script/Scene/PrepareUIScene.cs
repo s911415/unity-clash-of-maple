@@ -39,6 +39,7 @@ namespace NTUT.CSIE.GameDev.Scene
                 .SetContent("名稱不可以為空")
                 .SetIcon(Dialog.Icon.Error)
                 .SetYesBtnStatus(true)
+                .AddOnBeforeDestroyListener(() => Debug.Log("123"))
                 .SetClickListener(
                     new Dialog.MessageDialogEventListener(
                         () => Debug.Log("你點了確定")
@@ -57,7 +58,8 @@ namespace NTUT.CSIE.GameDev.Scene
         }
         private void EnterKey()
         {
-            var Dialog = GameObject.Find("Dialog(Clone)");
+            var Dialog = GameObject.FindGameObjectWithTag("Dialog");
+
             if ((Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return)) && !Dialog)
             {
                 Debug.Log("You press enterkey.");

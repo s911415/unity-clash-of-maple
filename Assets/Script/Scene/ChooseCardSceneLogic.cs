@@ -56,7 +56,7 @@ namespace NTUT.CSIE.GameDev.Scene
 
         internal static void CheckPlayer(Player.Info p)
         {
-            if (p.Status != Player.Info.STATUS.READY)
+            if (p.Status < Player.Info.STATUS.READY)
             {
                 p.SetName("Player" + p.id);
             }

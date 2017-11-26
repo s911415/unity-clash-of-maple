@@ -30,6 +30,7 @@ namespace NTUT.CSIE.GameDev.UI
         public Text title, content;
         public GameObject backDrop;
         private IDialogEventListener _dialogListener = null;
+        public event Action OnBeforeDestroy;
 
         public virtual void Awake()
         {
@@ -60,11 +61,22 @@ namespace NTUT.CSIE.GameDev.UI
                 background.sprite = ErrorBg;
         }
 
+        public void AddOnBeforeDestroyListener(Action action)
+        {
+            this.OnBeforeDestroy += action;
+        }
+
+        public void RemoveOnBeforeDestroyListener(Action action)
+        {
+            this.OnBeforeDestroy -= action;
+        }
+
         private void OnButtonClick(ButtonValue value)
         {
             if (_dialogListener != null)
                 _dialogListener.OnClick(value);
 
+            OnBeforeDestroy?.Invoke();
             Destroy(this.gameObject);
         }
 
