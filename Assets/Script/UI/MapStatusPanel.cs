@@ -75,10 +75,12 @@ namespace NTUT.CSIE.GameDev.UI
             Debug.Log("This building is Card" + _houseInfo.monsterNumber + "'s Home.");
             this.CloseDescribePanel();
             describePanel.Find("Upgrade").gameObject.SetActive(true);
+            describePanel.Find("Upgrade").GetChild(0).GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Monster/" + _houseInfo.monsterNumber);
         }
 
         public void CloseDescribePanel()
         {
+            // 把描述介面全關閉 需要再另開起
             describePanel.Find("Buy").gameObject.SetActive(false);
             describePanel.Find("Select").gameObject.SetActive(false);
             describePanel.Find("Upgrade").gameObject.SetActive(false);

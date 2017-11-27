@@ -10,7 +10,6 @@ namespace NTUT.CSIE.GameDev.CardSelect
         public bool selected;
         private string _number;
         private GameObject _startButton;
-
         // set number
         public void SetNumber(string number)
         {
@@ -92,13 +91,16 @@ namespace NTUT.CSIE.GameDev.CardSelect
                 cloneObject.transform.localPosition = v3;
                 cloneObject.GetComponent<RectTransform>().sizeDelta = new Vector2(84f, 120f);
                 cloneObject.GetComponent<Animator>().Play("CardAnimation");
-                // cloneObject.GetComponent<Select>().enabled = false;
-                //cloneObject.transform.localScale = new Vector2(1f, 1f) * parameter;
             }
-            else if (parameter == 1 && flag == 1)
+            else if (parameter == 1 && flag == 1 && this.GetComponent<Animator>())
             {
-                Destroy(this.gameObject);
+                this.Invoke("DestroyTheObject", 0.5f);       
             }
+        }
+
+        private void DestroyTheObject()
+        {
+            Destroy(this.gameObject);
         }
 
         private void DeleteRedundancy()
