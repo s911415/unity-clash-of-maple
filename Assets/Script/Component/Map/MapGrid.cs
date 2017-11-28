@@ -15,7 +15,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         public int row, col;
         public int width = 10;
         public List<Sprite> buildingImage = new List<Sprite>();
-		
+
         private Material _mat;
         public MapGridGenerator _generator;
         private HouseInfo _houseInfo;
@@ -41,7 +41,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         {
             type = 0;
             _gridText.text = "┌" + ToString() + "┐";
-            _houseInfo = new HouseInfo();
+            _houseInfo = GetComponent<HouseInfo>();
         }
 
         protected void OnMouseDown()
@@ -70,7 +70,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         public void SelectThisMonster(string Number)
         {
-            _houseInfo.monsterNumber = Number;
+            _houseInfo.MonsterNumber = Number;
         }
 
         private void Update()

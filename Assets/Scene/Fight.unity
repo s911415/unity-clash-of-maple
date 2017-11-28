@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -77,15 +77,17 @@ LightmapSettings:
     m_PVRDirectSampleCount: 32
     m_PVRSampleCount: 500
     m_PVRBounces: 2
-    m_PVRFiltering: 0
+    m_PVRFilterTypeDirect: 0
+    m_PVRFilterTypeIndirect: 0
+    m_PVRFilterTypeAO: 0
     m_PVRFilteringMode: 1
     m_PVRCulling: 1
     m_PVRFilteringGaussRadiusDirect: 1
     m_PVRFilteringGaussRadiusIndirect: 5
     m_PVRFilteringGaussRadiusAO: 2
-    m_PVRFilteringAtrousColorSigma: 1
-    m_PVRFilteringAtrousNormalSigma: 1
-    m_PVRFilteringAtrousPositionSigma: 1
+    m_PVRFilteringAtrousPositionSigmaDirect: 0.5
+    m_PVRFilteringAtrousPositionSigmaIndirect: 2
+    m_PVRFilteringAtrousPositionSigmaAO: 1
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -428,7 +430,7 @@ GameObject:
   m_Component:
   - component: {fileID: 51517482}
   - component: {fileID: 51517483}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -612,7 +614,7 @@ GameObject:
   m_Component:
   - component: {fileID: 111706531}
   - component: {fileID: 111706532}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -784,7 +786,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 104d4da793001bc4dba824624767bc24, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -809,7 +811,7 @@ GameObject:
   - component: {fileID: 189317403}
   - component: {fileID: 189317402}
   - component: {fileID: 189317407}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Monster_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -935,6 +937,9 @@ MonoBehaviour:
     level: 0
     hp: 1
     attack: 1
+    speed: 0
+    cost: 0
+    spawnInterval: 0
   _hp: 0
   action: 0
 --- !u!1 &192900977
@@ -946,7 +951,7 @@ GameObject:
   m_Component:
   - component: {fileID: 192900978}
   - component: {fileID: 192900979}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1120,7 +1125,7 @@ GameObject:
   - component: {fileID: 284316391}
   - component: {fileID: 284316390}
   - component: {fileID: 284316392}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Monster_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1246,6 +1251,9 @@ MonoBehaviour:
     level: 0
     hp: 1
     attack: 1
+    speed: 0
+    cost: 0
+    spawnInterval: 0
   _hp: 0
   action: 0
 --- !u!1 &331812523
@@ -1412,7 +1420,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 34a61672ca0aca64992af1159f8b09df, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -1676,7 +1684,7 @@ GameObject:
   - component: {fileID: 400445567}
   - component: {fileID: 400445566}
   - component: {fileID: 400445571}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Monster_11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1802,6 +1810,9 @@ MonoBehaviour:
     level: 0
     hp: 1
     attack: 1
+    speed: 0
+    cost: 0
+    spawnInterval: 0
   _hp: 0
   action: 0
 --- !u!1 &403896483
@@ -1934,7 +1945,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300020, guid: 10bf8d505e1efeb4e9282a10d503c3b1, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -1955,7 +1966,7 @@ GameObject:
   m_Component:
   - component: {fileID: 457818481}
   - component: {fileID: 457818482}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2026,7 +2037,7 @@ GameObject:
   m_Component:
   - component: {fileID: 576893088}
   - component: {fileID: 576893089}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2416,7 +2427,7 @@ GameObject:
   m_Component:
   - component: {fileID: 654162819}
   - component: {fileID: 654162821}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2534,7 +2545,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300010, guid: ad27292ffa4cac14684ac67b54127267, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -2650,7 +2661,7 @@ GameObject:
   - component: {fileID: 794810301}
   - component: {fileID: 794810300}
   - component: {fileID: 794810305}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Monster_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2776,6 +2787,9 @@ MonoBehaviour:
     level: 0
     hp: 1
     attack: 1
+    speed: 0
+    cost: 0
+    spawnInterval: 0
   _hp: 0
   action: 0
 --- !u!1 &823325834
@@ -2791,7 +2805,7 @@ GameObject:
   - component: {fileID: 823325836}
   - component: {fileID: 823325835}
   - component: {fileID: 823325840}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Monster_09
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2917,6 +2931,9 @@ MonoBehaviour:
     level: 0
     hp: 1
     attack: 1
+    speed: 0
+    cost: 0
+    spawnInterval: 0
   _hp: 0
   action: 0
 --- !u!1 &849481619
@@ -3191,7 +3208,7 @@ GameObject:
   m_Component:
   - component: {fileID: 951056164}
   - component: {fileID: 951056165}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3444,7 +3461,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1023554013}
   - component: {fileID: 1023554014}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3530,7 +3547,7 @@ GameObject:
   - component: {fileID: 1104849949}
   - component: {fileID: 1104849948}
   - component: {fileID: 1104849953}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Monster_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3656,6 +3673,9 @@ MonoBehaviour:
     level: 0
     hp: 1
     attack: 1
+    speed: 0
+    cost: 0
+    spawnInterval: 0
   _hp: 0
   action: 0
 --- !u!1 &1157144493
@@ -4490,7 +4510,7 @@ GameObject:
   - component: {fileID: 1365566126}
   - component: {fileID: 1365566125}
   - component: {fileID: 1365566130}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Monster_00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4616,6 +4636,9 @@ MonoBehaviour:
     level: 0
     hp: 1
     attack: 1
+    speed: 0
+    cost: 0
+    spawnInterval: 0
   _hp: 0
   action: 0
 --- !u!1 &1382388623
@@ -4947,7 +4970,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1493597808}
   - component: {fileID: 1493597809}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5022,7 +5045,7 @@ GameObject:
   - component: {fileID: 1546981168}
   - component: {fileID: 1546981167}
   - component: {fileID: 1546981172}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Monster_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5148,6 +5171,9 @@ MonoBehaviour:
     level: 0
     hp: 1
     attack: 1
+    speed: 0
+    cost: 0
+    spawnInterval: 0
   _hp: 0
   action: 0
 --- !u!1 &1551699439
@@ -5163,7 +5189,7 @@ GameObject:
   - component: {fileID: 1551699441}
   - component: {fileID: 1551699440}
   - component: {fileID: 1551699445}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Monster_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5289,6 +5315,9 @@ MonoBehaviour:
     level: 0
     hp: 1
     attack: 1
+    speed: 0
+    cost: 0
+    spawnInterval: 0
   _hp: 0
   action: 0
 --- !u!1 &1560027514
@@ -5347,7 +5376,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300018, guid: 0b9f4a863a6727a43a69942b15fd2fa0, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -5368,7 +5397,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1591900778}
   - component: {fileID: 1591900779}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5537,6 +5566,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardPrefab: {fileID: 1065573320263608, guid: bbfc9f101145a4443a0c546bcc606db3, type: 2}
+  upgradeAttackText: {fileID: 2040829674}
+  upgradeHPText: {fileID: 362063318}
+  upgradeSpeedText: {fileID: 1757452684}
 --- !u!1 &1706854133
 GameObject:
   m_ObjectHideFlags: 0
@@ -5550,7 +5582,7 @@ GameObject:
   - component: {fileID: 1706854135}
   - component: {fileID: 1706854134}
   - component: {fileID: 1706854139}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Monster_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5676,6 +5708,9 @@ MonoBehaviour:
     level: 0
     hp: 1
     attack: 1
+    speed: 0
+    cost: 0
+    spawnInterval: 0
   _hp: 0
   action: 0
 --- !u!1 &1710795465
@@ -5785,7 +5820,7 @@ GameObject:
   - component: {fileID: 1716221274}
   - component: {fileID: 1716221273}
   - component: {fileID: 1716221278}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Monster_08
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5911,6 +5946,9 @@ MonoBehaviour:
     level: 0
     hp: 1
     attack: 1
+    speed: 0
+    cost: 0
+    spawnInterval: 0
   _hp: 0
   action: 0
 --- !u!1 &1757452682
@@ -6442,7 +6480,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1926672755}
   - component: {fileID: 1926672756}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7000,7 +7038,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2063941332}
   - component: {fileID: 2063941333}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7075,7 +7113,7 @@ GameObject:
   - component: {fileID: 2094470232}
   - component: {fileID: 2094470233}
   - component: {fileID: 2094470234}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Monster_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7201,5 +7239,8 @@ MonoBehaviour:
     level: 0
     hp: 1
     attack: 1
+    speed: 0
+    cost: 0
+    spawnInterval: 0
   _hp: 0
   action: 0
