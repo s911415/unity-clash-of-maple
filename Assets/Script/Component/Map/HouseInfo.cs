@@ -12,7 +12,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         public int type;
         public int hp;
         public int maxHp;
-        public string name;
+        public string houseName;
         // 出產怪物資訊
         private string _monsterNum;
         private int _monsterAttack = 1;
@@ -22,7 +22,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         public HouseInfo()
         {
             hp = maxHp = 0;
-            name = "空地";
+            houseName = "空地";
         }
 
         public void SetHouseInfo(int type)
@@ -31,12 +31,12 @@ namespace NTUT.CSIE.GameDev.Component.Map
             if (type == 1)
             {
                 hp = maxHp = 0;
-                name = "空地";
+                houseName = "空地";
             }
             else if (type == 2)
             {
                 hp = maxHp = 5000;
-                name = "建築";
+                houseName = "建築";
             }
         }
 
