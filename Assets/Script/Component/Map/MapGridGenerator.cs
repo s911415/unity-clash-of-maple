@@ -67,15 +67,22 @@ namespace NTUT.CSIE.GameDev.Component.Map
         {
         }
 
-        public void ShowInfoOnPanel()
+        public void ShowInfoOnPanel(HouseInfo houseInfo)
         {
-            GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().DisplayInfo(_mapGridArray[curRow, curCol]);
+            GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().DisplayInfo(houseInfo);
         }
 
-        public void Building()
+        public void ClickBuildingButton()
         {
-            Debug.Log(string.Format("Click Grid: ({0}, {1})", curRow, curCol));
             _mapGridArray[curRow, curCol].Type += 1;
+            GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().CloseAllPanel();
+        }
+
+        public void ClickCardButton(int n)
+        {
+            string monsterNum = Manager.GetPlayerAt(Manager.DEFAULT_PLAYER_ID).GetCardIds()[n];
+            _mapGridArray[curRow, curCol].Type += 1;
+            _mapGridArray[curRow, curCol].SelectThisMonster(monsterNum);
             GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().CloseAllPanel();
         }
 
