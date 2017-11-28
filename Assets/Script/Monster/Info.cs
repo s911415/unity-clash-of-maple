@@ -16,7 +16,7 @@ namespace NTUT.CSIE.GameDev.Monster
         [SerializeField]
         private Difficulty.Level level;
         [SerializeField]
-        private int hp, attack;
+        private int hp, attack, speed, cost, spawnInterval;
 
         public Info()
         {
@@ -32,6 +32,9 @@ namespace NTUT.CSIE.GameDev.Monster
 
         public int MaxHP => hp;
         public int Attack => attack;
+        public int Speed => speed;
+        public int Cost => cost;
+        public int SpawnInterval => spawnInterval;
     }
 
 }

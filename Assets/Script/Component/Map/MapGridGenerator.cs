@@ -42,6 +42,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
                     mapGrid.row = r;
                     mapGrid._generator = this;
                     mapGrid.Selected = false;
+                    grid.name = mapGrid.ToString();
                     int posX = c * step + halfStep, posY = r * step + halfStep;
                     grid.transform.localPosition = new Vector3(posX, y, posY);
                 }
@@ -96,11 +97,6 @@ namespace NTUT.CSIE.GameDev.Component.Map
             }
         }
 
-        public void UpgrdeMonster(string item)
-        {
-            _mapGridArray[curRow, curCol].UpdgradeMonster(item);
-            this.ShowInfoOnPanel();
-        }
         public void DiscardMonster()
         {
             _mapGridArray[curRow, curCol].DiscardMonster();
