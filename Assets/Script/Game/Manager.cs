@@ -12,6 +12,7 @@ namespace NTUT.CSIE.GameDev.Game
         public const int REQUIRE_START_CARD_COUNT = 6;
 
         private static Manager _managerInstance = null;
+        [SerializeField]
         private static Monster.InfoCollection _monsterInfoCollection = null;
         private bool _initialized = false;
         public Player.Info[] _playerList;

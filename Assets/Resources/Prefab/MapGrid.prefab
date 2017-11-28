@@ -40,6 +40,7 @@ GameObject:
   - component: {fileID: 64194930017394262}
   - component: {fileID: 23267740637131632}
   - component: {fileID: 114529622339738320}
+  - component: {fileID: 114600183444975150}
   m_Layer: 0
   m_Name: MapGrid
   m_TagString: Untagged
@@ -231,14 +232,22 @@ MonoBehaviour:
   - {fileID: 21300008, guid: 37f9f168610b38347ae7f49d83926562, type: 3}
   - {fileID: 21300000, guid: b4804ebcf107d5142a8ed08d3fb1fe2d, type: 3}
   - {fileID: 21300000, guid: bdd957924da6a4640a64e03d8d6dae77, type: 3}
+  _generator: {fileID: 0}
+--- !u!114 &114600183444975150
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1772367493665388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 354687f5d01230041b6549ebeacf02a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
   hp: 0
   maxHp: 0
-  gridName: 
-  _generator: {fileID: 0}
-  monsterNum: 
-  monsterAttack: 0
-  monsterHp: 0
-  monsterSpeed: 0
+  houseName: "\u7A7A\u5730"
 --- !u!212 &212556299459181674
 SpriteRenderer:
   m_ObjectHideFlags: 1

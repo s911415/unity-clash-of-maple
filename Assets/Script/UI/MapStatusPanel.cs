@@ -17,6 +17,8 @@ namespace NTUT.CSIE.GameDev.UI
         Sprite[] _buildingLevel = new Sprite[3];
         Transform picturePanel;
         Transform describePanel;
+        public Text upgradeAttackText, upgradeHPText, upgradeSpeedText;
+
         // Use this for initialization
         void Start()
         {
@@ -31,23 +33,29 @@ namespace NTUT.CSIE.GameDev.UI
         {
             _houseInfo = houseInfo;
             picturePanel = this.transform.Find("Picture");
+
             for (int i = 0; i < 3; i++)
                 picturePanel.transform.GetChild(i).gameObject.SetActive(true);
+
             describePanel = this.transform.Find("Describe");
             picturePanel.Find("Image").GetComponent<Image>().sprite = _buildingLevel[_houseInfo.type];
             picturePanel.Find("Hp").GetComponent<Text>().text = _houseInfo.hp.ToString() + "/" + _houseInfo.maxHp.ToString();
-            picturePanel.Find("Name").GetComponent<Text>().text = _houseInfo.name.ToString();
+            picturePanel.Find("Name").GetComponent<Text>().text = _houseInfo.houseName.ToString();
+
             switch (_houseInfo.type)
             {
                 case 0:
                     this.Buy();
                     break;
+
                 case 1:
                     this.Select();
                     break;
+
                 case 2:
                     this.Upgrade();
                     break;
+
                 default:
                     Debug.Log("Type error");
                     break;
@@ -66,16 +74,20 @@ namespace NTUT.CSIE.GameDev.UI
         {
             this.CloseDescribePanel();
             describePanel.Find("Select").gameObject.SetActive(true);
+
             for (int i = 0; i < 6; i++)
                 describePanel.Find("Select").GetChild(i).GetComponent<Image>().sprite = Resources.Load<Sprite>("Card/Card" + _cardSet[i]);
         }
 
         public void Upgrade()
         {
-            Debug.Log("This building is Card" + _houseInfo.monsterNumber + "'s Home.");
+            Debug.Log("This building is Card" + _houseInfo.MonsterInfo.Name + "'s Home.");
             this.CloseDescribePanel();
             describePanel.Find("Upgrade").gameObject.SetActive(true);
-            describePanel.Find("Upgrade").GetChild(0).GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Monster/" + _houseInfo.monsterNumber);
+            describePanel.Find("Upgrade").GetChild(0).GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Monster/" + _houseInfo.MonsterNumber);
+            upgradeAttackText.text = string.Format("攻擊：{0}", _houseInfo.RealAttack);
+            upgradeHPText.text = string.Format("血量：{0}", _houseInfo.RealHP);
+            upgradeSpeedText.text = string.Format("速度：{0}", _houseInfo.RealSpeed);
         }
 
         public void CloseDescribePanel()
@@ -90,12 +102,12 @@ namespace NTUT.CSIE.GameDev.UI
         {
             for (int i = 0; i < 3; i++)
                 picturePanel.transform.GetChild(i).gameObject.SetActive(false);
+
             CloseDescribePanel();
         }
         // Update is called once per frame
         void Update()
         {
-
         }
     }
 }
