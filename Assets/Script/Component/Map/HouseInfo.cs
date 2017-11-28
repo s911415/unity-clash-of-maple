@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using NTUT.CSIE.GameDev.Game;
+using UnityEngine.Serialization;
 
 namespace NTUT.CSIE.GameDev.Component.Map
 {
@@ -17,6 +18,9 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private int _extraAttack;
         private int _extraHp;
         private int _extraSpeed;
+        [FormerlySerializedAs("Remaining Next Spawn Time (Readonly)")]
+        public int RemainingNextSpawnTime;
+        private float _lastSpawnTime = 0f;
 
         public HouseInfo()
         {
@@ -37,6 +41,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
             {
                 hp = maxHp = MAX_HP;
                 houseName = "建築";
+                _lastSpawnTime = Time.time;
             }
         }
 
@@ -68,6 +73,27 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private void SetMonsterAbility(string num)
         {
             // read monster info
+        }
+
+        private void Update()
+        {
+            RemainingNextSpawnTime = -1;
+
+            if (type == 2)
+            {
+                RemainingNextSpawnTime = System.Convert.ToInt32(_lastSpawnTime + MonsterInfo.SpawnInterval - Time.time);
+
+                if (Time.time - _lastSpawnTime > MonsterInfo.SpawnInterval)
+                {
+                    Spawn();
+                    _lastSpawnTime = Time.time;
+                }
+            }
+        }
+
+        private void Spawn()
+        {
+            Debug.Log(string.Format("召喚: {0}", MonsterInfo.Name));
         }
 
         public void Damage(int attack)
