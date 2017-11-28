@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using NTUT.CSIE.GameDev.Game;
+using NTUT.CSIE.GameDev.Scene;
 
 namespace NTUT.CSIE.GameDev.Component.Map
 {
-    public class HouseInfo
+    public class HouseInfo : CommonObject
     {
         // 房屋基本資訊
         public int type;
@@ -14,9 +15,9 @@ namespace NTUT.CSIE.GameDev.Component.Map
         public string name;
         // 出產怪物資訊
         private string _monsterNum;
-        private int _monsterAttack;
-        private int _monsterHp;
-        private int _monsterSpeed;
+        private int _monsterAttack = 1;
+        private int _monsterHp = 1;
+        private int _monsterSpeed = 1;
 
         public HouseInfo()
         {
@@ -55,6 +56,10 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private void SetMonsterAbility(string num)
         {
             // read monster info
+            _monsterAttack =  this.Manager.MonsterInfoCollection[int.Parse(_monsterNum)].Attack;
+            _monsterHp = this.Manager.MonsterInfoCollection[int.Parse(_monsterNum)].MaxHP;
+            _monsterSpeed = 1;
+
         }
 
         public void AttackHouse(int attack)
@@ -64,11 +69,43 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         public void ResetMonster()
         {
-            type--;
             _monsterNum = null;
-            _monsterAttack = 0;
-            _monsterHp = 0;
-            _monsterSpeed = 0;
-    }
+            _monsterAttack = 1;
+            _monsterHp = 1;
+            _monsterSpeed = 1;
+        }
+
+        public void Upgrade(string item)
+        {
+            switch (item)
+            {
+                case "attack":
+                    _monsterAttack *= 2;
+                    break;
+                case "hp":
+                    _monsterHp *= 2;
+                    break;
+                case "speed":
+                    _monsterSpeed *= 2;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public int GetMonsterAbility(string name)
+        {
+            switch (name)
+            {
+                case "attack":
+                    return _monsterAttack;
+                case "hp":
+                    return _monsterHp;
+                case "speed":
+                    return _monsterSpeed;
+                default:
+                    return 0;
+            }
+        }
     }
 }

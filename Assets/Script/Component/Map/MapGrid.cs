@@ -50,7 +50,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
             // Debug.Log(string.Format("Click Grid: ({0}, {1})", row, col));
             _generator.SetHighLight(this.row, this.col);
-            _generator.ShowInfoOnPanel(_houseInfo);
+            _generator.ShowInfoOnPanel();
         }
 
         public int Type
@@ -98,6 +98,21 @@ namespace NTUT.CSIE.GameDev.Component.Map
         public override string ToString()
         {
             return string.Format("({0}, {1})", row, col);
+        }
+
+        public void UpdgradeMonster(string item)
+        {
+            _houseInfo.Upgrade(item);
+        }
+
+        public HouseInfo GetInfo()
+        {
+            return _houseInfo;
+        }
+
+        public void DiscardMonster()
+        {
+            _houseInfo.ResetMonster();
         }
     }
 }

@@ -67,15 +67,16 @@ namespace NTUT.CSIE.GameDev.Component.Map
         {
         }
 
-        public void ShowInfoOnPanel(HouseInfo houseInfo)
+        public void ShowInfoOnPanel()
         {
-            GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().DisplayInfo(houseInfo);
+            GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().DisplayInfo(_mapGridArray[curRow, curCol].GetInfo());
         }
 
         public void ClickBuildingButton()
         {
             _mapGridArray[curRow, curCol].Type += 1;
             GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().CloseAllPanel();
+            this.ShowInfoOnPanel();
         }
 
         public void ClickCardButton(int n)
@@ -84,6 +85,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
             _mapGridArray[curRow, curCol].Type += 1;
             _mapGridArray[curRow, curCol].SelectThisMonster(monsterNum);
             GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().CloseAllPanel();
+            this.ShowInfoOnPanel();
         }
 
         private void DeleteChild()
@@ -92,6 +94,18 @@ namespace NTUT.CSIE.GameDev.Component.Map
             {
                 Destroy(child.gameObject);
             }
+        }
+
+        public void UpgrdeMonster(string item)
+        {
+            _mapGridArray[curRow, curCol].UpdgradeMonster(item);
+            this.ShowInfoOnPanel();
+        }
+        public void DiscardMonster()
+        {
+            _mapGridArray[curRow, curCol].DiscardMonster();
+            _mapGridArray[curRow, curCol].Type -= 1;
+            this.ShowInfoOnPanel();
         }
 
         public MapGrid this[int r, int c] => _mapGridArray[r, c];

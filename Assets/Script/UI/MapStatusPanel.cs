@@ -76,6 +76,10 @@ namespace NTUT.CSIE.GameDev.UI
             this.CloseDescribePanel();
             describePanel.Find("Upgrade").gameObject.SetActive(true);
             describePanel.Find("Upgrade").GetChild(0).GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Monster/" + _houseInfo.monsterNumber);
+            describePanel.Find("Upgrade").GetChild(1).GetChild(0).GetComponent<Text>().text = "攻擊：" + _houseInfo.GetMonsterAbility("attack").ToString();
+            describePanel.Find("Upgrade").GetChild(1).GetChild(1).GetComponent<Text>().text = "血量：" + _houseInfo.GetMonsterAbility("hp").ToString();
+            describePanel.Find("Upgrade").GetChild(1).GetChild(2).GetComponent<Text>().text = "速度：" + _houseInfo.GetMonsterAbility("speed").ToString();
+
         }
 
         public void CloseDescribePanel()
