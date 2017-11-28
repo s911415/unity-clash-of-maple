@@ -16,7 +16,8 @@ namespace NTUT.CSIE.GameDev.Monster
         [SerializeField]
         protected Info _info;
         [SerializeField]
-        protected int _hp;
+        protected int _hp, _maxHP, _attack, _speed;
+
 
         public enum Action
         {
@@ -25,13 +26,25 @@ namespace NTUT.CSIE.GameDev.Monster
 
         public Action action = Action.Idle;
 
-        public int MAX_HP => _info.MaxHP;
+        public int MAX_HP => _maxHP;
 
         protected override void Awake()
         {
             base.Awake();
             _info = Manager.MonsterInfoCollection[id];
-            _hp = MAX_HP;
+        }
+
+        public Monster SetInfo(int maxHP, int attack, int speed)
+        {
+            this._maxHP = maxHP;
+            this._attack = attack;
+            this._speed = speed;
+            return this;
+        }
+
+        public void Initialize()
+        {
+            this._hp = _maxHP;
         }
 
         public virtual void Damage(int damage)

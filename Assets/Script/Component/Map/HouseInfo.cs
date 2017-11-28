@@ -94,6 +94,13 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private void Spawn()
         {
             Debug.Log(string.Format("召喚: {0}", MonsterInfo.Name));
+            GameObject obj = null;//Instantiate();
+
+            if (obj != null)
+            {
+                var mob = obj.GetComponent<Monster.Monster>();
+                mob.SetInfo(RealHP, RealAttack, RealSpeed).Initialize();
+            }
         }
 
         public void Damage(int attack)
