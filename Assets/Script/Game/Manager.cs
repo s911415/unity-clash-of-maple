@@ -24,7 +24,11 @@ namespace NTUT.CSIE.GameDev.Game
         {
             if (_managerInstance != null)
             {
-                this.gameObject.SetActive(false);
+                if (this != _managerInstance)
+                {
+                    this.gameObject.SetActive(false);
+                    Destroy(this.gameObject);
+                }
             }
             else
             {
@@ -52,6 +56,9 @@ namespace NTUT.CSIE.GameDev.Game
 
         public void Initialize()
         {
+            if (_managerInstance != null)
+                return;
+
             _managerInstance = this;
             DontDestroyOnLoad(this.gameObject);
             _monsterInfoCollection = new Monster.InfoCollection();
