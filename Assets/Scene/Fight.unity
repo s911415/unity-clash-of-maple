@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -911,7 +911,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 189317401}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 129, y: 4.39, z: 18.89}
+  m_LocalPosition: {x: 107.899994, y: 4.39, z: 18.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 951056164}
@@ -941,6 +941,9 @@ MonoBehaviour:
     cost: 0
     spawnInterval: 0
   _hp: 0
+  _maxHP: 0
+  _attack: 0
+  _speed: 0
   action: 0
 --- !u!1 &192900977
 GameObject:
@@ -1166,7 +1169,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 284316386}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 37.27, y: 4.39, z: 18.89}
+  m_LocalPosition: {x: 171.6, y: 4.39, z: 18.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 654162819}
@@ -1255,6 +1258,9 @@ MonoBehaviour:
     cost: 0
     spawnInterval: 0
   _hp: 0
+  _maxHP: 0
+  _attack: 0
+  _speed: 0
   action: 0
 --- !u!1 &331812523
 GameObject:
@@ -1814,6 +1820,9 @@ MonoBehaviour:
     cost: 0
     spawnInterval: 0
   _hp: 0
+  _maxHP: 0
+  _attack: 0
+  _speed: 0
   action: 0
 --- !u!1 &403896483
 GameObject:
@@ -2761,7 +2770,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 794810299}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 108.8, y: 4.39, z: 18.89}
+  m_LocalPosition: {x: 87.7, y: 4.39, z: 18.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 192900978}
@@ -2791,6 +2800,9 @@ MonoBehaviour:
     cost: 0
     spawnInterval: 0
   _hp: 0
+  _maxHP: 0
+  _attack: 0
+  _speed: 0
   action: 0
 --- !u!1 &823325834
 GameObject:
@@ -2905,7 +2917,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 823325834}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 171.12, y: 4.39, z: 18.89}
+  m_LocalPosition: {x: 161.3, y: 4.39, z: 18.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1591900778}
@@ -2935,6 +2947,9 @@ MonoBehaviour:
     cost: 0
     spawnInterval: 0
   _hp: 0
+  _maxHP: 0
+  _attack: 0
+  _speed: 0
   action: 0
 --- !u!1 &849481619
 GameObject:
@@ -3647,7 +3662,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1104849947}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 159.13, y: 4.39, z: 18.89}
+  m_LocalPosition: {x: 134, y: 4.39, z: 18.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 111706531}
@@ -3677,6 +3692,9 @@ MonoBehaviour:
     cost: 0
     spawnInterval: 0
   _hp: 0
+  _maxHP: 0
+  _attack: 0
+  _speed: 0
   action: 0
 --- !u!1 &1157144493
 GameObject:
@@ -4610,7 +4628,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1365566124}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 67.1, y: 4.39, z: 18.89}
+  m_LocalPosition: {x: 31.2, y: 4.39, z: 18.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1926672755}
@@ -4640,6 +4658,9 @@ MonoBehaviour:
     cost: 0
     spawnInterval: 0
   _hp: 0
+  _maxHP: 0
+  _attack: 0
+  _speed: 0
   action: 0
 --- !u!1 &1382388623
 GameObject:
@@ -5145,7 +5166,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1546981166}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 76.96, y: 4.39, z: 18.89}
+  m_LocalPosition: {x: 41.06, y: 4.39, z: 18.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2063941332}
@@ -5175,6 +5196,9 @@ MonoBehaviour:
     cost: 0
     spawnInterval: 0
   _hp: 0
+  _maxHP: 0
+  _attack: 0
+  _speed: 0
   action: 0
 --- !u!1 &1551699439
 GameObject:
@@ -5289,7 +5313,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1551699439}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 146.7, y: 4.39, z: 18.89}
+  m_LocalPosition: {x: 122.999985, y: 4.39, z: 18.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 576893088}
@@ -5319,6 +5343,9 @@ MonoBehaviour:
     cost: 0
     spawnInterval: 0
   _hp: 0
+  _maxHP: 0
+  _attack: 0
+  _speed: 0
   action: 0
 --- !u!1 &1560027514
 GameObject:
@@ -5682,7 +5709,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1706854133}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 92.3, y: 4.39, z: 18.89}
+  m_LocalPosition: {x: 56.400005, y: 4.39, z: 18.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 51517482}
@@ -5712,6 +5739,9 @@ MonoBehaviour:
     cost: 0
     spawnInterval: 0
   _hp: 0
+  _maxHP: 0
+  _attack: 0
+  _speed: 0
   action: 0
 --- !u!1 &1710795465
 GameObject:
@@ -5920,7 +5950,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1716221272}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 48.55, y: 4.39, z: 18.89}
+  m_LocalPosition: {x: 145.7, y: 4.39, z: 18.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1493597808}
@@ -5950,6 +5980,9 @@ MonoBehaviour:
     cost: 0
     spawnInterval: 0
   _hp: 0
+  _maxHP: 0
+  _attack: 0
+  _speed: 0
   action: 0
 --- !u!1 &1757452682
 GameObject:
@@ -7139,7 +7172,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2094470228}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 58.04, y: 4.39, z: 18.89}
+  m_LocalPosition: {x: 69.5, y: 4.39, z: 18.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 457818481}
@@ -7243,4 +7276,7 @@ MonoBehaviour:
     cost: 0
     spawnInterval: 0
   _hp: 0
+  _maxHP: 0
+  _attack: 0
+  _speed: 0
   action: 0
