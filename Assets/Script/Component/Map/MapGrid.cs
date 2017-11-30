@@ -12,7 +12,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private TextMesh _gridText;
         [SerializeField]
         private Color _nonSelectColor, _selectColor;
-        public int row, col;
+        [SerializeField]
+        public Point _position;
         public int width = 10;
         public List<Sprite> buildingImage = new List<Sprite>();
 
@@ -49,7 +50,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
             if (IsMouseOnGUI) return;
 
             // Debug.Log(string.Format("Click Grid: ({0}, {1})", row, col));
-            _generator.SetHighLight(this.row, this.col);
+            _generator.SetHighLight(_position);
             _generator.ShowInfoOnPanel(_houseInfo);
         }
 
@@ -97,7 +98,14 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         public override string ToString()
         {
-            return string.Format("({0}, {1})", row, col);
+            return string.Format("({0}, {1})", _position.X, _position.Y);
+        }
+
+        public Point Position => _position;
+
+        public void SetPosition(int row, int col)
+        {
+            _position = new Point(row, col);
         }
     }
 }

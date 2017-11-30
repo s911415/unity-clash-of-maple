@@ -21,6 +21,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
         [FormerlySerializedAs("Remaining Next Spawn Time (Readonly)")]
         public int RemainingNextSpawnTime;
         private float _lastSpawnTime = 0f;
+        private Point _position;
+        private Size _size;
 
         public HouseInfo()
         {

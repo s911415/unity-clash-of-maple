@@ -21,6 +21,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
             _mapGridArray = new MapGrid[row, col];
             int step = 0;
             int halfStep = 0;
+            int mapHeight = 0;
             DeleteChild();
             curCol = curRow = EMPTY;
 
@@ -36,17 +37,22 @@ namespace NTUT.CSIE.GameDev.Component.Map
                     {
                         step = mapGrid.width;
                         halfStep = step >> 1;
+                        mapHeight = 10 * step;
                     }
 
-                    mapGrid.col = c;
-                    mapGrid.row = r;
+                    mapGrid.SetPosition(r, c);
                     mapGrid._generator = this;
                     mapGrid.Selected = false;
                     grid.name = mapGrid.ToString();
                     int posX = c * step + halfStep, posY = r * step + halfStep;
-                    grid.transform.localPosition = new Vector3(posX, y, posY);
+                    grid.transform.localPosition = new Vector3(posX, y, mapHeight - posY);
                 }
             }
+        }
+
+        public void SetHighLight(Point p)
+        {
+            SetHighLight(p.X, p.Y);
         }
 
         public void SetHighLight(int r, int c)
