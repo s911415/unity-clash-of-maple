@@ -1,4 +1,5 @@
-﻿using NTUT.CSIE.GameDev.Scene;
+﻿using NTUT.CSIE.GameDev.Game;
+using NTUT.CSIE.GameDev.Scene;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,28 +40,31 @@ namespace NTUT.CSIE.GameDev.Component
             Vector3 orgPos = new Vector3(pos.x, pos.y, pos.z);
             bool anyChange = false;
 
-            if (Input.mousePosition.x > _screenWidth - boundary)
+            if (!SpecialKeyController.GetKeyState(SpecialKeyController.VK_SCROLL))
             {
-                pos.x += speed * Time.deltaTime; // move on +X axis
-                anyChange = true;
-            }
+                if (Input.mousePosition.x > _screenWidth - boundary)
+                {
+                    pos.x += speed * Time.deltaTime; // move on +X axis
+                    anyChange = true;
+                }
 
-            if (Input.mousePosition.x < 0 + boundary)
-            {
-                pos.x -= speed * Time.deltaTime; // move on -X axis
-                anyChange = true;
-            }
+                if (Input.mousePosition.x < 0 + boundary)
+                {
+                    pos.x -= speed * Time.deltaTime; // move on -X axis
+                    anyChange = true;
+                }
 
-            if (Input.mousePosition.y > _screenHeight - boundary)
-            {
-                pos.z += speed * Time.deltaTime; // move on +Z axis
-                anyChange = true;
-            }
+                if (Input.mousePosition.y > _screenHeight - boundary)
+                {
+                    pos.z += speed * Time.deltaTime; // move on +Z axis
+                    anyChange = true;
+                }
 
-            if (Input.mousePosition.y < 0 + boundary)
-            {
-                pos.z -= speed * Time.deltaTime; // move on -Z axis
-                anyChange = true;
+                if (Input.mousePosition.y < 0 + boundary)
+                {
+                    pos.z -= speed * Time.deltaTime; // move on -Z axis
+                    anyChange = true;
+                }
             }
 
             if (anyChange)
