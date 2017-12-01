@@ -52,7 +52,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         public void SetHighLight(Point p)
         {
-            SetHighLight(p.X, p.Y);
+            SetHighLight(p.Row, p.Column);
         }
 
         public void SetHighLight(int r, int c)

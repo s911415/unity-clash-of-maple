@@ -35,6 +35,7 @@ namespace NTUT.CSIE.GameDev.Monster
         public int Speed => speed;
         public int Cost => cost;
         public int SpawnInterval => spawnInterval;
+        // public int SpawnInterval => 5;
     }
 
 }

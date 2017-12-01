@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using NTUT.CSIE.GameDev.Game;
 using UnityEngine.Serialization;
+using NTUT.CSIE.GameDev.Scene;
 
 namespace NTUT.CSIE.GameDev.Component.Map
 {
@@ -96,13 +97,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private void Spawn()
         {
             Debug.Log(string.Format("召喚: {0}", MonsterInfo.Name));
-            GameObject obj = null;//Instantiate();
-
-            if (obj != null)
-            {
-                var mob = obj.GetComponent<Monster.Monster>();
-                mob.SetInfo(RealHP, RealAttack, RealSpeed).Initialize();
-            }
+            var playerID = Manager.DEFAULT_PLAYER_ID;
+            GetSceneLogic<FightSceneLogic>().SpawnMonster(MonsterInfo.ID, playerID, this);
         }
 
         public void Damage(int attack)

@@ -1,4 +1,5 @@
-﻿using NTUT.CSIE.GameDev.Component.Map;
+﻿using NTUT.CSIE.GameDev.Component;
+using NTUT.CSIE.GameDev.Component.Map;
 using NTUT.CSIE.GameDev.Game;
 using NTUT.CSIE.GameDev.Player.Honors;
 using NTUT.CSIE.GameDev.UI;
@@ -11,6 +12,11 @@ namespace NTUT.CSIE.GameDev.Scene
 {
     public class FightSceneLogic : BasicSceneLogic
     {
+        private const string MONSTER_PREFAB_PATH = "Prefab/Monster/Monster_{0}";
+
+        [SerializeField]
+        private GameObject _monsterListObject;
+
         [SerializeField]
         private MapGridGenerator _mapGenerator;
 
@@ -34,6 +40,38 @@ namespace NTUT.CSIE.GameDev.Scene
         private void InitMembers()
         {
             InitPlayersByDiff();
+        }
+
+        public void SpawnMonster(int monsterID, int playerID, HouseInfo houseInfo)
+        {
+            SpawnMonster(string.Format("{0:2,00}", monsterID), playerID, houseInfo);
+        }
+
+        public void SpawnMonster(string monsterID, int playerID, HouseInfo houseInfo)
+        {
+            //var houseHeight = houseInfo.gameObject.GetComponent<>
+            var objPrefab = Resources.Load<GameObject>(string.Format(MONSTER_PREFAB_PATH, monsterID));
+            var obj = Instantiate(objPrefab, _monsterListObject.transform);
+            var mob = obj.GetComponent<Monster.Monster>();
+            var offset = (playerID == Manager.DEFAULT_PLAYER_ID) ? 1 : -1;
+            mob.SetInfo(houseInfo.RealHP, houseInfo.RealAttack, houseInfo.RealSpeed).Initialize();
+            var newPos = houseInfo.transform.position + offset * new Vector3(4, 0, 0);
+            mob.transform.position = newPos;
+            var newLocPos = Clone(mob.transform.localPosition);
+            newLocPos.y = 0;
+            newLocPos.z -= 5f;
+            mob.transform.localPosition = newLocPos;
+
+            if (playerID == Manager.DEFAULT_PLAYER_ID)
+            {
+                mob.Direction = Direction.Right;
+            }
+            else
+            {
+                mob.Direction = Direction.Left;
+            }
+
+            mob.Walk();
         }
 
         #region Check Members

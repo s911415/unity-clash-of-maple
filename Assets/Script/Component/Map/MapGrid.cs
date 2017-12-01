@@ -98,7 +98,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         public override string ToString()
         {
-            return string.Format("({0}, {1})", _position.X, _position.Y);
+            return string.Format("({0}, {1})", _position.Row, _position.Column);
         }
 
         public Point Position => _position;

@@ -11,14 +11,14 @@ namespace NTUT.CSIE.GameDev.Component
     public struct Point
     {
         [SerializeField]
-        private int _x, _y;
-        public Point(int x, int y)
+        private int _row, _col;
+        public Point(int row, int col)
         {
-            _x = x;
-            _y = y;
+            _row = row;
+            _col = col;
         }
 
-        public int X => _x;
-        public int Y => _y;
+        public int Row => _row;
+        public int Column => _col;
     }
 }
