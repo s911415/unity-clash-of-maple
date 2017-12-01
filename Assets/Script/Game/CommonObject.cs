@@ -15,6 +15,7 @@ namespace NTUT.CSIE.GameDev.Game
             Random.InitState(System.Guid.NewGuid().GetHashCode());
         }
 
+        #region manage getter
         private static Manager _manager;
         internal virtual Manager Manager
         {
@@ -50,33 +51,7 @@ namespace NTUT.CSIE.GameDev.Game
 
             return null;
         }
-
-        protected virtual bool IsMouseOnGUI => EventSystem.current.IsPointerOverGameObject();
-
-        /*
-        protected static Storage _storage;
-        public Storage Storage
-        {
-            get
-            {
-                if (_storage != null)
-                    return _storage;
-
-                var obj = GameObject.Find("GameStorage");
-
-                if (obj != null)
-                {
-                    _storage = obj.GetComponent<Storage>(); ;
-
-                    if (_storage != null)
-                        return _storage;
-                }
-
-                throw new MissingReferenceException("Cannot found GameStorage or Storage instance not found.");
-            }
-        }
-        */
-
+        #endregion
         protected virtual T GetSceneLogic<T>()  where T : BasicSceneLogic
         {
             var logicObj = GameObject.Find("SceneLogic");
@@ -91,5 +66,10 @@ namespace NTUT.CSIE.GameDev.Game
 
             return component;
         }
+        #region Helper
+        protected virtual bool IsMouseOnGUI => EventSystem.current.IsPointerOverGameObject();
+        protected static Vector3 Clone(Vector3 v) => new Vector3(v.x, v.y, v.z);
+
+        #endregion
     }
 }

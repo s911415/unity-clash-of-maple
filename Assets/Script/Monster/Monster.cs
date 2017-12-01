@@ -22,14 +22,29 @@ namespace NTUT.CSIE.GameDev.Monster
         [SerializeField]
         private SpriteRenderer _sprite;
         [SerializeField]
-        Direction _direction = Direction.Left;
+        private Direction _direction = Direction.Left;
+        private Rigidbody _body;
+
+        [SerializeField]
+        private int _playerID = -1;
 
 
         protected virtual void Start()
         {
             animator = GetComponent<Animator>();
             _sprite = transform.Find("Image").GetComponent<SpriteRenderer>();
+            _body = GetComponent<Rigidbody>();
             Debug.Assert(_sprite != null);
+            Debug.Assert(_body != null);
+        }
+
+        protected virtual void FixedUpdate()
+        {
+            if (action == Action.Walk)
+            {
+                var dir = _direction == Direction.Left ? -1 : 1;
+                _body.AddForce(_speed * new Vector3(1, 0, 0) * dir, ForceMode.Acceleration);
+            }
         }
 
         protected virtual void Update()
@@ -40,6 +55,17 @@ namespace NTUT.CSIE.GameDev.Monster
                 _sprite.flipX = false;
             else
                 _sprite.flipX = true;
+
+            if (CheckOutOfMap())
+            {
+                Destroy(this.gameObject);
+            }
+        }
+
+        protected virtual bool CheckOutOfMap()
+        {
+            var x = transform.localPosition.x;
+            return x < 0 || x > 200;
         }
 
         public enum Action
@@ -102,6 +128,42 @@ namespace NTUT.CSIE.GameDev.Monster
 
         public virtual void Idle()
         {
+        }
+
+        public virtual int PlayerID
+        {
+            get
+            {
+                return _playerID;
+            }
+            set
+            {
+                _playerID = value;
+            }
+        }
+
+        public virtual Direction Direction
+        {
+            get
+            {
+                return _direction;
+            }
+            set
+            {
+                _direction = value;
+            }
+        }
+
+        protected int VectorOffset
+        {
+            get
+            {
+                if (_playerID == Manager.DEFAULT_PLAYER_ID) return 1;
+
+                if (_playerID == Manager.ROBOT_PLAYER_ID) return -1;
+
+                return 0;
+            }
         }
     }
 }
