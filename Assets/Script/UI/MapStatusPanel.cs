@@ -13,7 +13,7 @@ namespace NTUT.CSIE.GameDev.UI
     {
         List<string> _cardSet = new List<string>();
         public GameObject cardPrefab;
-        private HouseInfo _houseInfo = new HouseInfo();
+        private HouseInfo _houseInfo;
         Sprite[] _buildingLevel = new Sprite[3];
         Transform picturePanel;
         Transform describePanel;
@@ -38,11 +38,11 @@ namespace NTUT.CSIE.GameDev.UI
                 picturePanel.transform.GetChild(i).gameObject.SetActive(true);
 
             describePanel = this.transform.Find("Describe");
-            picturePanel.Find("Image").GetComponent<Image>().sprite = _buildingLevel[_houseInfo.type];
+            picturePanel.Find("Image").GetComponent<Image>().sprite = _buildingLevel[_houseInfo.Type];
             picturePanel.Find("Hp").GetComponent<Text>().text = _houseInfo.hp.ToString() + "/" + _houseInfo.maxHp.ToString();
-            picturePanel.Find("Name").GetComponent<Text>().text = _houseInfo.houseName.ToString();
+            picturePanel.Find("Name").GetComponent<Text>().text = _houseInfo.houseName.ToString() + " " + _houseInfo.houseId.ToString().PadLeft(2,'0');
 
-            switch (_houseInfo.type)
+            switch (_houseInfo.Type)
             {
                 case 0:
                     this.Buy();

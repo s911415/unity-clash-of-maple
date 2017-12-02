@@ -3,16 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using NTUT.CSIE.GameDev.Game;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
+using NTUT.CSIE.GameDev.UI;
 
 namespace NTUT.CSIE.GameDev.Component.Map
 {
     public class HouseInfo : CommonObject, IHurtable
     {
+        public int scale = 1;
+        public int row;
+        public int col;
+        public int houseId;
+        [SerializeField]
+        private SpriteRenderer _houseRenderer;
         // 房屋基本資訊
-        public int type;
+        [SerializeField]
+        private int type;
         public int hp;
         public int maxHp;
         public string houseName;
+        public Sprite[] houseImage = new Sprite[3];
         // 出產怪物資訊
         private string _monsterNum;
         private int _extraAttack;
@@ -28,21 +38,39 @@ namespace NTUT.CSIE.GameDev.Component.Map
             houseName = "空地";
         }
 
-        public void SetHouseInfo(int type)
+        public int Type
         {
-            this.type = type;
+            set
+            {
+                type = value;
+                if (type == 0)
+                {
+                    hp = maxHp = 0;
+                    houseName = "空地";
+                }
+                else if (type == 1)
+                {
+                    hp = maxHp = MAX_HP;
+                    houseName = "建築";
+                }
+                else if (type == 2)
+                {
+                    _lastSpawnTime = Time.time;
+                }
+                _houseRenderer.sprite = houseImage[type];
+            }
+            get
+            {
+                return type;
+            }
+        }
 
-            if (type == 1)
-            {
-                hp = maxHp = 0;
-                houseName = "空地";
-            }
-            else if (type == 2)
-            {
-                hp = maxHp = MAX_HP;
-                houseName = "建築";
-                _lastSpawnTime = Time.time;
-            }
+        public void SetPosition(int row, int col)
+        {
+            this.row = row;
+            this.col = col;
+            GameObject.Find("Terrain").GetComponent<MapGridGenerator>().SetHighLight(row, col);
+            gameObject.transform.position = new Vector3(10 * col + 5.0f, 1.0f, 10 * row + 5.0f);
         }
 
         public string MonsterNumber
@@ -103,6 +131,17 @@ namespace NTUT.CSIE.GameDev.Component.Map
             }
         }
 
+
+        protected void OnMouseDown()
+        {
+            // 空地時 顯示hightlight的工作 是給格線MapGrid執行的 之後選卡跟升級給HouseInfo來執行
+            if (Type != 0)
+            {
+                GameObject.Find("Terrain").GetComponent<MapGridGenerator>().SetHighLight(row, col);
+                GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().DisplayInfo(this);
+            }
+        }
+
         public void Damage(int attack)
         {
             hp -= attack;
@@ -115,7 +154,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         public void ResetMonster()
         {
-            type--;
+            Type--;
             _monsterNum = null;
             _extraAttack = 0;
             _extraHp = 0;
