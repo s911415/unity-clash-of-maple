@@ -4,16 +4,23 @@ using UnityEngine;
 using NTUT.CSIE.GameDev.Game;
 using UnityEngine.Serialization;
 using NTUT.CSIE.GameDev.Scene;
+using NTUT.CSIE.GameDev.UI;
 
 namespace NTUT.CSIE.GameDev.Component.Map
 {
     public class HouseInfo : CommonObject, IHurtable
     {
+        public int scale = 1;
+        public int houseId;
+        [SerializeField]
+        private SpriteRenderer _houseRenderer;
         // 房屋基本資訊
-        public int type;
+        [SerializeField]
+        private int type;
         public int hp;
         public int maxHp;
         public string houseName;
+        public Sprite[] houseImage = new Sprite[3];
         // 出產怪物資訊
         private string _monsterNum;
         private int _extraAttack;
@@ -22,6 +29,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         [FormerlySerializedAs("Remaining Next Spawn Time (Readonly)")]
         public int RemainingNextSpawnTime;
         private float _lastSpawnTime = 0f;
+        [SerializeField]
         private Point _position;
         private Size _size;
 
@@ -31,21 +39,44 @@ namespace NTUT.CSIE.GameDev.Component.Map
             houseName = "空地";
         }
 
-        public void SetHouseInfo(int type)
+        public int Type
         {
-            this.type = type;
+            set
+            {
+                type = value;
 
-            if (type == 1)
-            {
-                hp = maxHp = 0;
-                houseName = "空地";
+                if (type == 0)
+                {
+                    hp = maxHp = 0;
+                    houseName = "空地";
+                }
+                else if (type == 1)
+                {
+                    hp = maxHp = MAX_HP;
+                    houseName = "建築";
+                }
+                else if (type == 2)
+                {
+                    _lastSpawnTime = Time.time;
+                }
+
+                _houseRenderer.sprite = houseImage[type];
             }
-            else if (type == 2)
+
+            get
             {
-                hp = maxHp = MAX_HP;
-                houseName = "建築";
-                _lastSpawnTime = Time.time;
+                return type;
             }
+        }
+
+        public void SetPosition(int row, int col)
+        {
+            this._position = new Point(row, col);
+            var gen = GetSceneLogic<FightSceneLogic>().MapGridGenerator;
+            gen.SetHighLight(row, col);
+            var pos = Clone(gen[row, col].gameObject.transform.localPosition);
+            pos.y = 0;
+            gameObject.transform.localPosition = pos;
         }
 
         public string MonsterNumber
@@ -101,6 +132,17 @@ namespace NTUT.CSIE.GameDev.Component.Map
             GetSceneLogic<FightSceneLogic>().SpawnMonster(MonsterInfo.ID, playerID, this);
         }
 
+
+        protected void OnMouseDown()
+        {
+            // 空地時 顯示hightlight的工作 是給格線MapGrid執行的 之後選卡跟升級給HouseInfo來執行
+            if (Type != 0)
+            {
+                GetSceneLogic<FightSceneLogic>().MapGridGenerator.SetHighLight(_position);
+                GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().DisplayInfo(this);
+            }
+        }
+
         public void Damage(int attack)
         {
             hp -= attack;
@@ -113,7 +155,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         public void ResetMonster()
         {
-            type--;
+            Type--;
             _monsterNum = null;
             _extraAttack = 0;
             _extraHp = 0;

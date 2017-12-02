@@ -15,7 +15,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
         public float y;
         private MapGrid[,] _mapGridArray;
         public bool ShowGridText = true;
-
+        public HouseGenerator houseGenerator;
+        public HouseInfo emptyHouseInfo;
         private void Start()
         {
             _mapGridArray = new MapGrid[row, col];
@@ -27,7 +28,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
             for (int c = 0; c < col; c++)
             {
-                for (int r = 0; r < row; r ++)
+                for (int r = 0; r < row; r++)
                 {
                     var grid = Object.Instantiate(gridObject, this.gameObject.transform);
                     var mapGrid = grid.GetComponent<MapGrid>();
@@ -74,23 +75,10 @@ namespace NTUT.CSIE.GameDev.Component.Map
         {
         }
 
-        public void ShowInfoOnPanel(HouseInfo houseInfo)
+        public void ShowInfoOnPanel()
         {
-            GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().DisplayInfo(houseInfo);
-        }
-
-        public void ClickBuildingButton()
-        {
-            _mapGridArray[curRow, curCol].Type += 1;
-            GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().CloseAllPanel();
-        }
-
-        public void ClickCardButton(int n)
-        {
-            string monsterNum = Manager.GetPlayerAt(Manager.DEFAULT_PLAYER_ID).GetCardIds()[n];
-            _mapGridArray[curRow, curCol].Type += 1;
-            _mapGridArray[curRow, curCol].SelectThisMonster(monsterNum);
-            GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().CloseAllPanel();
+            emptyHouseInfo.SetPosition(curRow, curCol);
+            GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().DisplayInfo(emptyHouseInfo);
         }
 
         private void DeleteChild()

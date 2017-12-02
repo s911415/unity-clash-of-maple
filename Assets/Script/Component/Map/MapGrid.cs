@@ -15,17 +15,10 @@ namespace NTUT.CSIE.GameDev.Component.Map
         [SerializeField]
         public Point _position;
         public int width = 10;
-        public List<Sprite> buildingImage = new List<Sprite>();
+        //public List<Sprite> buildingImage = new List<Sprite>();
 
         private Material _mat;
         public MapGridGenerator _generator;
-        private HouseInfo _houseInfo;
-        /*
-        0 空地 可選擇建造
-        1 房屋 可選擇兵種
-        2 生產 可選擇升級
-        */
-        private int type;
 
         protected override void Awake()
         {
@@ -40,38 +33,16 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         private void SetGridInitial()
         {
-            type = 0;
             _gridText.text = "┌" + ToString() + "┐";
-            _houseInfo = GetComponent<HouseInfo>();
         }
 
         protected void OnMouseDown()
         {
             if (IsMouseOnGUI) return;
 
-            // Debug.Log(string.Format("Click Grid: ({0}, {1})", row, col));
+            //Debug.Log(string.Format("Click Grid: ({0}, {1})", row, col));
             _generator.SetHighLight(_position);
-            _generator.ShowInfoOnPanel(_houseInfo);
-        }
-
-        public int Type
-        {
-            set
-            {
-                type = value;
-                gameObject.GetComponentInChildren<SpriteRenderer>().sprite = buildingImage[type];
-                _houseInfo.SetHouseInfo(type);
-            }
-
-            get
-            {
-                return type;
-            }
-        }
-
-        public void SelectThisMonster(string Number)
-        {
-            _houseInfo.MonsterNumber = Number;
+            _generator.ShowInfoOnPanel();
         }
 
         private void Update()

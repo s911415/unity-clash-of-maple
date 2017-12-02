@@ -74,6 +74,8 @@ namespace NTUT.CSIE.GameDev.Scene
             mob.Walk();
         }
 
+        public MapGridGenerator MapGridGenerator => _mapGenerator;
+
         #region Check Members
         private void CheckDiff()
         {
