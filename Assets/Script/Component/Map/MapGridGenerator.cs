@@ -90,5 +90,6 @@ namespace NTUT.CSIE.GameDev.Component.Map
         }
 
         public MapGrid this[int r, int c] => _mapGridArray[r, c];
+        public Point CurPoint => new Point(curRow, curCol);
     }
 }

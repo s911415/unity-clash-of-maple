@@ -19,6 +19,11 @@ namespace NTUT.CSIE.GameDev.UI
         Transform describePanel;
         public Text upgradeAttackText, upgradeHPText, upgradeSpeedText;
 
+        [SerializeField]
+        protected Button _buyOK, _byuyCancel, _upgAtt, _upgHP, _upgSpeed, _disCard;
+        [SerializeField]
+        protected Button[] _selectCard;
+
         // Use this for initialization
         void Start()
         {
@@ -26,6 +31,65 @@ namespace NTUT.CSIE.GameDev.UI
             _buildingLevel[1] = Resources.Load<Sprite>("Building/Building");
             _buildingLevel[2] = Resources.Load<Sprite>("Building/produceBuilding");
             _cardSet.AddRange(Manager.GetPlayerAt(Manager.DEFAULT_PLAYER_ID).GetCardIds());
+            BindButtonEvent();
+        }
+
+        private void BindButtonEvent()
+        {
+            var scene = GetSceneLogic<FightSceneLogic>();
+            var player = scene.GetPlayerAt(Manager.DEFAULT_PLAYER_ID);
+            System.Action noMoneyMsg = () => new DialogBuilder().SetContent("你沒錢").Show(scene.Window);
+            System.Action<HouseInfo> checkInfoAndShow = (houseInfo) =>
+            {
+                if (houseInfo != null)
+                {
+                    CloseAllPanel();
+                    DisplayInfo(houseInfo);
+                }
+                else
+                {
+                    noMoneyMsg.Invoke();
+                }
+            };
+            _buyOK.onClick.AddListener(() =>
+            {
+                var houseInfo = player.BuyHouse(scene.MapGridGenerator.CurPoint);
+                checkInfoAndShow.Invoke(houseInfo);
+            });
+
+            for (int i = 0; i < _selectCard.Length; i++)
+            {
+                int finalI = i; // Important, if use i, i always equals to _selectCard.Length
+                _selectCard[i].onClick.AddListener(() =>
+                {
+                    var houseInfo = player.SetHouseMonster(scene.MapGridGenerator.CurPoint, finalI);
+                    checkInfoAndShow.Invoke(houseInfo);
+                });
+            }
+
+            _upgAtt.onClick.AddListener(() =>
+            {
+                checkInfoAndShow.Invoke(
+                    player.UpgradeHouse(scene.MapGridGenerator.CurPoint, HouseInfo.UpgradeType.Attack)
+                );
+            });
+            _upgHP.onClick.AddListener(() =>
+            {
+                checkInfoAndShow.Invoke(
+                    player.UpgradeHouse(scene.MapGridGenerator.CurPoint, HouseInfo.UpgradeType.HP)
+                );
+            });
+            _upgSpeed.onClick.AddListener(() =>
+            {
+                checkInfoAndShow.Invoke(
+                    player.UpgradeHouse(scene.MapGridGenerator.CurPoint, HouseInfo.UpgradeType.Speed)
+                );
+            });
+            _disCard.onClick.AddListener(() =>
+            {
+                var houseInfo = player.DiscardHouseMonster(scene.MapGridGenerator.CurPoint);
+                checkInfoAndShow.Invoke(houseInfo);
+            });
         }
 
         // display about mapgrid
@@ -38,21 +102,21 @@ namespace NTUT.CSIE.GameDev.UI
                 picturePanel.transform.GetChild(i).gameObject.SetActive(true);
 
             describePanel = this.transform.Find("Describe");
-            picturePanel.Find("Image").GetComponent<Image>().sprite = _buildingLevel[_houseInfo.Type];
+            picturePanel.Find("Image").GetComponent<Image>().sprite = _buildingLevel[(int)_houseInfo.Type];
             picturePanel.Find("Hp").GetComponent<Text>().text = _houseInfo.hp.ToString() + "/" + _houseInfo.maxHp.ToString();
-            picturePanel.Find("Name").GetComponent<Text>().text = _houseInfo.houseName.ToString() + " " + _houseInfo.houseId.ToString().PadLeft(2,'0');
+            picturePanel.Find("Name").GetComponent<Text>().text = _houseInfo.houseName.ToString() + " " + _houseInfo.houseId.ToString().PadLeft(2, '0');
 
             switch (_houseInfo.Type)
             {
-                case 0:
+                case HouseInfo.HouseType.Empty:
                     this.Buy();
                     break;
 
-                case 1:
+                case HouseInfo.HouseType.Building:
                     this.Select();
                     break;
 
-                case 2:
+                case HouseInfo.HouseType.Summon:
                     this.Upgrade();
                     break;
 

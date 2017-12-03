@@ -661,18 +661,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 171497299}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 692475477}
-        m_MethodName: AddHouse
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &171497299
@@ -2852,7 +2841,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u63D0\u5347\u50B7\u5BB3"
+  m_Text: "\u63D0\u5347\u79FB\u901F"
 --- !u!222 &1218297964
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3009,6 +2998,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _window: {fileID: 1924317634}
+  _controlPanel: {fileID: 1648542974}
   _monsterListObject: {fileID: 1459388006}
   _mapGenerator: {fileID: 755741779}
   _players:
@@ -4172,6 +4162,19 @@ MonoBehaviour:
   upgradeAttackText: {fileID: 2040829674}
   upgradeHPText: {fileID: 362063318}
   upgradeSpeedText: {fileID: 1757452684}
+  _buyOK: {fileID: 171497298}
+  _byuyCancel: {fileID: 336966931}
+  _upgAtt: {fileID: 2012444133}
+  _upgHP: {fileID: 618134199}
+  _upgSpeed: {fileID: 994694166}
+  _disCard: {fileID: 1224168728}
+  _selectCard:
+  - {fileID: 1934662802}
+  - {fileID: 1358812746}
+  - {fileID: 862562302}
+  - {fileID: 1858967803}
+  - {fileID: 2045028829}
+  - {fileID: 1831979227}
 --- !u!1 &1710795465
 GameObject:
   m_ObjectHideFlags: 0

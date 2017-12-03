@@ -22,7 +22,8 @@ namespace NTUT.CSIE.GameDev.Monster
         {
             id = name = desc = string.Empty;
             level = 0;
-            hp = attack = 1;
+            hp = attack = spawnInterval = 1;
+            speed = cost = 0;
         }
 
         public string ID => id;
@@ -34,8 +35,8 @@ namespace NTUT.CSIE.GameDev.Monster
         public int Attack => attack;
         public int Speed => speed;
         public int Cost => cost;
-        public int SpawnInterval => spawnInterval;
-        // public int SpawnInterval => 5;
+        //public int SpawnInterval => spawnInterval;
+        public int SpawnInterval => 5;
     }
 
 }

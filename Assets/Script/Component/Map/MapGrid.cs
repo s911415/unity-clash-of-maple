@@ -11,7 +11,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         [SerializeField]
         private TextMesh _gridText;
         [SerializeField]
-        private Color _nonSelectColor, _selectColor;
+        private Color _nonSelectColor = Color.black, _selectColor = Color.white;
         [SerializeField]
         public Point _position;
         public int width = 10;

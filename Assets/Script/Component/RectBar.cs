@@ -9,7 +9,7 @@ namespace NTUT.CSIE.GameDev.Component
     public class RectBar : MonoBehaviour
     {
         [SerializeField]
-        private RectTransform _bgRect, _valRect;
+        private RectTransform _bgRect = null, _valRect = null;
         private float _value = 0;
         private float _width;
 
