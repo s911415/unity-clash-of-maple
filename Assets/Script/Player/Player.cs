@@ -1,5 +1,8 @@
 ﻿using NTUT.CSIE.GameDev.Component;
+using NTUT.CSIE.GameDev.Component.Map;
 using NTUT.CSIE.GameDev.Game;
+using NTUT.CSIE.GameDev.Scene;
+using NTUT.CSIE.GameDev.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -119,6 +122,93 @@ namespace NTUT.CSIE.GameDev.Player
             if (_hp > MAX_HP) _hp = MAX_HP;
 
             OnHPChanged?.Invoke(_hp);
+        }
+
+        public HouseInfo BuyHouse(Point p)
+        {
+            var scene = GetSceneLogic<FightSceneLogic>();
+            var houseGen = scene.HouseGenerator;
+
+            if (CostMoney(Config.HOUSE_PRICE))
+            {
+                var houseInfo = houseGen.AddHouse(p.Row, p.Column, this._playerID);
+                return houseInfo;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public HouseInfo SetHouseMonster(Point p, int cardIndex)
+        {
+            var scene = GetSceneLogic<FightSceneLogic>();
+            var houseGen = scene.HouseGenerator;
+            var monsterID = Info.GetCardIds()[cardIndex];
+            var monsterInfo = this.Manager.MonsterInfoCollection[monsterID];
+
+            if (CostMoney(monsterInfo.Cost))
+            {
+                return houseGen.SetHouseMonster(p.Row, p.Column, monsterID);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public HouseInfo UpgradeHouse(Point p, HouseInfo.UpgradeType type)
+        {
+            var scene = GetSceneLogic<FightSceneLogic>();
+            var house = scene.HouseGenerator[p.Row, p.Column];
+            var price = CalcUpgradePrice(type, house.GetUpgradeCount(type));
+
+            if (CostMoney(price))
+            {
+                scene.HouseGenerator.UpgradeHouse(type, p.Row, p.Column);
+                return house;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public HouseInfo DiscardHouseMonster(Point p)
+        {
+            var scene = GetSceneLogic<FightSceneLogic>();
+            var houseGen = scene.HouseGenerator;
+
+            if (CostMoney(Config.DISCARD_MONSTER_PUNISH))
+            {
+                return houseGen.DiscardMonster(p.Row, p.Column);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public int CalcUpgradePrice(HouseInfo.UpgradeType type, int currentCount)
+        {
+            var basis = 0;
+
+            switch (type)
+            {
+                case HouseInfo.UpgradeType.Attack:
+                    basis = Config.UPGRADE_ATTACK_BASIS;
+                    break;
+
+                case HouseInfo.UpgradeType.HP:
+                    basis = Config.UPGRADE_HP_BASIS;
+                    break;
+
+                case HouseInfo.UpgradeType.Speed:
+                    basis = Config.UPGRADE_SPEED_BASIS;
+                    break;
+            }
+
+            return basis * (currentCount + 1);
         }
     }
 }

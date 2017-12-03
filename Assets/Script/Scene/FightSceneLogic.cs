@@ -15,6 +15,9 @@ namespace NTUT.CSIE.GameDev.Scene
         private const string MONSTER_PREFAB_PATH = "Prefab/Monster/Monster_{0}";
 
         [SerializeField]
+        public MapStatusPanel _controlPanel;
+
+        [SerializeField]
         private GameObject _monsterListObject;
 
         [SerializeField]
@@ -75,6 +78,8 @@ namespace NTUT.CSIE.GameDev.Scene
         }
 
         public MapGridGenerator MapGridGenerator => _mapGenerator;
+        public HouseGenerator HouseGenerator => _mapGenerator.houseGenerator;
+        public MapStatusPanel ControlPanel => _controlPanel;
 
         #region Check Members
         private void CheckDiff()

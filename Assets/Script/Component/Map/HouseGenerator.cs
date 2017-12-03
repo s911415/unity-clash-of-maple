@@ -16,49 +16,70 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private GameObject _houseList;
         [SerializeField]
         private MapGridGenerator _mapGridGenerator;
-        private GameObject[,] _houseArray; // 對應mapgrid
+        private HouseInfo[,] _houseArray; // 對應mapgrid
         int houseCount = 0;
-        public void AddHouse()
+
+        public HouseInfo AddHouse(int row, int col, int playerID)
         {
-            HouseInfo currentHouseInfo;
-            GameObject house = (GameObject)Instantiate(_housePrefab, _houseList.transform);
+            GameObject house = Instantiate(_housePrefab, _houseList.transform);
             var houseInfo = house.GetComponent<HouseInfo>();
             houseInfo.houseId = houseCount++;
-            houseInfo.Type = 1;
+            houseInfo.Type = HouseInfo.HouseType.Building;
             houseInfo.SetPosition(_mapGridGenerator.curRow, _mapGridGenerator.curCol);
-            _houseArray[_mapGridGenerator.curRow, _mapGridGenerator.curCol] = house;
-            currentHouseInfo = _houseArray[_mapGridGenerator.curRow, _mapGridGenerator.curCol].GetComponent<HouseInfo>();
-            GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().DisplayInfo(currentHouseInfo);
+            houseInfo.PlayerID = playerID;
+
+            if (_houseArray[row, col] != null)
+            {
+                throw new System.Exception("Grid is occupy");
+            }
+            else
+            {
+                _houseArray[_mapGridGenerator.curRow, _mapGridGenerator.curCol] = houseInfo;
+                return houseInfo;
+            }
         }
 
-        public void ClickCardButton(int n)
+        public HouseInfo SetHouseMonster(int row, int col, string monsterID)
         {
-            HouseInfo currentHouseInfo = _houseArray[_mapGridGenerator.curRow, _mapGridGenerator.curCol].GetComponent<HouseInfo>();
-            string monsterNum = Manager.GetPlayerAt(Manager.DEFAULT_PLAYER_ID).GetCardIds()[n];
-            currentHouseInfo.Type += 1;
-            currentHouseInfo.MonsterNumber = monsterNum;
-            GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().CloseAllPanel();
-            GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().DisplayInfo(currentHouseInfo);
+            HouseInfo currentHouseInfo = _houseArray[row, col];
+            currentHouseInfo.Type = HouseInfo.HouseType.Summon;
+            currentHouseInfo.MonsterNumber = monsterID;
+            return currentHouseInfo;
         }
 
-        public void DiscardMonster()
+        public HouseInfo DiscardMonster(int row, int col)
         {
-            HouseInfo currentHouseInfo = _houseArray[_mapGridGenerator.curRow, _mapGridGenerator.curCol].GetComponent<HouseInfo>();
+            HouseInfo currentHouseInfo = _houseArray[row, col];
             currentHouseInfo.ResetMonster();
-            GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().DisplayInfo(currentHouseInfo);
+            return currentHouseInfo;
+        }
+
+        public HouseInfo UpgradeHouse(HouseInfo.UpgradeType type, int row, int col)
+        {
+            HouseInfo hInfo = _houseArray[row, col];
+
+            switch (type)
+            {
+                case HouseInfo.UpgradeType.Attack:
+                    hInfo.UpgradeAttack();
+                    break;
+
+                case HouseInfo.UpgradeType.HP:
+                    hInfo.UpgradeHP();
+                    break;
+
+                case HouseInfo.UpgradeType.Speed:
+                    hInfo.UpgradeSpeed();
+                    break;
+            }
+
+            return hInfo;
         }
 
         // Use this for initialization
         void Start()
         {
-            _houseArray = new GameObject[_mapGridGenerator.row, _mapGridGenerator.col];
-
-            for (int i = 0; i < _mapGridGenerator.col; i++)
-                for (int j = 0; j < _mapGridGenerator.row; j++)
-                {
-                    _houseArray[j, i] = _housePrefab;
-                }
-
+            _houseArray = new HouseInfo[_mapGridGenerator.row, _mapGridGenerator.col];
             houseCount = 0;
         }
 
@@ -67,6 +88,6 @@ namespace NTUT.CSIE.GameDev.Component.Map
         {
         }
 
-        public GameObject this[int r, int c] => _houseArray[r, c];
+        public HouseInfo this[int r, int c] => _houseArray[r, c];
     }
 }
