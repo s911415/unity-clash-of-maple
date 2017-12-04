@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using NTUT.CSIE.GameDev.Game;
 using UnityEngine.Serialization;
-using NTUT.CSIE.GameDev.Scene;
+using UnityEngine.UI;
 using NTUT.CSIE.GameDev.UI;
+using NTUT.CSIE.GameDev.Scene;
 
 namespace NTUT.CSIE.GameDev.Component.Map
 {
