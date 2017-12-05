@@ -88,6 +88,11 @@ namespace NTUT.CSIE.GameDev.Component.Map
         {
         }
 
+        public HouseInfo[] GetAllHouseInfo()
+        {
+            return this.gameObject.GetComponentsInChildren<HouseInfo>();
+        }
+
         public HouseInfo this[int r, int c] => _houseArray[r, c];
     }
 }
