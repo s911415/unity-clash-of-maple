@@ -15,19 +15,26 @@ namespace NTUT.CSIE.GameDev.Component
 
         private void Start()
         {
-            _width = _bgRect.rect.width;
+            UpdateWidth();
         }
 
         private void Update()
         {
-#if UNITY_EDITOR
+            if (_width == 0) UpdateWidth();
+
+// #if UNITY_EDITOR
             UpdateValueWidth();
-#endif
+// #endif
         }
 
         private void UpdateValueWidth()
         {
             _valRect.sizeDelta = new Vector2(_width * _value, _valRect.sizeDelta.y);
+        }
+
+        private void UpdateWidth()
+        {
+            _width = _bgRect.rect.width;
         }
 
         [SerializeField]

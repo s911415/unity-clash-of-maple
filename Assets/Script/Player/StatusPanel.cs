@@ -37,9 +37,9 @@ namespace NTUT.CSIE.GameDev.Player
         private void Update()
         {
             // Call event from Editor
-#if UNITY_EDITOR
+// #if UNITY_EDITOR
             _player.Attached();
-#endif
+// #endif
         }
 
         private void OnHPChanged(int value)
