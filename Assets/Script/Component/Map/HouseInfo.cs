@@ -156,6 +156,10 @@ namespace NTUT.CSIE.GameDev.Component.Map
             GetSceneLogic<FightSceneLogic>().SpawnMonster(MonsterInfo.ID, playerID, this);
         }
 
+        internal void _ResetSpawnCounter()
+        {
+            _lastSpawnTime = 0;
+        }
 
         protected void OnMouseDown()
         {
