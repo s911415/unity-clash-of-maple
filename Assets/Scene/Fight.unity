@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.4437018, g: 0.4930389, b: 0.5725847, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1670,13 +1670,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 643576757}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalRotation: {x: 0.5175837, y: 0.026178304, z: 0.2060551, w: 0.830038}
+  m_LocalPosition: {x: 6.24, y: 7.91, z: 2.51}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 58.042004, y: 29.019001, z: 44.224003}
 --- !u!1 &672682609
 GameObject:
   m_ObjectHideFlags: 0
@@ -2702,6 +2702,41 @@ Prefab:
       propertyPath: _generator
       value: 
       objectReference: {fileID: 755741779}
+    - target: {fileID: 23267740637131632, guid: 3dfc608e2cff12a469c5810850b0584d,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e406e2e9ed9f62944923859956d1d8f2, type: 2}
+    - target: {fileID: 114529622339738320, guid: 3dfc608e2cff12a469c5810850b0584d,
+        type: 2}
+      propertyPath: _nonSelectColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114529622339738320, guid: 3dfc608e2cff12a469c5810850b0584d,
+        type: 2}
+      propertyPath: _nonSelectColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114529622339738320, guid: 3dfc608e2cff12a469c5810850b0584d,
+        type: 2}
+      propertyPath: _nonSelectColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114529622339738320, guid: 3dfc608e2cff12a469c5810850b0584d,
+        type: 2}
+      propertyPath: _selectColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114529622339738320, guid: 3dfc608e2cff12a469c5810850b0584d,
+        type: 2}
+      propertyPath: _selectColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114529622339738320, guid: 3dfc608e2cff12a469c5810850b0584d,
+        type: 2}
+      propertyPath: _selectColor.b
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3dfc608e2cff12a469c5810850b0584d, type: 2}
   m_IsPrefabParent: 0

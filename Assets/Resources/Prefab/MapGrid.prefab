@@ -149,7 +149,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: ea44373bbd704f74987d6e382c29dcb2, type: 2}
+  - {fileID: 2100000, guid: e406e2e9ed9f62944923859956d1d8f2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gridText: {fileID: 102922813398135544}
   _nonSelectColor: {r: 0.4745098, g: 0.47843137, b: 0.15294118, a: 1}
-  _selectColor: {r: 0.58482194, g: 0.58965516, b: 0.18849634, a: 1}
+  _selectColor: {r: 0.84241307, g: 1, b: 0.6985294, a: 1}
   _position:
     _row: 0
     _col: 0
