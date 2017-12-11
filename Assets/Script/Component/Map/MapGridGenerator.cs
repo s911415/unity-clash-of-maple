@@ -64,7 +64,6 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         public void SetHighLight(int r, int c)
         {
-            Debug.Log(curRow + "," + curCol);
 
             if (this.curCol != EMPTY && this.curRow != EMPTY)
             {

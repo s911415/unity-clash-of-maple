@@ -179,15 +179,12 @@ namespace NTUT.CSIE.GameDev.Player
         {
             var scene = GetSceneLogic<FightSceneLogic>();
             var houseGen = scene.HouseGenerator;
-            var mapGen = scene.MapGridGenerator;
             int[,] row = { { 1, 4, 7, 1, 4, 7 }, { 1, 4, 7, 1, 4, 7 } };
             int[,] col = { { 4, 4, 4, 7, 7, 7 }, { 12, 12, 12, 15, 15, 15 } };
 
-            for (int j = 0; j < INIT_HOUSES; j++)
+            for (int i = 0; i < INIT_HOUSES; i++)
             {
-                mapGen.curRow = row[_playerID, j];
-                mapGen.curCol = col[_playerID, j];
-                houseGen.AddHouse(row[_playerID, j], col[_playerID, j], _playerID);
+                houseGen.AddHouse(row[_playerID, i], col[_playerID, i], _playerID);
             }
         }
 

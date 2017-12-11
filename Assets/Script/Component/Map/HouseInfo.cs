@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using NTUT.CSIE.GameDev.Component;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NTUT.CSIE.GameDev.Game;
@@ -31,6 +32,9 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private float _lastSpawnTime = 0f;
         [SerializeField]
         private Point _position;
+        [SerializeField]
+        private Direction _direction = Direction.Right;
+        private SpriteRenderer _sprite;
         private int _playerID;
         private int _upgAttackCnt, _upgHpCnt, _upgSpeedCnt;
 
@@ -136,7 +140,10 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private void Update()
         {
             RemainingNextSpawnTime = -1;
-
+            if (_direction == Direction.Left)
+                _sprite.flipX = true;
+            else
+                _sprite.flipX = false;
             if (type == HouseInfo.HouseType.Summon)
             {
                 RemainingNextSpawnTime = System.Convert.ToInt32(_lastSpawnTime + MonsterInfo.SpawnInterval - Time.time);
@@ -155,10 +162,25 @@ namespace NTUT.CSIE.GameDev.Component.Map
             var playerID = Manager.DEFAULT_PLAYER_ID;
             GetSceneLogic<FightSceneLogic>().SpawnMonster(MonsterInfo.ID, playerID, this);
         }
-
+        public Direction Direction
+        {
+            get
+            {
+                return _direction;
+            }
+            set
+            {
+                _direction = value;
+            }
+        }
         internal void _ResetSpawnCounter()
         {
             _lastSpawnTime = 0;
+        }
+        protected virtual void Start()
+        {
+            _sprite = transform.Find("Building").GetComponent<SpriteRenderer>();
+            Debug.Assert(_sprite != null);
         }
 
         protected void OnMouseDown()
