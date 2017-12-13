@@ -38,7 +38,7 @@ namespace NTUT.CSIE.GameDev.Monster
         {
             // 開始先鎖定主堡位置
             var gen = GetSceneLogic<FightSceneLogic>().MapGridGenerator;
-            _finalTarget = new Vector3(190.0f, 0.0f, 50.0f);
+            _finalTarget = (_playerID == 0) ? new Vector3(190.0f, 0.0f, 50.0f) : new Vector3(15.0f, 0.0f, 50.0f);
             animator = GetComponent<Animator>();
             _sprite = transform.Find("Image").GetComponent<SpriteRenderer>();
             _body = GetComponent<Rigidbody>();
@@ -63,7 +63,7 @@ namespace NTUT.CSIE.GameDev.Monster
         }
         protected virtual void Find()
         {
-            if (!_target)
+            if (!_target || _target._hp<=0)
             {
                 Monster[] monsterList = GetSceneLogic<FightSceneLogic>().GetAllMonsterInfo();
                 float[] distanceArray = new float[monsterList.Length];
@@ -83,13 +83,13 @@ namespace NTUT.CSIE.GameDev.Monster
                     distanceArray[i] = distance;
                 }
 
-                int v = GetMinIndex(distanceArray);
+                int minDistanceIndex = GetMinIndex(distanceArray);
 
-                if (v < 0 || distanceArray[v] > _info.AttackRange) return;
+                if (minDistanceIndex < 0 || distanceArray[minDistanceIndex] > _info.AttackRange) return;
 
-                if (monsterList[v] != this)
+                if (monsterList[minDistanceIndex] != this)
                 {
-                    _target = monsterList[v];
+                    _target = monsterList[minDistanceIndex];
                 }
             }
         }
@@ -101,7 +101,11 @@ namespace NTUT.CSIE.GameDev.Monster
                 return;
             }
 
-            if (!_target) return;
+            if (!_target)
+            {
+                action = Action.Walk;
+                return;
+            }
 
             action = Action.Attack;
             _target.Damage(_info.Attack);
@@ -174,6 +178,20 @@ namespace NTUT.CSIE.GameDev.Monster
 
         public virtual void Die()
         {
+            action = Action.Die;
+            var container = GameObject.Find("PendingRemoveMonster");
+            this.transform.parent = container.transform;
+        }
+
+        public void Remove()
+        {
+            Debug.Log("RRR");
+            Destroy(gameObject);
+        }
+
+        public void AfterAttack()
+        {
+            action = Action.Walk;
         }
 
         public virtual void Skill1()
