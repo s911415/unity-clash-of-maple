@@ -181,6 +181,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
                 _lastSpawnTime = -MonsterInfo.SpawnInterval - 1;
             }
         }
+
         protected virtual void Start()
         {
             _sprite = transform.Find("Building").GetComponent<SpriteRenderer>();
@@ -260,5 +261,10 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
             return 0;
         }
+
+        public void ShowHpChangedNumber(int damage)
+        {
+        }
+
     }
 }

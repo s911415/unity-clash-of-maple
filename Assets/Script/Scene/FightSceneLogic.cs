@@ -84,6 +84,11 @@ namespace NTUT.CSIE.GameDev.Scene
         {
             _controlPanel.DisplayInfo(this.HouseGenerator[p] ?? _defaultHouseInfo);
         }
+        
+        public Monster.Monster[] GetAllMonsterInfo()
+        {
+            return GameObject.Find("MonsterList").GetComponentsInChildren<Monster.Monster>();
+        }
 
         public MapGridGenerator MapGridGenerator => _mapGenerator;
         public HouseGenerator HouseGenerator => _mapGenerator.HouseGenerator;
