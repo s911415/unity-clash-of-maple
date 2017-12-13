@@ -161,8 +161,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private void Spawn()
         {
             Debug.Log(string.Format("召喚: {0}", MonsterInfo.Name));
-            var playerID = Manager.DEFAULT_PLAYER_ID;
-            GetSceneLogic<FightSceneLogic>().SpawnMonster(MonsterInfo.ID, playerID, this);
+            GetSceneLogic<FightSceneLogic>().SpawnMonster(MonsterInfo.ID, _playerID, this);
         }
         public Direction Direction
         {
