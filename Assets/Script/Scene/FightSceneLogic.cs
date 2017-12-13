@@ -24,6 +24,9 @@ namespace NTUT.CSIE.GameDev.Scene
         private MapGridGenerator _mapGenerator;
 
         [SerializeField]
+        private HouseInfo _defaultHouseInfo;
+
+        [SerializeField]
         protected List<Player.Player> _players;
 
         public Player.Player GetPlayerAt(int i) => _players[i];
@@ -77,8 +80,13 @@ namespace NTUT.CSIE.GameDev.Scene
             mob.Walk();
         }
 
+        public void ShowInfoOnPanel(Point p)
+        {
+            _controlPanel.DisplayInfo(this.HouseGenerator[p] ?? _defaultHouseInfo);
+        }
+
         public MapGridGenerator MapGridGenerator => _mapGenerator;
-        public HouseGenerator HouseGenerator => _mapGenerator.houseGenerator;
+        public HouseGenerator HouseGenerator => _mapGenerator.HouseGenerator;
         public MapStatusPanel ControlPanel => _controlPanel;
 
         #region Check Members

@@ -1,4 +1,5 @@
 ﻿using NTUT.CSIE.GameDev.Game;
+using NTUT.CSIE.GameDev.Scene;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         [SerializeField]
         private TextMesh _gridText;
         [SerializeField]
-        private Color _nonSelectColor = Color.black, _selectColor = Color.white;
+        private float _nonSelectAlpha = 1f, _selectAlpha = .8f;
         [SerializeField]
         public Point _position;
         public int width = 10;
@@ -41,8 +42,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
             if (IsMouseOnGUI) return;
 
             //Debug.Log(string.Format("Click Grid: ({0}, {1})", row, col));
-            _generator.SetHighLight(_position);
-            _generator.ShowInfoOnPanel();
+            _generator.SetHighLight(this._position);
+            GetSceneLogic<FightSceneLogic>().ShowInfoOnPanel(this._position);
         }
 
         private void Update()
@@ -54,15 +55,15 @@ namespace NTUT.CSIE.GameDev.Component.Map
         {
             set
             {
-                const string COLOR_TAG = "_Color";
+                const string TRANS_TAG = "_BaseTransVal";
 
                 if (value)
                 {
-                    _mat.SetColor(COLOR_TAG, _selectColor);
+                    _mat.SetFloat(TRANS_TAG, _selectAlpha);
                 }
                 else
                 {
-                    _mat.SetColor(COLOR_TAG, _nonSelectColor);
+                    _mat.SetFloat(TRANS_TAG, _nonSelectAlpha);
                 }
             }
         }

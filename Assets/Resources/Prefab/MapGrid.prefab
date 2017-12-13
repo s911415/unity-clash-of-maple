@@ -83,7 +83,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1679023632310208}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.25, z: 4}
+  m_LocalPosition: {x: 0, y: 0.5, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4525498566239122}
@@ -222,8 +222,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gridText: {fileID: 102922813398135544}
-  _nonSelectColor: {r: 0.4745098, g: 0.47843137, b: 0.15294118, a: 1}
-  _selectColor: {r: 0.84241307, g: 1, b: 0.6985294, a: 1}
+  _nonSelectAlpha: 1
+  _selectAlpha: 0.8
   _position:
     _row: 0
     _col: 0

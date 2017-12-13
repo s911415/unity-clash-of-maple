@@ -27,7 +27,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
             houseInfo.Type = HouseInfo.HouseType.Building;
             houseInfo.SetPosition(row, col);
             houseInfo.PlayerID = playerID;
-            houseInfo.Direction = (playerID == Manager.DEFAULT_PLAYER_ID)?Direction.Right: Direction.Left;
+            houseInfo.Direction = (playerID == Manager.DEFAULT_PLAYER_ID) ? Direction.Right : Direction.Left;
 
             if (_houseArray[row, col] != null)
             {
@@ -93,6 +93,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
         {
             return this.gameObject.GetComponentsInChildren<HouseInfo>();
         }
+
+        public HouseInfo this[Point p] => this[p.Row, p.Column];
 
         public HouseInfo this[int r, int c] => _houseArray[r, c];
     }
