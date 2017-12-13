@@ -77,6 +77,11 @@ namespace NTUT.CSIE.GameDev.Scene
             mob.Walk();
         }
 
+        public Monster.Monster[] GetAllMonsterInfo()
+        {
+            return GameObject.Find("MonsterList").GetComponentsInChildren<Monster.Monster>();
+        }
+
         public MapGridGenerator MapGridGenerator => _mapGenerator;
         public HouseGenerator HouseGenerator => _mapGenerator.houseGenerator;
         public MapStatusPanel ControlPanel => _controlPanel;

@@ -63,6 +63,23 @@ namespace NTUT.CSIE.GameDev.Game
 
             return component;
         }
+
+        public static int GetMinIndex(float[] array) 
+        {
+            if (array.Length > 0)
+            {
+                var minIndex = 0;
+                for (int i = 1; i < array.Length; i++)
+                    if (array[minIndex] > array[i])
+                    {
+                        minIndex = i;
+                    }
+
+                return minIndex;
+            }
+
+            return -1;
+        }
         #region Helper
         protected virtual bool IsMouseOnGUI => EventSystem.current.IsPointerOverGameObject();
         protected static Vector3 Clone(Vector3 v) => new Vector3(v.x, v.y, v.z);

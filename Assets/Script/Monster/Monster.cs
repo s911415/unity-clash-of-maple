@@ -1,5 +1,6 @@
 ﻿using NTUT.CSIE.GameDev.Component;
 using NTUT.CSIE.GameDev.Game;
+using NTUT.CSIE.GameDev.Scene;
 using NTUT.CSIE.GameDev.Helper;
 using System;
 using System.Collections;
@@ -24,13 +25,21 @@ namespace NTUT.CSIE.GameDev.Monster
         [SerializeField]
         private Direction _direction = Direction.Left;
         private Rigidbody _body;
-
+        [SerializeField]
+        private float _attackCount = 0f;
         [SerializeField]
         private int _playerID = -1;
+        private Monster _target = null;
 
+        // finalTartget 敵方主堡
+        private Vector3 _finalTarget;
 
         protected virtual void Start()
         {
+            // 開始先鎖定主堡位置
+            var gen = GetSceneLogic<FightSceneLogic>().MapGridGenerator;
+            _finalTarget = new Vector3(190.0f, 0.0f, 50.0f);
+            
             animator = GetComponent<Animator>();
             _sprite = transform.Find("Image").GetComponent<SpriteRenderer>();
             _body = GetComponent<Rigidbody>();
@@ -40,13 +49,62 @@ namespace NTUT.CSIE.GameDev.Monster
 
         protected virtual void FixedUpdate()
         {
+            Walk();
+            Find();
+            Attack();
+        }
+        public virtual void Walk()
+        {
             if (action == Action.Walk)
             {
-                var dir = _direction == Direction.Left ? -1 : 1;
-                _body.AddForce(_speed * new Vector3(1, 0, 0) * dir, ForceMode.Acceleration);
+                Vector3 v3 = _finalTarget - transform.position;
+                v3 = v3.normalized * _speed * 0.1f;
+                transform.Translate(v3);
             }
         }
+        protected virtual void Find()
+        {
 
+                if(!_target)
+                {
+                    Monster[] monsterList = GetSceneLogic<FightSceneLogic>().GetAllMonsterInfo();
+                    float[] distanceArray = new float[monsterList.Length];
+                    for(int i=0;i< monsterList.Length; i++)
+                    {
+                        var m = monsterList[i];
+                        float distance = float.MaxValue;
+                        if (m._playerID != _playerID)
+                        {
+                            Vector3 myPoint = gameObject.transform.position;
+                            Vector3 targetPoint = m.gameObject.transform.position;
+                            distance = Vector3.Distance(myPoint, targetPoint);
+                        }
+                        distanceArray[i] = distance;
+                    }
+                    
+                    int v=GetMinIndex(distanceArray);
+                    
+                    if (v<0||distanceArray[v] > _info.AttackRange) return;
+                if (monsterList[v] != this)
+                {
+                    _target = monsterList[v];
+                }
+                    
+            }      
+        }
+        public virtual void Attack()
+        {
+            if (_attackCount > 0)
+            {
+                _attackCount -= Time.deltaTime;
+                return;
+            }
+                if (!_target) return;
+                action = Action.Attack;
+        
+                _target.Damage(_info.Attack);
+                _attackCount = _info.AttackSpeed;              
+        }
         protected virtual void Update()
         {
             animator.SetInteger("action", (int)action);
@@ -98,20 +156,21 @@ namespace NTUT.CSIE.GameDev.Monster
 
         public virtual void Damage(int damage)
         {
-            throw new NotImplementedException();
+            _hp -= damage;
+            //TODO: 彈數字
+            if (_hp < 0) Die();
         }
 
         public virtual void Recovery(int recover)
         {
-            throw new NotImplementedException();
+            _hp += recover;
         }
 
-        public virtual void Attack()
-        {
-        }
+     
 
         public virtual void Die()
         {
+
         }
 
         public virtual void Skill1()
@@ -122,12 +181,15 @@ namespace NTUT.CSIE.GameDev.Monster
         {
         }
 
-        public virtual void Walk()
-        {
-        }
+        
 
         public virtual void Idle()
         {
+        }
+
+        public void ShowHpChangedNumber(int damage)
+        {
+            throw new NotImplementedException();
         }
 
         public virtual int PlayerID

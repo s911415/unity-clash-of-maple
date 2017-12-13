@@ -31,6 +31,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private float _lastSpawnTime = 0f;
         [SerializeField]
         private Point _position;
+        [SerializeField]
         private int _playerID;
         private int _upgAttackCnt, _upgHpCnt, _upgSpeedCnt;
 
@@ -158,7 +159,10 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         internal void _ResetSpawnCounter()
         {
-            _lastSpawnTime = 0;
+            if (type == HouseInfo.HouseType.Summon)
+            {
+                _lastSpawnTime = -MonsterInfo.SpawnInterval - 1;
+            }
         }
 
         protected void OnMouseDown()
@@ -234,5 +238,10 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
             return 0;
         }
+
+        public void ShowHpChangedNumber(int damage)
+        {
+        }
+
     }
 }

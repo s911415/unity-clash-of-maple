@@ -47,6 +47,9 @@ namespace NTUT.CSIE.GameDev.Player
         protected void Start()
         {
         }
+        public void ShowHpChangedNumber(int damage)
+        {
+        }
 
         public void Attached()
         {
