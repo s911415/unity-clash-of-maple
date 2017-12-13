@@ -85,14 +85,14 @@ namespace NTUT.CSIE.GameDev.Component.Map
             }
         }
 
-        public void SetPosition(int row, int col)
+        public HouseInfo SetPosition(int row, int col)
         {
             this._position = new Point(row, col);
             var gen = GetSceneLogic<FightSceneLogic>().MapGridGenerator;
-            gen.SetHighLight(row, col);
             var pos = Clone(gen[row, col].gameObject.transform.localPosition);
             pos.y = 0;
             gameObject.transform.localPosition = pos;
+            return this;
         }
 
         public string MonsterNumber
@@ -140,10 +140,12 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private void Update()
         {
             RemainingNextSpawnTime = -1;
+
             if (_direction == Direction.Left)
                 _sprite.flipX = true;
             else
                 _sprite.flipX = false;
+
             if (type == HouseInfo.HouseType.Summon)
             {
                 RemainingNextSpawnTime = System.Convert.ToInt32(_lastSpawnTime + MonsterInfo.SpawnInterval - Time.time);

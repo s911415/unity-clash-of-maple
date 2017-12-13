@@ -16,8 +16,9 @@ namespace NTUT.CSIE.GameDev.Component.Map
         public float y;
         private MapGrid[,] _mapGridArray;
         public bool ShowGridText = true;
-        public HouseGenerator houseGenerator;
-        public HouseInfo emptyHouseInfo;
+        [SerializeField]
+        protected HouseGenerator _houseGenerator;
+
         private void Start()
         {
             _mapGridArray = new MapGrid[row, col];
@@ -64,7 +65,6 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         public void SetHighLight(int r, int c)
         {
-
             if (this.curCol != EMPTY && this.curRow != EMPTY)
             {
                 this[curRow, curCol].Selected = false;
@@ -82,12 +82,6 @@ namespace NTUT.CSIE.GameDev.Component.Map
         {
         }
 
-        public void ShowInfoOnPanel()
-        {
-            emptyHouseInfo.SetPosition(curRow, curCol);
-            GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().DisplayInfo(emptyHouseInfo);
-        }
-
         private void DeleteChild()
         {
             foreach (Transform child in transform)
@@ -97,6 +91,9 @@ namespace NTUT.CSIE.GameDev.Component.Map
         }
 
         public MapGrid this[int r, int c] => _mapGridArray[r, c];
+        public MapGrid this[Point p] => _mapGridArray[p.Row, p.Column];
         public Point CurPoint => new Point(curRow, curCol);
+        public HouseInfo CurHouseInfo => this.HouseGenerator[curRow, curCol];
+        public HouseGenerator HouseGenerator => _houseGenerator;
     }
 }
