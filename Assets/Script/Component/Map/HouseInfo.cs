@@ -175,7 +175,10 @@ namespace NTUT.CSIE.GameDev.Component.Map
         }
         internal void _ResetSpawnCounter()
         {
-            _lastSpawnTime = 0;
+            if (type == HouseInfo.HouseType.Summon)
+            {
+                _lastSpawnTime = -MonsterInfo.SpawnInterval - 1;
+            }
         }
         protected virtual void Start()
         {
