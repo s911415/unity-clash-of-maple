@@ -60,7 +60,7 @@ namespace NTUT.CSIE.GameDev.Scene
             var obj = Instantiate(objPrefab, _monsterListObject.transform);
             var mob = obj.GetComponent<Monster.Monster>();
             var offset = (playerID == Manager.DEFAULT_PLAYER_ID) ? 1 : -1;
-            mob.SetInfo(houseInfo.RealHP, houseInfo.RealAttack, houseInfo.RealSpeed).Initialize();
+            mob.SetInfo(playerID, houseInfo.RealHP, houseInfo.RealAttack, houseInfo.RealSpeed).Initialize();
             var newPos = houseInfo.transform.position + offset * new Vector3(4, 0, 0);
             mob.transform.position = newPos;
             var newLocPos = Clone(mob.transform.localPosition);
@@ -84,7 +84,7 @@ namespace NTUT.CSIE.GameDev.Scene
         {
             _controlPanel.DisplayInfo(this.HouseGenerator[p] ?? _defaultHouseInfo);
         }
-        
+
         public Monster.Monster[] GetAllMonsterInfo()
         {
             return GameObject.Find("MonsterList").GetComponentsInChildren<Monster.Monster>();
