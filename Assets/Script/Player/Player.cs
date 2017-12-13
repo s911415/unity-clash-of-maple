@@ -12,6 +12,7 @@ namespace NTUT.CSIE.GameDev.Player
     public class Player : CommonObject, IHurtable
     {
         public delegate void ValueChangedEventHandler<T>(T value);
+        private const int INIT_HOUSES = 6;
         public const int MAX_HP = 50000;
         public const int MAX_MONEY = 2000000000;
         [SerializeField]
@@ -171,6 +172,19 @@ namespace NTUT.CSIE.GameDev.Player
             else
             {
                 return null;
+            }
+        }
+
+        public void InitHouses()
+        {
+            var scene = GetSceneLogic<FightSceneLogic>();
+            var houseGen = scene.HouseGenerator;
+            int[,] row = { { 1, 4, 7, 1, 4, 7 }, { 1, 4, 7, 1, 4, 7 } };
+            int[,] col = { { 4, 4, 4, 7, 7, 7 }, { 12, 12, 12, 15, 15, 15 } };
+
+            for (int i = 0; i < INIT_HOUSES; i++)
+            {
+                houseGen.AddHouse(row[_playerID, i], col[_playerID, i], _playerID);
             }
         }
 

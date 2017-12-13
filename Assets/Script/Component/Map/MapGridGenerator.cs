@@ -1,4 +1,5 @@
 ﻿using NTUT.CSIE.GameDev.Game;
+using NTUT.CSIE.GameDev.Scene;
 using NTUT.CSIE.GameDev.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private const int EMPTY = -1;
         public GameObject gridObject;
         public int col, row;
-        public int curCol, curRow;
+        public int curRow, curCol;
         public float y;
         private MapGrid[,] _mapGridArray;
         public bool ShowGridText = true;
@@ -49,6 +50,11 @@ namespace NTUT.CSIE.GameDev.Component.Map
                     grid.transform.localPosition = new Vector3(posX, y, mapHeight - posY);
                 }
             }
+
+            GetSceneLogic<FightSceneLogic>().GetPlayerAt(0).InitHouses();
+            GetSceneLogic<FightSceneLogic>().GetPlayerAt(1).InitHouses();
+            curCol = EMPTY;
+            curRow = EMPTY;
         }
 
         public void SetHighLight(Point p)
@@ -58,6 +64,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         public void SetHighLight(int r, int c)
         {
+
             if (this.curCol != EMPTY && this.curRow != EMPTY)
             {
                 this[curRow, curCol].Selected = false;

@@ -25,8 +25,9 @@ namespace NTUT.CSIE.GameDev.Component.Map
             var houseInfo = house.GetComponent<HouseInfo>();
             houseInfo.houseId = houseCount++;
             houseInfo.Type = HouseInfo.HouseType.Building;
-            houseInfo.SetPosition(_mapGridGenerator.curRow, _mapGridGenerator.curCol);
+            houseInfo.SetPosition(row, col);
             houseInfo.PlayerID = playerID;
+            houseInfo.Direction = (playerID == Manager.DEFAULT_PLAYER_ID)?Direction.Right: Direction.Left;
 
             if (_houseArray[row, col] != null)
             {
@@ -34,7 +35,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
             }
             else
             {
-                _houseArray[_mapGridGenerator.curRow, _mapGridGenerator.curCol] = houseInfo;
+                _houseArray[row, col] = houseInfo;
                 return houseInfo;
             }
         }
