@@ -103,7 +103,7 @@ namespace NTUT.CSIE.GameDev.UI
             describePanel = this.transform.Find("Describe");
             picturePanel.Find("Image").GetComponent<Image>().sprite = _buildingLevel[(int)houseInfo.Type];
             picturePanel.Find("Hp").GetComponent<Text>().text = houseInfo.hp.ToString() + "/" + houseInfo.maxHp.ToString();
-            picturePanel.Find("Name").GetComponent<Text>().text = houseInfo.houseName.ToString() + " " + houseInfo.houseId.ToString().PadLeft(2, '0');
+            picturePanel.Find("Name").GetComponent<Text>().text = houseInfo.houseName.ToString() + " " + houseInfo.ID.ToString().PadLeft(2, '0');
 
             switch (houseInfo.Type)
             {

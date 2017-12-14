@@ -18,9 +18,7 @@ namespace NTUT.CSIE.GameDev.Monster
         [SerializeField]
         private int hp, attack, speed, cost, spawnInterval;
         [SerializeField]
-        private float attackSpeed = 1f, attackRange = 10f;
-
-
+        private float attackSpeed, attackRange;
 
         public Info()
         {
@@ -28,6 +26,8 @@ namespace NTUT.CSIE.GameDev.Monster
             level = 0;
             hp = attack = spawnInterval = 1;
             speed = cost = 0;
+            attackSpeed = 1;
+            attackRange = 10;
         }
 
         public string ID => id;
@@ -42,7 +42,6 @@ namespace NTUT.CSIE.GameDev.Monster
         public int SpawnInterval => spawnInterval;
         public float AttackSpeed => attackSpeed;
         public float AttackRange => attackRange;
-        // public int SpawnInterval => 5;
     }
 
 }

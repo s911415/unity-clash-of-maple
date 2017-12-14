@@ -13,7 +13,11 @@ namespace NTUT.CSIE.GameDev.Monster
     [Serializable]
     public class Monster : CommonObject, IHurtable
     {
-        public int id;
+        protected static ulong _monsterCounter = 0;
+        [SerializeField]
+        protected ulong _id;
+        [SerializeField]
+        protected readonly int _monsterID;
         [SerializeField]
         protected Info _info;
         [SerializeField]
@@ -33,6 +37,11 @@ namespace NTUT.CSIE.GameDev.Monster
 
         // finalTartget 敵方主堡
         private Vector3 _finalTarget;
+
+        protected Monster(int mobID)
+        {
+            this._monsterID = mobID;
+        }
 
         protected virtual void Start()
         {
@@ -144,7 +153,7 @@ namespace NTUT.CSIE.GameDev.Monster
         protected override void Awake()
         {
             base.Awake();
-            _info = Manager.MonsterInfoCollection[id];
+            _info = Manager.MonsterInfoCollection[_monsterID];
         }
 
         public Monster SetInfo(int playerID, int maxHP, int attack, int speed)
@@ -153,6 +162,8 @@ namespace NTUT.CSIE.GameDev.Monster
             this._maxHP = maxHP;
             this._attack = attack;
             this._speed = speed;
+            this._id = _monsterCounter++;
+            this.name = string.Format("Mob #{0}", _id);
             return this;
         }
 
@@ -248,5 +259,7 @@ namespace NTUT.CSIE.GameDev.Monster
                 return 0;
             }
         }
+
+        public ulong ID => _id;
     }
 }

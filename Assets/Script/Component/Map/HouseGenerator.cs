@@ -17,17 +17,18 @@ namespace NTUT.CSIE.GameDev.Component.Map
         [SerializeField]
         private MapGridGenerator _mapGridGenerator;
         private HouseInfo[,] _houseArray; // 對應mapgrid
-        int houseCount = 0;
+        private ulong houseCount = 0;
 
         public HouseInfo AddHouse(int row, int col, int playerID)
         {
             GameObject house = Instantiate(_housePrefab, _houseList.transform);
             var houseInfo = house.GetComponent<HouseInfo>();
-            houseInfo.houseId = houseCount++;
-            houseInfo.Type = HouseInfo.HouseType.Building;
-            houseInfo.SetPosition(row, col);
-            houseInfo.PlayerID = playerID;
-            houseInfo.Direction = (playerID == Manager.DEFAULT_PLAYER_ID) ? Direction.Right : Direction.Left;
+            houseInfo
+            .SetId(houseCount++)
+            .SetType(HouseInfo.HouseType.Building)
+            .SetPosition(row, col)
+            .SetPlayerID(playerID)
+            .SetDirection((playerID == Manager.DEFAULT_PLAYER_ID) ? Direction.Right : Direction.Left);
 
             if (_houseArray[row, col] != null)
             {
