@@ -1,5 +1,6 @@
 ﻿using NTUT.CSIE.GameDev.Component;
 using NTUT.CSIE.GameDev.Component.Map;
+using NTUT.CSIE.GameDev.Component.Numbers;
 using NTUT.CSIE.GameDev.Game;
 using NTUT.CSIE.GameDev.Helpers;
 using NTUT.CSIE.GameDev.Player.Honors;
@@ -26,6 +27,9 @@ namespace NTUT.CSIE.GameDev.Scene
 
         [SerializeField]
         private HouseInfo _defaultHouseInfo;
+
+        [SerializeField]
+        private NumberCollection _numberCollection;
 
         [SerializeField]
         protected List<Player.Player> _players;
@@ -90,6 +94,16 @@ namespace NTUT.CSIE.GameDev.Scene
         {
             return GameObject.Find("MonsterList").GetComponentsInChildren<Monster.Monster>();
         }
+
+        protected void Update()
+        {
+            if (Input.GetKeyUp(KeyCode.Escape))
+            {
+                _controlPanel.Hide();
+            }
+        }
+
+        public NumberCollection NumberCollection => _numberCollection;
 
         public MapGridGenerator MapGridGenerator => _mapGenerator;
         public HouseGenerator HouseGenerator => _mapGenerator.HouseGenerator;

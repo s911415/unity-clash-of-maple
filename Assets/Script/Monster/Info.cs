@@ -43,5 +43,4 @@ namespace NTUT.CSIE.GameDev.Monster
         public float AttackSpeed => attackSpeed;
         public float AttackRange => attackRange;
     }
-
 }
