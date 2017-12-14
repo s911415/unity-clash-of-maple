@@ -30,7 +30,7 @@ namespace NTUT.CSIE.GameDev.Game
             if (Input.GetKeyUp(KeyCode.F3))
             {
                 //
-                _scene.NumberCollection.ShowNumber(GameObject.Find("Monster_03"), NumberCollection.Type.Violet, 4567);
+                _scene.NumberCollection.ShowNumber(GameObject.Find("Monster_03"), NumberCollection.Type.Violet, 0);
             }
 
             if (

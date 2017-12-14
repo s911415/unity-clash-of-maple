@@ -11,6 +11,7 @@ namespace NTUT.CSIE.GameDev.Component.Numbers
         public Sprite[] redNumberSprits = new Sprite[11];
         public Sprite[] violetNumberSprits = new Sprite[11];
         private readonly static int[] NumbersWidth = { 31, 22, 29, 28, 31, 29, 31, 29, 31, 31, 98 };
+        private readonly static int[] NumbersHeight = { 33, 32, 33, 32, 33, 32, 33, 32, 33, 33, 38 };
         private const int MISS_IDX = 10;
 
         [SerializeField]
@@ -29,6 +30,12 @@ namespace NTUT.CSIE.GameDev.Component.Numbers
             const int MARGIN_WIDTH = -5;
             int[] numbers = number.ToString().Select(n => (int)System.Char.GetNumericValue(n)).ToArray<int>();
             Sprite[] sprites = GetSpriteArray(type);
+
+            if (number == 0  && sprites.Length > MISS_IDX)
+            {
+                numbers = new int[] { MISS_IDX };
+            }
+
             int totalWidth = numbers.Select(x => NumbersWidth[x]).Sum() - MARGIN_WIDTH * (numbers.Length - 1);
             GameObject[] go = new GameObject[numbers.Length];
             var container = Instantiate(_numberContainer);
@@ -53,7 +60,7 @@ namespace NTUT.CSIE.GameDev.Component.Numbers
                 o.GetComponent<Image>().sprite = sprites[num];
                 var t = o.GetComponent<RectTransform>();
                 t.SetParent(container.transform);
-                t.sizeDelta = new Vector2(NumbersWidth[num], t.sizeDelta.y);
+                t.sizeDelta = new Vector2(NumbersWidth[num], NumbersHeight[num]);
                 t.localPosition = new Vector2(
                     posX - halfWidth,
                     (i & 1) == 0 ? 0 : NUMBER_OFFSET
