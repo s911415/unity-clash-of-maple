@@ -4,11 +4,10 @@ using UnityEngine;
 
 namespace NTUT.CSIE.GameDev.Monster
 {
-public class Mob00 : Monster
-{
-    public Mob00()
+    public class Mob00 : Monster
     {
-        id = 0;
+        public Mob00() : base(0)
+        {
+        }
     }
-}
 }

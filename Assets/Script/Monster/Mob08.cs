@@ -6,9 +6,8 @@ namespace NTUT.CSIE.GameDev.Monster
 {
     public class Mob08 : Monster
     {
-        public Mob08()
+        public Mob08() : base(8)
         {
-            id = 8;
         }
     }
 }

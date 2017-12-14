@@ -13,7 +13,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
     public class HouseInfo : CommonObject, IHurtable
     {
         public int scale = 1;
-        public int houseId;
+        [SerializeField]
+        private ulong _houseId;
         [SerializeField]
         private SpriteRenderer _houseRenderer;
         // 房屋基本資訊
@@ -96,6 +97,19 @@ namespace NTUT.CSIE.GameDev.Component.Map
             return this;
         }
 
+        public HouseInfo SetId(ulong id)
+        {
+            this._houseId = id;
+            this.name = string.Format("House #{0}", id);
+            return this;
+        }
+
+        public HouseInfo SetType(HouseType type)
+        {
+            this.Type = type;
+            return this;
+        }
+
         public string MonsterNumber
         {
             set
@@ -119,6 +133,12 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
                 return this.Manager.MonsterInfoCollection[_monsterNum];
             }
+        }
+
+        public HouseInfo SetPlayerID(int id)
+        {
+            this.PlayerID = id;
+            return this;
         }
 
         public int PlayerID
@@ -164,6 +184,13 @@ namespace NTUT.CSIE.GameDev.Component.Map
             Debug.Log(string.Format("召喚: {0}", MonsterInfo.Name));
             GetSceneLogic<FightSceneLogic>().SpawnMonster(MonsterInfo.ID, _playerID, this);
         }
+
+        public HouseInfo SetDirection(Direction dir)
+        {
+            this.Direction = dir;
+            return this;
+        }
+
         public Direction Direction
         {
             get
@@ -267,5 +294,6 @@ namespace NTUT.CSIE.GameDev.Component.Map
         {
         }
 
+        public ulong ID => _houseId;
     }
 }
