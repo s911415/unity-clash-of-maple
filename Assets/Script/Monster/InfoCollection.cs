@@ -1,5 +1,5 @@
 ﻿using NTUT.CSIE.GameDev.Game;
-using NTUT.CSIE.GameDev.Helper;
+using NTUT.CSIE.GameDev.Helpers;
 using System;
 using System.Collections;
 using System.Collections.Generic;

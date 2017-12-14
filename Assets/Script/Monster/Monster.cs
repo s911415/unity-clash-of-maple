@@ -1,7 +1,7 @@
 ﻿using NTUT.CSIE.GameDev.Component;
 using NTUT.CSIE.GameDev.Game;
+using NTUT.CSIE.GameDev.Helpers;
 using NTUT.CSIE.GameDev.Scene;
-using NTUT.CSIE.GameDev.Helper;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -83,7 +83,7 @@ namespace NTUT.CSIE.GameDev.Monster
                     distanceArray[i] = distance;
                 }
 
-                int v = GetMinIndex(distanceArray);
+                int v = Helper.GetMinIndex(distanceArray);
 
                 if (v < 0 || distanceArray[v] > _info.AttackRange) return;
 
