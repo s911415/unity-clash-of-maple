@@ -15,6 +15,10 @@ namespace NTUT.CSIE.GameDev.Monster
     public class Monster : CommonObject, IHurtable
     {
         protected static ulong _monsterCounter = 0;
+
+        [SerializeField]
+        protected AudioClip _attackAudioClip, _damageAudioClip;
+        protected AudioSource _audio;
         [SerializeField]
         protected ulong _id;
         [SerializeField]
@@ -52,6 +56,7 @@ namespace NTUT.CSIE.GameDev.Monster
             _finalTarget = (_playerID == 0) ? new Vector3(190.0f, 0.0f, 50.0f) : new Vector3(15.0f, 0.0f, 50.0f);
             animator = GetComponent<Animator>();
             _sprite = transform.Find("Image").GetComponent<SpriteRenderer>();
+            _audio = GetComponent<AudioSource>();
             _body = GetComponent<Rigidbody>();
             _numberCollection = GetSceneLogic<FightSceneLogic>().NumberCollection;
             Debug.Assert(_sprite != null);

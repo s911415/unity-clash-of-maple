@@ -27,10 +27,12 @@ namespace NTUT.CSIE.GameDev.Game
             if (_scene == null) return;
 
             //For Test
-            if (Input.GetKeyUp(KeyCode.F3))
+            if (Input.GetKey(KeyCode.F3))
             {
-                //
-                _scene.NumberCollection.ShowNumber(GameObject.Find("Monster_03"), NumberCollection.Type.Violet, 0);
+                foreach ( var m in GameObject.Find("MonsterTemplate").GetComponentsInChildren<Monster.Monster>())
+                {
+                    m.Damage(0);
+                }
             }
 
             if (

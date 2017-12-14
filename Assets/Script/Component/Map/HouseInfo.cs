@@ -7,6 +7,7 @@ using UnityEngine.Serialization;
 using NTUT.CSIE.GameDev.Scene;
 using NTUT.CSIE.GameDev.UI;
 using NTUT.CSIE.GameDev.Helpers;
+using NTUT.CSIE.GameDev.Component.Numbers;
 
 namespace NTUT.CSIE.GameDev.Component.Map
 {
@@ -39,6 +40,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private SpriteRenderer _sprite;
         private int _playerID;
         private int _upgAttackCnt, _upgHpCnt, _upgSpeedCnt;
+        private NumberCollection _numberCollection;
 
         public enum HouseType
         {
@@ -213,6 +215,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         protected virtual void Start()
         {
             _sprite = transform.Find("Building").GetComponent<SpriteRenderer>();
+            _numberCollection = GetSceneLogic<FightSceneLogic>().NumberCollection;
             Debug.Assert(_sprite != null);
         }
 
@@ -230,11 +233,17 @@ namespace NTUT.CSIE.GameDev.Component.Map
         public void Damage(int attack)
         {
             hp -= attack;
+            _numberCollection.ShowNumber(
+                this.gameObject,
+                _playerID == 0 ? NumberCollection.Type.Violet : NumberCollection.Type.Red,
+                (uint)attack
+            );
         }
 
         public void Recovery(int recovery)
         {
             hp += recovery;
+            _numberCollection.ShowNumber(this.gameObject, NumberCollection.Type.Blue, (uint)recovery);
         }
 
         public void ResetMonster()

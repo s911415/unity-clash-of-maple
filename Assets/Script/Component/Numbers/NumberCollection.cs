@@ -42,7 +42,7 @@ namespace NTUT.CSIE.GameDev.Component.Numbers
             var containerRectT = container.GetComponent<RectTransform>();
             containerRectT.SetParent(this.gameObject.transform);
             var sr = target.GetComponentInChildren<SpriteRenderer>() ?? target.GetComponent<SpriteRenderer>();
-            var targetHeight = sr ? sr.size.y : 0;
+            var targetHeight = sr != null ? sr.size.y : 0;
             container.GetComponent<NumberContainer>().SetTargetPosition(
                 target.transform.position + new Vector3(0, 0, targetHeight)
             );
