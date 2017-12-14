@@ -1,4 +1,5 @@
-﻿using NTUT.CSIE.GameDev.Scene;
+﻿using NTUT.CSIE.GameDev.Component.Numbers;
+using NTUT.CSIE.GameDev.Scene;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,11 +24,17 @@ namespace NTUT.CSIE.GameDev.Game
 
         protected void Update()
         {
+            if (_scene == null) return;
+
+            //For Test
+            if (Input.GetKeyUp(KeyCode.F3))
+            {
+                //
+                _scene.NumberCollection.ShowNumber(GameObject.Find("Monster_03"), NumberCollection.Type.Violet, 4567);
+            }
+
             if (
-                _scene != null  &&
-                (
-                    Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)
-                )
+                Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)
             )
             {
                 var player = _scene.GetPlayerAt(0);

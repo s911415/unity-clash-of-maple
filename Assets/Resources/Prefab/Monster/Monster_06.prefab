@@ -38,7 +38,6 @@ GameObject:
   - component: {fileID: 65515650658531174}
   - component: {fileID: 54107543988341544}
   - component: {fileID: 95822550110235098}
-  - component: {fileID: 212107052705520852}
   - component: {fileID: 114863843147719258}
   m_Layer: 2
   m_Name: Monster_06
@@ -53,8 +52,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1664365885168020}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 122.999985, y: 0.75, z: 18.89}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 122.999985, y: 0.100000024, z: 18.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4206523188281986}
@@ -129,7 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c26e483b85c58f4ca525daa2c4b9724, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 6
+  _id: 0
   _info:
     id: 
     name: 
@@ -140,6 +139,8 @@ MonoBehaviour:
     speed: 0
     cost: 0
     spawnInterval: 0
+    attackSpeed: 1
+    attackRange: 10
   _hp: 0
   _maxHP: 0
   _attack: 0
@@ -147,50 +148,9 @@ MonoBehaviour:
   animator: {fileID: 0}
   _sprite: {fileID: 0}
   _direction: 0
+  _attackCount: 0
   _playerID: -1
   action: 0
---- !u!212 &212107052705520852
-SpriteRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1664365885168020}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 13.75, y: 3.125}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
-  m_MaskInteraction: 0
 --- !u!212 &212638787889398592
 SpriteRenderer:
   m_ObjectHideFlags: 1
