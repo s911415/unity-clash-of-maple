@@ -20,7 +20,7 @@ namespace NTUT.CSIE.GameDev.UI
         public Text upgradeAttackText, upgradeHPText, upgradeSpeedText;
 
         [SerializeField]
-        protected Button _buyOK, _byuyCancel, _upgAtt, _upgHP, _upgSpeed, _disCard;
+        protected Button _buyOK, _buyCancel, _upgAtt, _upgHP, _upgSpeed, _disCard;
         [SerializeField]
         protected Button[] _selectCard;
 
@@ -56,6 +56,7 @@ namespace NTUT.CSIE.GameDev.UI
                 var houseInfo = player.BuyHouse(scene.MapGridGenerator.CurPoint);
                 checkInfoAndShow.Invoke(houseInfo);
             });
+            _buyCancel.onClick.AddListener(() => Hide());
 
             for (int i = 0; i < _selectCard.Length; i++)
             {
@@ -95,6 +96,7 @@ namespace NTUT.CSIE.GameDev.UI
         // display about mapgrid
         public void DisplayInfo(HouseInfo houseInfo)
         {
+            Show();
             picturePanel = this.transform.Find("Picture");
 
             for (int i = 0; i < 3; i++)
@@ -172,6 +174,16 @@ namespace NTUT.CSIE.GameDev.UI
         // Update is called once per frame
         void Update()
         {
+        }
+
+        public void Hide()
+        {
+            this.gameObject.SetActive(false);
+        }
+
+        public void Show()
+        {
+            this.gameObject.SetActive(true);
         }
     }
 }

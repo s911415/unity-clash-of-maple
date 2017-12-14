@@ -221,8 +221,9 @@ namespace NTUT.CSIE.GameDev.Component.Map
             // 空地時 顯示hightlight的工作 是給格線MapGrid執行的 之後選卡跟升級給HouseInfo來執行
             if (Type != 0)
             {
-                GetSceneLogic<FightSceneLogic>().MapGridGenerator.SetHighLight(_position);
-                GameObject.FindGameObjectWithTag("MapStatus").GetComponent<MapStatusPanel>().DisplayInfo(this);
+                var logic = GetSceneLogic<FightSceneLogic>();
+                logic.MapGridGenerator.SetHighLight(_position);
+                GetSceneLogic<FightSceneLogic>().ControlPanel.DisplayInfo(this);
             }
         }
 

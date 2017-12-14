@@ -1,4 +1,5 @@
 ﻿using NTUT.CSIE.GameDev.Component;
+using NTUT.CSIE.GameDev.Component.Numbers;
 using NTUT.CSIE.GameDev.Game;
 using NTUT.CSIE.GameDev.Helpers;
 using NTUT.CSIE.GameDev.Scene;
@@ -34,6 +35,7 @@ namespace NTUT.CSIE.GameDev.Monster
         [SerializeField]
         private int _playerID = -1;
         private Monster _target = null;
+        private NumberCollection _numberCollection;
 
         // finalTartget 敵方主堡
         private Vector3 _finalTarget;
@@ -51,6 +53,7 @@ namespace NTUT.CSIE.GameDev.Monster
             animator = GetComponent<Animator>();
             _sprite = transform.Find("Image").GetComponent<SpriteRenderer>();
             _body = GetComponent<Rigidbody>();
+            _numberCollection = GetSceneLogic<FightSceneLogic>().NumberCollection;
             Debug.Assert(_sprite != null);
             Debug.Assert(_body != null);
         }
@@ -72,7 +75,7 @@ namespace NTUT.CSIE.GameDev.Monster
         }
         protected virtual void Find()
         {
-            if (!_target || _target._hp<=0)
+            if (!_target || _target._hp <= 0)
             {
                 Monster[] monsterList = GetSceneLogic<FightSceneLogic>().GetAllMonsterInfo();
                 float[] distanceArray = new float[monsterList.Length];
@@ -175,17 +178,24 @@ namespace NTUT.CSIE.GameDev.Monster
         public virtual void Damage(int damage)
         {
             _hp -= damage;
+            _numberCollection.ShowNumber(
+                this.gameObject,
+                _playerID == 0 ? NumberCollection.Type.Violet : NumberCollection.Type.Red,
+                (uint)damage
+            );
 
-            //TODO: 彈數字
             if (_hp < 0) Die();
         }
 
         public virtual void Recovery(int recover)
         {
             _hp += recover;
+            _numberCollection.ShowNumber(
+                this.gameObject,
+                NumberCollection.Type.Blue,
+                (uint)recover
+            );
         }
-
-
 
         public virtual void Die()
         {
@@ -196,7 +206,6 @@ namespace NTUT.CSIE.GameDev.Monster
 
         public void Remove()
         {
-            Debug.Log("RRR");
             Destroy(gameObject);
         }
 

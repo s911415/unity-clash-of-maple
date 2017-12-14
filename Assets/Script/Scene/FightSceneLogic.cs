@@ -95,6 +95,14 @@ namespace NTUT.CSIE.GameDev.Scene
             return GameObject.Find("MonsterList").GetComponentsInChildren<Monster.Monster>();
         }
 
+        protected void Update()
+        {
+            if (Input.GetKeyUp(KeyCode.Escape))
+            {
+                _controlPanel.Hide();
+            }
+        }
+
         public NumberCollection NumberCollection => _numberCollection;
 
         public MapGridGenerator MapGridGenerator => _mapGenerator;
