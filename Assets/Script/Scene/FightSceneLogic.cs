@@ -1,6 +1,7 @@
 ﻿using NTUT.CSIE.GameDev.Component;
 using NTUT.CSIE.GameDev.Component.Map;
 using NTUT.CSIE.GameDev.Game;
+using NTUT.CSIE.GameDev.Helpers;
 using NTUT.CSIE.GameDev.Player.Honors;
 using NTUT.CSIE.GameDev.UI;
 using System.Collections;
@@ -63,7 +64,7 @@ namespace NTUT.CSIE.GameDev.Scene
             mob.SetInfo(playerID, houseInfo.RealHP, houseInfo.RealAttack, houseInfo.RealSpeed).Initialize();
             var newPos = houseInfo.transform.position + offset * new Vector3(4, 0, 0);
             mob.transform.position = newPos;
-            var newLocPos = Clone(mob.transform.localPosition);
+            var newLocPos = Helper.Clone(mob.transform.localPosition);
             newLocPos.y = 0;
             newLocPos.z -= 5f;
             mob.transform.localPosition = newLocPos;

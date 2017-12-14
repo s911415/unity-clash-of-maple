@@ -6,6 +6,7 @@ using NTUT.CSIE.GameDev.Game;
 using UnityEngine.Serialization;
 using NTUT.CSIE.GameDev.Scene;
 using NTUT.CSIE.GameDev.UI;
+using NTUT.CSIE.GameDev.Helpers;
 
 namespace NTUT.CSIE.GameDev.Component.Map
 {
@@ -89,7 +90,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         {
             this._position = new Point(row, col);
             var gen = GetSceneLogic<FightSceneLogic>().MapGridGenerator;
-            var pos = Clone(gen[row, col].gameObject.transform.localPosition);
+            var pos = Helper.Clone(gen[row, col].gameObject.transform.localPosition);
             pos.y = 0;
             gameObject.transform.localPosition = pos;
             return this;

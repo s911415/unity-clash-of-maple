@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace NTUT.CSIE.GameDev.Helper
+namespace NTUT.CSIE.GameDev.Helpers
 {
     public class JsonHelper
     {

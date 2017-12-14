@@ -1,5 +1,5 @@
 ﻿using NTUT.CSIE.GameDev.Game;
-using NTUT.CSIE.GameDev.Helper;
+using NTUT.CSIE.GameDev.Helpers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,8 +18,8 @@ namespace NTUT.CSIE.GameDev.Monster
         [SerializeField]
         private int hp, attack, speed, cost, spawnInterval;
         [SerializeField]
-        private float attackSpeed = 1f,attackRange = 10f;
-        
+        private float attackSpeed = 1f, attackRange = 10f;
+
 
 
         public Info()
