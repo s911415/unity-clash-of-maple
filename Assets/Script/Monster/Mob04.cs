@@ -8,6 +8,8 @@ namespace NTUT.CSIE.GameDev.Monster
     {
         [SerializeField]
         protected AudioClip _attack2AudioClip;
+
+        [SerializeField]
         protected int _attackIdx = 0;
 
         public Mob04() : base(4)
@@ -20,9 +22,9 @@ namespace NTUT.CSIE.GameDev.Monster
             _animator.SetInteger("attackIndex", _attackIdx);
         }
 
-        public override void Attack()
+        public override void DamageTarget()
         {
-            base.Attack();
+            base.DamageTarget();
             _attackIdx = 1 - _attackIdx;
         }
     }
