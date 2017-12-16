@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 namespace NTUT.CSIE.GameDev.Scene
 {
@@ -93,6 +94,21 @@ namespace NTUT.CSIE.GameDev.Scene
         public Monster.Monster[] GetAllMonsterInfo()
         {
             return GameObject.Find("MonsterList").GetComponentsInChildren<Monster.Monster>();
+        }
+
+        protected virtual void Start()
+        {
+            //定時給錢
+            SetInterval(GiveEveryoneMoney, 60 * 1000);
+        }
+
+        private void GiveEveryoneMoney()
+        {
+            Debug.Log("發$囉");
+            _players.ForEach(p =>
+            {
+                p.AddMoney(1250);
+            });
         }
 
         protected override void Update()
