@@ -95,8 +95,10 @@ namespace NTUT.CSIE.GameDev.Scene
             return GameObject.Find("MonsterList").GetComponentsInChildren<Monster.Monster>();
         }
 
-        protected void Update()
+        protected override void Update()
         {
+            base.Update();
+
             if (Input.GetKeyUp(KeyCode.Escape))
             {
                 _controlPanel.Hide();

@@ -1,6 +1,8 @@
 ﻿using NTUT.CSIE.GameDev.Scene;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Action = System.Action;
 
 namespace NTUT.CSIE.GameDev.Game
 {
@@ -64,6 +66,28 @@ namespace NTUT.CSIE.GameDev.Game
             return component;
         }
 
+
         protected virtual bool IsMouseOnGUI => EventSystem.current.IsPointerOverGameObject();
+
+        protected uint SetTimeout(Action action, uint timeoutMS)
+        {
+            return Manager._SetTimeout(action, timeoutMS);
+        }
+
+        protected uint SetInterval(Action action, uint timeoutMS)
+        {
+            return Manager._SetInterval(action, timeoutMS);
+        }
+
+        protected void ClearTimeout(uint timerId)
+        {
+            Manager._ClearTimeout(timerId);
+        }
+
+        protected void ClearInterval(uint timerId)
+        {
+            Manager._ClearTimeout(timerId);
+        }
+
     }
 }

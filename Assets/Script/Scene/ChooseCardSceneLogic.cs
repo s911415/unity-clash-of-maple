@@ -78,9 +78,5 @@ namespace NTUT.CSIE.GameDev.Scene
             return list;
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-        }
     }
 }
