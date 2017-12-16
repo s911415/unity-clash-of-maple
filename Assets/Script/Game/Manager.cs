@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using Action = System.Action;
 
 namespace NTUT.CSIE.GameDev.Game
 {
@@ -63,6 +64,89 @@ namespace NTUT.CSIE.GameDev.Game
             DontDestroyOnLoad(this.gameObject);
             _monsterInfoCollection = new Monster.InfoCollection();
             _initialized = true;
+        }
+
+
+        private static uint _timerID = 0;
+        private static Dictionary<uint, Timer> _timerList = new Dictionary<uint, Timer>();
+
+        protected virtual void Update()
+        {
+            var keyClone = new List<uint>();
+            keyClone.AddRange(_timerList.Keys);
+
+            foreach (var t in keyClone)
+                _timerList[t].Check();
+        }
+
+        public uint _SetTimeout(Action action, uint timeoutMS)
+        {
+            var id = _timerID++;
+            _timerList.Add(
+                id,
+                new Timer(
+                    id, action, timeoutMS
+                )
+            );
+            return id;
+        }
+
+        public uint _SetInterval(Action action, uint timeoutMS)
+        {
+            var id = _timerID++;
+            _timerList.Add(
+                id,
+                new ContinuousTimer(
+                    id, action, timeoutMS
+                )
+            );
+            return id;
+        }
+
+        public void _ClearTimeout(uint timerId)
+        {
+            _timerList.Remove(timerId);
+        }
+
+        private class Timer
+        {
+            protected uint _id;
+            protected float _runTime;
+            protected Action _action;
+            protected uint _timeout;
+
+            public Timer(uint id, Action action, uint timeoutMS)
+            {
+                _id = id;
+                _timeout = timeoutMS;
+                _runTime = Time.time + (float)_timeout / 1e3f;
+                _action = action;
+            }
+
+            public virtual void Check()
+            {
+                if (Time.time >= _runTime)
+                {
+                    _timerList.Remove(this._id);
+                    _action();
+                }
+            }
+        }
+
+        private class ContinuousTimer : Timer
+        {
+            public ContinuousTimer(uint id, Action action, uint timeoutMS): base(id, action, timeoutMS)
+            {
+            }
+
+            public override void Check()
+            {
+                if (Time.time >= _runTime)
+                {
+                    _runTime = Time.time + (float)_timeout / 1e3f;
+                    _action();
+                }
+            }
         }
 
         public Difficulty.Level Difficulty => _difficult;

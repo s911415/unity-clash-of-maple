@@ -19,10 +19,12 @@ namespace NTUT.CSIE.GameDev.Scene
                 SceneManager.LoadScene("ChooseCard");
             }
         }
-        void Update()
+        protected override void Update()
         {
+            base.Update();
             EnterKey();
         }
+
         public void OnReadyButtonClick()
         {
             var playerName = GameObject.Find("PlayerNameInput").GetComponent<InputField>().text.Trim();

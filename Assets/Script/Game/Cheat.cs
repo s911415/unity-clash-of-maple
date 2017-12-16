@@ -36,6 +36,14 @@ namespace NTUT.CSIE.GameDev.Game
                 }*/
             }
 
+            //For Test
+            if (Input.GetKeyDown(KeyCode.F4))
+                SetTimeout(() => Debug.Log(123), 5000);
+
+            //For Test
+            if (Input.GetKeyDown(KeyCode.F5))
+                SetInterval(() => Debug.Log(456), 2000);
+
             if (
                 Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)
             )
