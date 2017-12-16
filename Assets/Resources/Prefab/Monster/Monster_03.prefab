@@ -209,6 +209,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f7131d4be46d694b8dd4b186d2de489, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attackAudioClip: {fileID: 8300000, guid: 4447faf39aa4fe049a97231f3d70ef12, type: 3}
+  _damageAudioClip: {fileID: 8300000, guid: 070d2e03f98c65b428782c3ab105e993, type: 3}
+  _dieAudioClip: {fileID: 8300000, guid: 5690c24a5c26292409eb5846894849c6, type: 3}
   _id: 0
   _info:
     id: 

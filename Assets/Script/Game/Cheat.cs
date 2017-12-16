@@ -29,10 +29,11 @@ namespace NTUT.CSIE.GameDev.Game
             //For Test
             if (Input.GetKey(KeyCode.F3))
             {
-                foreach ( var m in GameObject.Find("MonsterTemplate").GetComponentsInChildren<Monster.Monster>())
+                _scene.NumberCollection.ShowNumber(GameObject.Find("Player0"), NumberCollection.Type.Blue, 50);
+                /*foreach ( var m in GameObject.Find("MonsterTemplate").GetComponentsInChildren<Monster.Monster>())
                 {
                     m.Damage(0);
-                }
+                }*/
             }
 
             if (
