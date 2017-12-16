@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace NTUT.CSIE.GameDev.Monster
@@ -66,50 +67,41 @@ namespace NTUT.CSIE.GameDev.Monster
         protected virtual void FixedUpdate()
         {
             Walk();
-            Find();
+            FindNearestTarget();
             Attack();
         }
+
         public virtual void Walk()
         {
             if (action == Action.Walk)
             {
+                var originalY = transform.position.y;
                 Vector3 v3 = _finalTarget - transform.position;
                 v3 = v3.normalized * _speed * 0.1f;
+                v3.y = 0;
                 transform.Translate(v3);
             }
         }
-        protected virtual void Find()
+
+        protected virtual void FindNearestTarget()
         {
             if (!_target || _target._hp <= 0)
             {
-                Monster[] monsterList = GetSceneLogic<FightSceneLogic>().GetAllMonsterInfo();
-                float[] distanceArray = new float[monsterList.Length];
-
-                for (int i = 0; i < monsterList.Length; i++)
-                {
-                    var m = monsterList[i];
-                    float distance = float.MaxValue;
-
-                    if (m._playerID != _playerID)
-                    {
-                        Vector3 myPoint = gameObject.transform.position;
-                        Vector3 targetPoint = m.gameObject.transform.position;
-                        distance = Vector3.Distance(myPoint, targetPoint);
-                    }
-
-                    distanceArray[i] = distance;
-                }
-
+                Monster[] enemiesList = GetEnemies();
+                float[] distanceArray = enemiesList.Select(
+                                            m => Vector3.Distance(m.transform.position, this.transform.position)
+                                        ).ToArray();
                 int minDistanceIndex = Helper.GetMinIndex(distanceArray);
 
                 if (minDistanceIndex < 0 || distanceArray[minDistanceIndex] > _info.AttackRange) return;
 
-                if (monsterList[minDistanceIndex] != this)
+                if (enemiesList[minDistanceIndex] != this)
                 {
-                    _target = monsterList[minDistanceIndex];
+                    _target = enemiesList[minDistanceIndex];
                 }
             }
         }
+
         public virtual void Attack()
         {
             if (_attackCount > 0)
@@ -128,6 +120,7 @@ namespace NTUT.CSIE.GameDev.Monster
             _target.Damage(_info.Attack);
             _attackCount = _info.AttackSpeed;
         }
+
         protected virtual void Update()
         {
             animator.SetInteger("action", (int)action);
@@ -272,6 +265,36 @@ namespace NTUT.CSIE.GameDev.Monster
 
                 return 0;
             }
+        }
+
+        protected Monster[] GetEnemies(float range = float.MaxValue)
+        {
+            Monster[] monsterList = GetSceneLogic<FightSceneLogic>().GetAllMonsterInfo();
+            var query = monsterList.Where(m => m._playerID != this._playerID);
+
+            if (range < float.MaxValue)
+            {
+                query = query.Where(
+                            m => Vector3.Distance(m.transform.position, this.transform.position) <= range
+                        );
+            }
+
+            return query.ToArray();
+        }
+
+        protected Monster[] GetFriends(float range = float.MaxValue)
+        {
+            Monster[] monsterList = GetSceneLogic<FightSceneLogic>().GetAllMonsterInfo();
+            var query = monsterList.Where(m => m._playerID == this._playerID);
+
+            if (range < float.MaxValue)
+            {
+                query = query.Where(
+                            m => Vector3.Distance(m.transform.position, this.transform.position) <= range
+                        );
+            }
+
+            return query.ToArray();
         }
 
         public ulong ID => _id;
