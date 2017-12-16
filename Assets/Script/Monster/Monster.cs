@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace NTUT.CSIE.GameDev.Monster
 {
@@ -18,7 +19,7 @@ namespace NTUT.CSIE.GameDev.Monster
         protected static ulong _monsterCounter = 0;
 
         [SerializeField]
-        protected AudioClip _attackAudioClip, _damageAudioClip;
+        protected AudioClip _attackAudioClip, _damageAudioClip, _dieAudioClip;
         protected AudioSource _audio;
         [SerializeField]
         protected ulong _id;
@@ -62,6 +63,7 @@ namespace NTUT.CSIE.GameDev.Monster
             _numberCollection = GetSceneLogic<FightSceneLogic>().NumberCollection;
             Debug.Assert(_sprite != null);
             Debug.Assert(_body != null);
+            this.GetComponent<Collider>().enabled = false;
         }
 
         protected virtual void FixedUpdate()
@@ -75,7 +77,6 @@ namespace NTUT.CSIE.GameDev.Monster
         {
             if (action == Action.Walk)
             {
-                var originalY = transform.position.y;
                 Vector3 v3 = _finalTarget - transform.position;
                 v3 = v3.normalized * _speed * 0.1f;
                 v3.y = 0;
@@ -117,7 +118,11 @@ namespace NTUT.CSIE.GameDev.Monster
             }
 
             action = Action.Attack;
-            _target.Damage(_info.Attack);
+
+            if (_attackAudioClip != null)
+                _audio.PlayOneShot(_attackAudioClip);
+
+            _target.Damage(CalcDamageValue());
             _attackCount = _info.AttackSpeed;
         }
 
@@ -134,6 +139,12 @@ namespace NTUT.CSIE.GameDev.Monster
             {
                 Destroy(this.gameObject);
             }
+        }
+
+        protected virtual int CalcDamageValue()
+        {
+            var offset = _info.Attack * 0.25f;
+            return (int)(_info.Attack + Random.Range(-offset, offset));
         }
 
         protected virtual bool CheckOutOfMap()
@@ -182,7 +193,18 @@ namespace NTUT.CSIE.GameDev.Monster
                 (uint)damage
             );
 
-            if (_hp < 0) Die();
+            if (_hp < 0)
+            {
+                if (_dieAudioClip != null)
+                    _audio.PlayOneShot(_dieAudioClip);
+
+                Die();
+            }
+            else
+            {
+                if (_damageAudioClip != null)
+                    _audio.PlayOneShot(_damageAudioClip);
+            }
         }
 
         public virtual void Recovery(int recover)

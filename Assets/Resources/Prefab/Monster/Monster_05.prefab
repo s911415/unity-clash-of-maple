@@ -209,6 +209,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d031625a5f4cb343bd5f2582d4e0de7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attackAudioClip: {fileID: 8300000, guid: a538ceae9a99fd44cbd5ecc904ef56f3, type: 3}
+  _damageAudioClip: {fileID: 8300000, guid: 766f4d0496ff50346a9f2f9cb1cc238d, type: 3}
+  _dieAudioClip: {fileID: 8300000, guid: 9e663528db1ca9f43ba06859f421ea8a, type: 3}
   _id: 0
   _info:
     id: 
@@ -232,6 +235,7 @@ MonoBehaviour:
   _attackCount: 0
   _playerID: -1
   action: 0
+  _attack2AudioClip: {fileID: 8300000, guid: 3e142cf814799214fb07de3eaf798453, type: 3}
 --- !u!212 &212641172240976440
 SpriteRenderer:
   m_ObjectHideFlags: 1

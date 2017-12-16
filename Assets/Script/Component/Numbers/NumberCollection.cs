@@ -47,6 +47,7 @@ namespace NTUT.CSIE.GameDev.Component.Numbers
                 target.transform.position + new Vector3(0, 0, targetHeight)
             );
             containerRectT.sizeDelta = new Vector2(totalWidth, containerRectT.sizeDelta.y);
+            container.name = number.ToString();
 
             for (
                 int i = 0, posX = 0, halfWidth = totalWidth >> 1;
@@ -56,7 +57,7 @@ namespace NTUT.CSIE.GameDev.Component.Numbers
             {
                 var num = numbers[i];
                 var o = Object.Instantiate(_numberTemplate);
-                o.name = i.ToString();
+                o.name = num.ToString();
                 o.GetComponent<Image>().sprite = sprites[num];
                 var t = o.GetComponent<RectTransform>();
                 t.SetParent(container.transform);
