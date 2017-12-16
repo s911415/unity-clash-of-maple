@@ -5,12 +5,12 @@
     "desc": "棲息在森林的松鼠，喜歡用橡果砸人。",
     "level": 1,
     "hp": 1600,
-    "attack": 160,
+    "attack": 120,
     "speed": 2,
     "cost": 100,
     "spawnInterval": 30,
     "attackRange": 5,
-    "attackSpeed": 1.5
+    "attackSpeed": 0.625
   },
   {
     "id": "01",
@@ -18,12 +18,12 @@
     "desc": "在上廁所時被射殺的兔子，一次可以生產兩隻，在殺死敵人後會搶奪敵人身上所有的財產。",
     "level": 1,
     "hp": 1900,
-    "attack": 190,
+    "attack": 80,
     "speed": 3,
     "cost": 120,
     "spawnInterval": 40,
     "attackRange": 5,
-    "attackSpeed": 1.25
+    "attackSpeed": 0.363636364
   },
   {
     "id": "02",
@@ -36,7 +36,7 @@
     "cost": 300,
     "spawnInterval": 40,
     "attackRange": 5,
-    "attackSpeed": 1.25
+    "attackSpeed": 0.727272727
   },
   {
     "id": "03",
@@ -44,12 +44,12 @@
     "desc": "從異世界被召喚到楓之大陸的魔法師，擁有很強的魔法操作能力，可以攻擊大量的敵人。",
     "level": 3,
     "hp": 4000,
-    "attack": 400,
+    "attack": 3700,
     "speed": 5,
     "cost": 4500,
     "spawnInterval": 240,
     "attackRange": 15,
-    "attackSpeed": 2
+    "attackSpeed": 3.166666667
   },
   {
     "id": "04",
@@ -57,12 +57,12 @@
     "desc": "從萬聖節逃離出來的南瓜，生前受到很多的虐待，因此遇到任何人都想來一發爆炸。",
     "level": 2,
     "hp": 3000,
-    "attack": 600,
+    "attack": 1000,
     "speed": 1,
     "cost": 700,
     "spawnInterval": 180,
     "attackRange": 20,
-    "attackSpeed": 10
+    "attackSpeed": 1.65
   },
   {
     "id": "05",
@@ -70,12 +70,12 @@
     "desc": "來自東之大陸的鳥類，平常棲息在高原上，其力氣之大即使是成年人也可以輕易地抓走。",
     "level": 3,
     "hp": 4500,
-    "attack": 450,
+    "attack": 2250,
     "speed": 8,
     "cost": 5000,
     "spawnInterval": 270,
     "attackRange": 15,
-    "attackSpeed": 3
+    "attackSpeed": 1.8125
   },
   {
     "id": "06",
@@ -83,12 +83,12 @@
     "desc": "太喜歡可樂而不小心掉落到可樂中的水靈，因為在可樂中浸泡太久而有可樂色，因為全身黏黏的，會使被攻擊的敵人覺得討厭。",
     "level": 1,
     "hp": 1700,
-    "attack": 170,
+    "attack": 260,
     "speed": 3,
     "cost": 150,
     "spawnInterval": 40,
     "attackRange": 5,
-    "attackSpeed": 2
+    "attackSpeed": 1.166666667
   },
   {
     "id": "07",
@@ -96,12 +96,12 @@
     "desc": "原先是擁有療癒功能的草藥，受到楓之大陸的影響，有了靈性後，獲得自由移動的能力。",
     "level": 1,
     "hp": 1750,
-    "attack": 175,
+    "attack": 110,
     "speed": 3,
     "cost": 200,
     "spawnInterval": 45,
     "attackRange": 5,
-    "attackSpeed": 2
+    "attackSpeed": 0.454545455
   },
   {
     "id": "08",
@@ -109,12 +109,12 @@
     "desc": "變種的香菇。不是很毒但是吃了之後會有強烈的睡意。",
     "level": 1,
     "hp": 1800,
-    "attack": 180,
+    "attack": 200,
     "speed": 3,
     "cost": 250,
     "spawnInterval": 45,
     "attackRange": 5,
-    "attackSpeed": 2
+    "attackSpeed": 0.833333333
   },
   {
     "id": "09",
@@ -122,12 +122,12 @@
     "desc": "寫程式寫到抓狂而猝死的工程師，因為生前的程式Bug De不出來，非常暴躁。",
     "level": 2,
     "hp": 2700,
-    "attack": 270,
+    "attack": 570,
     "speed": 4,
     "cost": 430,
     "spawnInterval": 120,
     "attackRange": 10,
-    "attackSpeed": 2
+    "attackSpeed": 1.375
   },
   {
     "id": 10,
@@ -135,12 +135,12 @@
     "desc": "備受黎明卿關愛的母砂兔。特徵是小小的耳朵與圓圓的身體。因為非常可愛，很受大家的歡迎。因為曾經受到黎明式關愛，對周圍的警戒特別高。",
     "level": 1,
     "hp": 1800,
-    "attack": 180,
+    "attack": 275,
     "speed": 3,
     "cost": 230,
     "spawnInterval": 45,
     "attackRange": 5,
-    "attackSpeed": 1.5
+    "attackSpeed": 1.25
   },
   {
     "id": 11,
@@ -148,11 +148,11 @@
     "desc": "是擅長潛伏攻擊的朋友。",
     "level": 2,
     "hp": 3100,
-    "attack": 310,
+    "attack": 320,
     "speed": 10,
     "cost": 500,
     "spawnInterval": 150,
     "attackRange": 10,
-    "attackSpeed": 2.5
+    "attackSpeed": 0.75
   }
 ]

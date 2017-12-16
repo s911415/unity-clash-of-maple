@@ -18,6 +18,16 @@ namespace NTUT.CSIE.GameDev.Component
             _col = col;
         }
 
+        public static float Distance(Point p1, Point p2)
+        {
+            return Mathf.Sqrt(Mathf.Pow(p1._row - p2._row, 2) + Mathf.Pow(p1._col - p2._col, 2));
+        }
+
+        public float Distance(Point p)
+        {
+            return Distance(this, p);
+        }
+
         public int Row => _row;
         public int Column => _col;
     }

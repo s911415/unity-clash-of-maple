@@ -88,6 +88,5 @@ namespace NTUT.CSIE.GameDev.Game
         {
             Manager._ClearTimeout(timerId);
         }
-
     }
 }

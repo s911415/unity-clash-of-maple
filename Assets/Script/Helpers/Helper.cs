@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Linq;
 using Array = System.Array;
+using System.Collections.Generic;
 
 namespace NTUT.CSIE.GameDev.Helpers
 {
     public sealed class Helper
     {
-        public static int GetMinIndex(float[] array)
+        public static int GetMinIndex<T>(T[] array) where T : System.IComparable
         {
             if (array.Length > 0)
             {
@@ -14,6 +15,12 @@ namespace NTUT.CSIE.GameDev.Helpers
             }
 
             return -1;
+        }
+
+        public static T GetRandomElement<T>(IReadOnlyList<T> list)
+        {
+            var idx = Random.Range(0, list.Count);
+            return list[idx];
         }
 
         public static bool IsMouseOnGUI => UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();

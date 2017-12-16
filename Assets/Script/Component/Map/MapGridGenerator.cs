@@ -19,8 +19,9 @@ namespace NTUT.CSIE.GameDev.Component.Map
         [SerializeField]
         protected HouseGenerator _houseGenerator;
 
-        private void Start()
+        protected override void Awake()
         {
+            base.Awake();
             _mapGridArray = new MapGrid[row, col];
             int step = 0;
             int halfStep = 0;
@@ -52,8 +53,6 @@ namespace NTUT.CSIE.GameDev.Component.Map
                 }
             }
 
-            GetSceneLogic<FightSceneLogic>().GetPlayerAt(0).InitHouses();
-            GetSceneLogic<FightSceneLogic>().GetPlayerAt(1).InitHouses();
             curCol = EMPTY;
             curRow = EMPTY;
         }

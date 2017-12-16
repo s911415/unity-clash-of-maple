@@ -147,7 +147,6 @@ namespace NTUT.CSIE.GameDev.UI
         public void Upgrade()
         {
             var houseInfo = GetSceneLogic<FightSceneLogic>().MapGridGenerator.CurHouseInfo;
-            Debug.Log("This building is Card" + houseInfo.MonsterInfo.Name + "'s Home.");
             this.CloseDescribePanel();
             describePanel.Find("Upgrade").gameObject.SetActive(true);
             describePanel.Find("Upgrade").GetChild(0).GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Monster/" + houseInfo.MonsterNumber);
