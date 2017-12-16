@@ -48,7 +48,7 @@ namespace NTUT.CSIE.GameDev.Player
             return this;
         }
 
-        public List<string> GetCardIds()
+        public IReadOnlyList<string> GetCardIds()
         {
             return _cardIds;
         }

@@ -88,7 +88,20 @@ namespace NTUT.CSIE.GameDev.Scene
 
         public void ShowInfoOnPanel(Point p)
         {
-            _controlPanel.DisplayInfo(this.HouseGenerator[p] ?? _defaultHouseInfo);
+            var house = this.HouseGenerator[p] ?? _defaultHouseInfo;
+
+            if (house.Type != HouseInfo.HouseType.Master)
+            {
+                if (
+                    p.Column < 10 ||
+                    this.Manager.Difficulty == Difficulty.Level.Demo
+                )
+                    _controlPanel.DisplayInfo(house);
+            }
+            else
+            {
+                _controlPanel.Hide();
+            }
         }
 
         public Monster.Monster[] GetAllMonsterInfo()

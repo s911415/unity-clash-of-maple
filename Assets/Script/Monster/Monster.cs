@@ -30,18 +30,18 @@ namespace NTUT.CSIE.GameDev.Monster
         [SerializeField]
         protected int _hp, _maxHP, _attack, _speed;
         [SerializeField]
-        private Animator animator;
+        protected Animator _animator;
         [SerializeField]
-        private SpriteRenderer _sprite;
+        protected SpriteRenderer _sprite;
         [SerializeField]
-        private Direction _direction = Direction.Left;
-        private Rigidbody _body;
+        protected Direction _direction = Direction.Left;
+        protected Rigidbody _body;
         [SerializeField]
-        private float _attackCount = 0f;
+        protected float _attackCount = 0f;
         [SerializeField]
-        private int _playerID = -1;
-        private Monster _target = null;
-        private NumberCollection _numberCollection;
+        protected int _playerID = -1;
+        protected Monster _target = null;
+        protected NumberCollection _numberCollection;
 
         // finalTartget 敵方主堡
         private Vector3 _finalTarget;
@@ -55,8 +55,9 @@ namespace NTUT.CSIE.GameDev.Monster
         {
             // 開始先鎖定主堡位置
             var gen = GetSceneLogic<FightSceneLogic>().MapGridGenerator;
-            _finalTarget = (_playerID == 0) ? new Vector3(190.0f, 0.0f, 50.0f) : new Vector3(15.0f, 0.0f, 50.0f);
-            animator = GetComponent<Animator>();
+            _finalTarget = (_playerID == 0) ? gen[4, 18].transform.localPosition : gen[4, 1].transform.localPosition;
+            _finalTarget += new Vector3(-2.5f * VectorOffset, 0, -5);
+            _animator = GetComponent<Animator>();
             _sprite = transform.Find("Image").GetComponent<SpriteRenderer>();
             _audio = GetComponent<AudioSource>();
             _body = GetComponent<Rigidbody>();
@@ -88,7 +89,8 @@ namespace NTUT.CSIE.GameDev.Monster
         {
             if (!_target || _target._hp <= 0)
             {
-                Monster[] enemiesList = GetEnemies();
+                _target = null;
+                Monster[] enemiesList = GetEnemies(_info.AttackRange);
                 float[] distanceArray = enemiesList.Select(
                                             m => Vector3.Distance(m.transform.position, this.transform.position)
                                         ).ToArray();
@@ -100,6 +102,10 @@ namespace NTUT.CSIE.GameDev.Monster
                 {
                     _target = enemiesList[minDistanceIndex];
                 }
+            }
+            else
+            {
+                _target = null;
             }
         }
 
@@ -118,17 +124,31 @@ namespace NTUT.CSIE.GameDev.Monster
             }
 
             action = Action.Attack;
-
-            if (_attackAudioClip != null)
-                _audio.PlayOneShot(_attackAudioClip);
-
-            _target.Damage(CalcDamageValue());
             _attackCount = _info.AttackSpeed;
+        }
+
+        public virtual void DamageTarget()
+        {
+            if (action != Action.Attack || _target == null || !_target.gameObject) return;
+
+            var nearMonsters = GetEnemies(this._info.AttackRange);
+
+            foreach (var m in nearMonsters)
+            {
+                if (!m) continue;
+
+                Debug.Log(string.Format("DamageTarget: {0}", m.name));
+
+                if (_attackAudioClip != null)
+                    _audio.PlayOneShot(_attackAudioClip);
+
+                m.Damage(CalcDamageValue());
+            }
         }
 
         protected virtual void Update()
         {
-            animator.SetInteger("action", (int)action);
+            _animator.SetInteger("action", (int)action);
 
             if (_direction == Direction.Left)
                 _sprite.flipX = false;
@@ -143,8 +163,8 @@ namespace NTUT.CSIE.GameDev.Monster
 
         protected virtual int CalcDamageValue()
         {
-            var offset = _info.Attack * 0.25f;
-            return (int)(_info.Attack + Random.Range(-offset, offset));
+            var offset = _attack * 0.25f;
+            return (int)(_attack + Random.Range(-offset, offset));
         }
 
         protected virtual bool CheckOutOfMap()
@@ -277,6 +297,7 @@ namespace NTUT.CSIE.GameDev.Monster
             }
         }
 
+        /// <summary>   Return 1 if player, 0 if robot. </summary>
         protected int VectorOffset
         {
             get
@@ -285,6 +306,7 @@ namespace NTUT.CSIE.GameDev.Monster
 
                 if (_playerID == Manager.ROBOT_PLAYER_ID) return -1;
 
+                Debug.LogWarning("0 returned");
                 return 0;
             }
         }

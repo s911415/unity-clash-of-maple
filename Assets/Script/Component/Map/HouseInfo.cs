@@ -41,11 +41,13 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private int _playerID;
         private int _upgAttackCnt, _upgHpCnt, _upgSpeedCnt;
         private NumberCollection _numberCollection;
+        private bool _died = false;
 
         public enum HouseType
         {
-            Empty, Building, Summon
+            Empty, Building, Summon, Master
         }
+
         public enum UpgradeType
         {
             Attack, HP, Speed
@@ -79,6 +81,10 @@ namespace NTUT.CSIE.GameDev.Component.Map
                 {
                     _lastSpawnTime = Time.time;
                 }
+                else if (type == HouseType.Master)
+                {
+                    houseName = "主塔";
+                }
 
                 _houseRenderer.sprite = houseImage[(int)type];
             }
@@ -102,7 +108,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         public HouseInfo SetId(ulong id)
         {
             this._houseId = id;
-            this.name = string.Format("House #{0}", id);
+            this.name = string.Format("House #{0} ({1}, {2})", id, _position.Row, _position.Column);
             return this;
         }
 
@@ -187,6 +193,12 @@ namespace NTUT.CSIE.GameDev.Component.Map
             GetSceneLogic<FightSceneLogic>().SpawnMonster(MonsterInfo.ID, _playerID, this);
         }
 
+        private void Die()
+        {
+            _died = true;
+            GetSceneLogic<FightSceneLogic>().HouseGenerator.DestroyHouse(this._position);
+        }
+
         public HouseInfo SetDirection(Direction dir)
         {
             this.Direction = dir;
@@ -219,17 +231,6 @@ namespace NTUT.CSIE.GameDev.Component.Map
             Debug.Assert(_sprite != null);
         }
 
-        protected void OnMouseDown()
-        {
-            // 空地時 顯示hightlight的工作 是給格線MapGrid執行的 之後選卡跟升級給HouseInfo來執行
-            if (Type != 0)
-            {
-                var logic = GetSceneLogic<FightSceneLogic>();
-                logic.MapGridGenerator.SetHighLight(_position);
-                GetSceneLogic<FightSceneLogic>().ControlPanel.DisplayInfo(this);
-            }
-        }
-
         public void Damage(int attack)
         {
             hp -= attack;
@@ -238,6 +239,11 @@ namespace NTUT.CSIE.GameDev.Component.Map
                 _playerID == 0 ? NumberCollection.Type.Violet : NumberCollection.Type.Red,
                 (uint)attack
             );
+
+            if (hp <= 0 && !_died)
+            {
+                Die();
+            }
         }
 
         public void Recovery(int recovery)
@@ -305,5 +311,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         }
 
         public ulong ID => _houseId;
+
+        public Point Position => _position;
     }
 }

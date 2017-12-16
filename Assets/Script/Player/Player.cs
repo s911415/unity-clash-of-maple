@@ -47,7 +47,9 @@ namespace NTUT.CSIE.GameDev.Player
         }
         protected void Start()
         {
+            InitHouses();
         }
+
         public void ShowHpChangedNumber(int damage)
         {
         }
@@ -144,11 +146,11 @@ namespace NTUT.CSIE.GameDev.Player
             }
         }
 
-        public HouseInfo SetHouseMonster(Point p, int cardIndex)
+        public HouseInfo SetHouseMonster(Point p, int cardSelectIndex)
         {
             var scene = GetSceneLogic<FightSceneLogic>();
             var houseGen = scene.HouseGenerator;
-            var monsterID = Info.GetCardIds()[cardIndex];
+            var monsterID = Info.GetCardIds()[cardSelectIndex];
             var monsterInfo = this.Manager.MonsterInfoCollection[monsterID];
 
             if (CostMoney(monsterInfo.Cost))
