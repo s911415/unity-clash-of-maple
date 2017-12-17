@@ -43,9 +43,9 @@ namespace NTUT.CSIE.GameDev.Component.Map
             GameObject house = Instantiate(_housePrefab, _houseList.transform);
             var houseInfo = house.GetComponent<HouseInfo>();
             houseInfo
-            .SetId(_houseSeq++)
             .SetType(HouseInfo.HouseType.Building)
             .SetPosition(row, col)
+            .SetId(_houseSeq++)
             .SetPlayerID(playerID)
             .SetDirection((playerID == Manager.DEFAULT_PLAYER_ID) ? Direction.Right : Direction.Left);
             _houseArray[row, col] = houseInfo;
