@@ -40,6 +40,7 @@ namespace NTUT.CSIE.GameDev.Monster
         protected float _attackCount = 0f;
         [SerializeField]
         protected int _playerID = -1;
+        [SerializeField]
         protected Monster _target = null;
         protected NumberCollection _numberCollection;
         [SerializeField]
@@ -71,9 +72,19 @@ namespace NTUT.CSIE.GameDev.Monster
 
         protected virtual void FixedUpdate()
         {
-            Walk();
-            FindNearestTarget();
-            Attack();
+            if (action == Action.Walk)
+            {
+                Walk();
+            }
+
+            if (action == Action.Walk || action == Action.Attack)
+            {
+                FindNearestTarget();
+
+                if (!_target) action = Action.Walk;
+            }
+
+            if (_target && IsAllowAttack(_target)) Attack();
 
             if (_died || _hp < 0)
             {
@@ -83,19 +94,16 @@ namespace NTUT.CSIE.GameDev.Monster
 
         public virtual void Walk()
         {
-            if (action == Action.Walk)
-            {
-                Vector3 v3 = _finalTarget - transform.position;
-                v3 = v3.normalized * _speed * 0.1f;
-                v3.y = 0;
-                transform.Translate(v3);
-            }
+            action = Action.Walk;
+            Vector3 v3 = _finalTarget - transform.position;
+            v3 = v3.normalized * _speed * 0.1f;
+            v3.y = 0;
+            transform.Translate(v3);
         }
 
         protected virtual void FindNearestTarget()
         {
             if (
-                !_died &&
                 (!_target || _target._hp <= 0)
             )
             {
@@ -115,7 +123,10 @@ namespace NTUT.CSIE.GameDev.Monster
             }
             else
             {
-                _target = null;
+                if (!IsAllowAttack(_target))
+                {
+                    action = Action.Walk;
+                }
             }
         }
 
@@ -124,12 +135,6 @@ namespace NTUT.CSIE.GameDev.Monster
             if (_attackCount > 0)
             {
                 _attackCount -= Time.deltaTime;
-                return;
-            }
-
-            if (!_target)
-            {
-                action = Action.Walk;
                 return;
             }
 
@@ -211,13 +216,13 @@ namespace NTUT.CSIE.GameDev.Monster
             this._speed = speed;
             this._id = _monsterCounter++;
             this.name = string.Format("Mob #{0}", _id);
-            this._died = false;
             return this;
         }
 
         public void Initialize()
         {
             this._hp = _maxHP;
+            this._died = false;
         }
 
         public virtual void Damage(int damage)
@@ -342,6 +347,11 @@ namespace NTUT.CSIE.GameDev.Monster
             }
 
             return query.ToArray();
+        }
+
+        public bool IsAllowAttack(Monster m)
+        {
+            return Vector3.Distance(m.transform.position, this.transform.position) <= _info.AttackRange;
         }
 
         protected Monster[] GetFriends(float range = float.MaxValue)

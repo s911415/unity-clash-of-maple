@@ -314,6 +314,24 @@ namespace NTUT.CSIE.GameDev.Component.Map
         {
         }
 
+        public void UpgradeAttribute(UpgradeType type, int value)
+        {
+            switch (type)
+            {
+                case UpgradeType.Attack:
+                    _extraAttack = value;
+                    break;
+
+                case UpgradeType.HP:
+                    _extraHp = value;
+                    break;
+
+                case UpgradeType.Speed:
+                    _extraSpeed = value;
+                    break;
+            }
+        }
+
         public ulong ID => _houseId;
 
         public Point Position => _position;
