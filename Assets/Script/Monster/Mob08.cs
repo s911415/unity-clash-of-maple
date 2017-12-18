@@ -6,8 +6,28 @@ namespace NTUT.CSIE.GameDev.Monster
 {
     public class Mob08 : Monster
     {
+        protected const float 中毒機率 = 0.5f;
+
         public Mob08() : base(8)
         {
+        }
+
+        protected override void DamageTarget<T>(IEnumerable<T> targetList)
+        {
+            base.DamageTarget(targetList);
+
+            foreach (var m in targetList)
+            {
+                if (Random.value < 中毒機率)
+                {
+                    Monster mConv = m as Monster;
+
+                    if (mConv != null)
+                    {
+                        mConv.SetPoisoning(35, 10000, 1000);
+                    }
+                }
+            }
         }
     }
 }

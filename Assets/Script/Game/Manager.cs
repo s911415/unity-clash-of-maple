@@ -108,6 +108,15 @@ namespace NTUT.CSIE.GameDev.Game
             _timerList.Remove(timerId);
         }
 
+        protected virtual void OnDestroy()
+        {
+            var keyClone = new List<uint>();
+            keyClone.AddRange(_timerList.Keys);
+
+            foreach (var t in keyClone)
+                _ClearTimeout(t);
+        }
+
         private class Timer
         {
             protected uint _id;
