@@ -110,11 +110,14 @@ namespace NTUT.CSIE.GameDev.Game
 
         protected virtual void OnDestroy()
         {
-            var keyClone = new List<uint>();
-            keyClone.AddRange(_timerList.Keys);
+            if (_managerInstance == this)
+            {
+                var keyClone = new List<uint>();
+                keyClone.AddRange(_timerList.Keys);
 
-            foreach (var t in keyClone)
-                _ClearTimeout(t);
+                foreach (var t in keyClone)
+                    _ClearTimeout(t);
+            }
         }
 
         private class Timer
