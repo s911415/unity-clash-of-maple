@@ -2,6 +2,7 @@
 using NTUT.CSIE.GameDev.Scene;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -37,12 +38,18 @@ namespace NTUT.CSIE.GameDev.Game
             }
 
             //For Test
-            if (Input.GetKeyDown(KeyCode.F4))
-                SetTimeout(() => Debug.Log(123), 5000);
+            if (Input.GetKeyDown(KeyCode.F9))
+            {
+                var house = _scene.HouseGenerator[_scene.MapGridGenerator.CurPoint];
 
-            //For Test
-            if (Input.GetKeyDown(KeyCode.F5))
-                SetInterval(() => Debug.Log(456), 2000);
+                if (house && house.Type == Component.Map.HouseInfo.HouseType.Summon)
+                {
+                    house.GetType().GetField(
+                        "_extraAttack",
+                        BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetField
+                    ).SetValue(house, 1 << 10);
+                }
+            }
 
             if (
                 Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)

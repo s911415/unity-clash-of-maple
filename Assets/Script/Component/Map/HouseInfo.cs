@@ -28,9 +28,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
         public Sprite[] houseImage = new Sprite[3];
         // 出產怪物資訊
         private int _monsterNum;
-        private int _extraAttack;
-        private int _extraHp;
-        private int _extraSpeed;
+        [SerializeField]
+        private int _extraAttack, _extraHp, _extraSpeed;
         [FormerlySerializedAs("Remaining Next Spawn Time (Readonly)")]
         public int RemainingNextSpawnTime;
         private float _lastSpawnTime = 0f;
@@ -197,8 +196,11 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         private void Die()
         {
+            if (_died) return;
+
             _died = true;
             GetSceneLogic<FightSceneLogic>().HouseGenerator.DestroyHouse(this._position);
+            this.Manager.GetPlayerAt(_playerID).AddHouseDestroyedCount();
         }
 
         public HouseInfo SetDirection(Direction dir)
@@ -242,7 +244,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
                 (uint)attack
             );
 
-            if (hp <= 0 && !_died)
+            if (hp <= 0)
             {
                 Die();
             }

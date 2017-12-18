@@ -194,7 +194,7 @@ namespace NTUT.CSIE.GameDev.Scene
         }
         private void InitPlayer(Player.Player p, Difficulty.Level level)
         {
-            p.Info.ResetMonsterCounter();
+            p.Info.ResetCounter();
             int money = 0;
 
             switch (level)

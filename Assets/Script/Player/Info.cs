@@ -22,7 +22,9 @@ namespace NTUT.CSIE.GameDev.Player
         [SerializeField]
         private List<int> _cardIds = new List<int>();
         [SerializeField]
-        private Dictionary<int, int> _killedMonster;
+        private Dictionary<int, int> _killedMonsterCount;
+        [SerializeField]
+        private int _houseDestroyedCount;
 
         protected override void Awake()
         {
@@ -69,13 +71,24 @@ namespace NTUT.CSIE.GameDev.Player
             return "";
         }
 
-        public void ResetMonsterCounter()
+        public void AddMonsterKillCount(int mobID)
         {
-            _killedMonster = new Dictionary<int, int>();
+            _killedMonsterCount[mobID]++;
+        }
+
+        public void AddHouseDestroyedCount()
+        {
+            _houseDestroyedCount++;
+        }
+
+        public void ResetCounter()
+        {
+            _killedMonsterCount = new Dictionary<int, int>();
+            _houseDestroyedCount = 0;
 
             foreach (var m in this.Manager.MonsterInfoCollection.GetAllMonsterId())
             {
-                _killedMonster.Add(m, 0);
+                _killedMonsterCount.Add(m, 0);
             }
         }
     }
