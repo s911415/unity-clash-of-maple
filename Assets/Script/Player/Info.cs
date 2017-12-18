@@ -20,7 +20,9 @@ namespace NTUT.CSIE.GameDev.Player
         private STATUS _status;
         public STATUS Status => _status;
         [SerializeField]
-        private List<string> _cardIds = new List<string>();
+        private List<int> _cardIds = new List<int>();
+        [SerializeField]
+        private Dictionary<int, int> _killedMonster;
 
         protected override void Awake()
         {
@@ -41,14 +43,14 @@ namespace NTUT.CSIE.GameDev.Player
             return this;
         }
 
-        public Info SetCardIds(IEnumerable<string> list)
+        public Info SetCardIds(IEnumerable<int> list)
         {
             _cardIds.Clear();
             _cardIds.AddRange(list);
             return this;
         }
 
-        public IReadOnlyList<string> GetCardIds()
+        public IReadOnlyList<int> GetCardIds()
         {
             return _cardIds;
         }
@@ -65,6 +67,16 @@ namespace NTUT.CSIE.GameDev.Player
             }
 
             return "";
+        }
+
+        public void ResetMonsterCounter()
+        {
+            _killedMonster = new Dictionary<int, int>();
+
+            foreach (var m in this.Manager.MonsterInfoCollection.GetAllMonsterId())
+            {
+                _killedMonster.Add(m, 0);
+            }
         }
     }
 }

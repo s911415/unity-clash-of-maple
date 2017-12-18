@@ -13,6 +13,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
 {
     public class HouseInfo : CommonObject, IHurtable
     {
+        private const int NONE = -1;
         public int scale = 1;
         [SerializeField]
         private ulong _houseId;
@@ -26,7 +27,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         public string houseName;
         public Sprite[] houseImage = new Sprite[3];
         // 出產怪物資訊
-        private string _monsterNum;
+        private int _monsterNum;
         private int _extraAttack;
         private int _extraHp;
         private int _extraSpeed;
@@ -124,17 +125,12 @@ namespace NTUT.CSIE.GameDev.Component.Map
             return this;
         }
 
-        public string MonsterNumber
+        public int MonsterNumber
         {
             set
             {
                 _monsterNum = value;
                 this.SetMonsterAbility(value);
-            }
-
-            get
-            {
-                return _monsterNum;
             }
         }
 
@@ -142,7 +138,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         {
             get
             {
-                if (_monsterNum == null)
+                if (_monsterNum == NONE)
                     return null;
 
                 return this.Manager.MonsterInfoCollection[_monsterNum];
@@ -167,7 +163,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
             }
         }
 
-        private void SetMonsterAbility(string num)
+        private void SetMonsterAbility(int num)
         {
             // read monster info
         }
@@ -196,7 +192,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private void Spawn()
         {
             Debug.Log(string.Format("召喚: {0}", MonsterInfo.Name));
-            GetSceneLogic<FightSceneLogic>().SpawnMonster(MonsterInfo.ID, _playerID, this);
+            GetSceneLogic<FightSceneLogic>().SpawnMonster(MonsterInfo, _playerID, this);
         }
 
         private void Die()
@@ -261,7 +257,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         public void ResetMonster()
         {
             Type = HouseInfo.HouseType.Building;
-            _monsterNum = null;
+            _monsterNum = NONE;
             _extraAttack = 0;
             _extraHp = 0;
             _extraSpeed = 0;

@@ -3,6 +3,7 @@ using NTUT.CSIE.GameDev.Scene;
 using NTUT.CSIE.GameDev.CardSelect;
 using NTUT.CSIE.GameDev.Component.Map;
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +12,7 @@ namespace NTUT.CSIE.GameDev.UI
 {
     public class MapStatusPanel : CommonObject
     {
-        List<string> _cardSet = new List<string>();
+        List<Monster.Info> _cardSet = new List<Monster.Info>();
         public GameObject cardPrefab;
 
         Sprite[] _buildingLevel = new Sprite[3];
@@ -30,7 +31,11 @@ namespace NTUT.CSIE.GameDev.UI
             _buildingLevel[0] = Resources.Load<Sprite>("Building/empty");
             _buildingLevel[1] = Resources.Load<Sprite>("Building/Building");
             _buildingLevel[2] = Resources.Load<Sprite>("Building/produceBuilding");
-            _cardSet.AddRange(Manager.GetPlayerAt(Manager.DEFAULT_PLAYER_ID).GetCardIds());
+            _cardSet.AddRange(
+                Manager.GetPlayerAt(Manager.DEFAULT_PLAYER_ID)
+                .GetCardIds()
+                .Select(mobID => this.Manager.MonsterInfoCollection[mobID])
+            );
             BindButtonEvent();
         }
 
@@ -141,7 +146,10 @@ namespace NTUT.CSIE.GameDev.UI
             describePanel.Find("Select").gameObject.SetActive(true);
 
             for (int i = 0; i < 6; i++)
-                describePanel.Find("Select").GetChild(i).GetComponent<Image>().sprite = Resources.Load<Sprite>("Card/Card" + _cardSet[i]);
+                describePanel.Find("Select")
+                .GetChild(i)
+                .GetComponent<Image>()
+                .sprite = Resources.Load<Sprite>("Card/Card" + _cardSet[i].IDStr);
         }
 
         public void Upgrade()
@@ -149,7 +157,7 @@ namespace NTUT.CSIE.GameDev.UI
             var houseInfo = GetSceneLogic<FightSceneLogic>().MapGridGenerator.CurHouseInfo;
             this.CloseDescribePanel();
             describePanel.Find("Upgrade").gameObject.SetActive(true);
-            describePanel.Find("Upgrade").GetChild(0).GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Monster/" + houseInfo.MonsterNumber);
+            describePanel.Find("Upgrade").GetChild(0).GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Monster/" + houseInfo.MonsterInfo.IDStr);
             upgradeAttackText.text = string.Format("攻擊：{0}", houseInfo.RealAttack);
             upgradeHPText.text = string.Format("血量：{0}", houseInfo.RealHP);
             upgradeSpeedText.text = string.Format("速度：{0}", houseInfo.RealSpeed);

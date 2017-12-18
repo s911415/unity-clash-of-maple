@@ -11,19 +11,16 @@ namespace NTUT.CSIE.GameDev.Monster
     public class InfoCollection
     {
         private const string MONSTER_FILE = "Info/Monster/list.json";
-        private static Dictionary<string, Info> _list = null;
+        private static Dictionary<int, Info> _list = null;
         private Dictionary<int, List<Info>> _diffCardCache = new Dictionary<int, List<Info>>();
         private Dictionary<int, List<Info>> _levelLessOrEqualSetCache = new Dictionary<int, List<Info>>();
 
         public InfoCollection()
         {
             GetList();
-            var a = this[0];
-            var b = this["00"];
-            Debug.Assert(a == b);
         }
 
-        public List<Info> GetInfoListAtLevel(int level)
+        public IReadOnlyList<Info> GetInfoListAtLevel(int level)
         {
             if (_diffCardCache.ContainsKey(level))
                 return _diffCardCache[level];
@@ -38,7 +35,7 @@ namespace NTUT.CSIE.GameDev.Monster
             return list;
         }
 
-        public List<Info> GetInfoListLessOrEqualToLevel(int level)
+        public IReadOnlyList<Info> GetInfoListLessOrEqualToLevel(int level)
         {
             if (_levelLessOrEqualSetCache.ContainsKey(level))
                 return _levelLessOrEqualSetCache[level];
@@ -55,11 +52,11 @@ namespace NTUT.CSIE.GameDev.Monster
             return list;
         }
 
-        private static Dictionary<string, Info> GetList()
+        private static IReadOnlyDictionary<int, Info> GetList()
         {
             if (_list != null) return _list;
 
-            _list = new Dictionary<string, Info>();
+            _list = new Dictionary<int, Info>();
             string filePath = Path.Combine(Application.streamingAssetsPath, MONSTER_FILE);
 
             if (File.Exists(filePath))
@@ -82,7 +79,11 @@ namespace NTUT.CSIE.GameDev.Monster
             }
         }
 
-        public Info this[string id] => GetList()[id];
-        public Info this[int id] => this[id.ToString().PadLeft(2, '0')];
+        public Info this[int id] => GetList()[id];
+
+        public IEnumerable<int> GetAllMonsterId()
+        {
+            return GetList().Keys;
+        }
     }
 }
