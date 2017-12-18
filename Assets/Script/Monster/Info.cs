@@ -12,7 +12,9 @@ namespace NTUT.CSIE.GameDev.Monster
     public class Info
     {
         [SerializeField]
-        private string id, name, desc;
+        private int id;
+        [SerializeField]
+        private string name, desc;
         [SerializeField]
         private Difficulty.Level level;
         [SerializeField]
@@ -22,7 +24,8 @@ namespace NTUT.CSIE.GameDev.Monster
 
         public Info()
         {
-            id = name = desc = string.Empty;
+            id = 0;
+            name = desc = string.Empty;
             level = 0;
             hp = attack = spawnInterval = 1;
             speed = cost = 0;
@@ -30,7 +33,8 @@ namespace NTUT.CSIE.GameDev.Monster
             attackRange = 10;
         }
 
-        public string ID => id;
+        public int ID => id;
+        public string IDStr => string.Format("{0:00}", id);
         public string Name => name;
         public string Description => desc;
         public Difficulty.Level Level => level;

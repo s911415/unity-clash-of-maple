@@ -52,7 +52,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
             return houseInfo;
         }
 
-        public HouseInfo SetHouseMonster(int row, int col, string monsterID)
+        public HouseInfo SetHouseMonster(int row, int col, int monsterID)
         {
             HouseInfo currentHouseInfo = _houseArray[row, col];
             currentHouseInfo.Type = HouseInfo.HouseType.Summon;

@@ -8,16 +8,16 @@ namespace NTUT.CSIE.GameDev.CardSelect
     public class Select : MonoBehaviour
     {
         public bool selected;
-        private string _number;
+        private int _number;
         private GameObject _startButton;
         // set number
-        public void SetNumber(string number)
+        public void SetNumber(int number)
         {
             this._number = number;
         }
 
         // get number
-        public string GetNumber()
+        public int GetNumber()
         {
             return _number;
         }
@@ -94,7 +94,7 @@ namespace NTUT.CSIE.GameDev.CardSelect
             }
             else if (parameter == 1 && flag == 1 && this.GetComponent<Animator>())
             {
-                this.Invoke("DestroyTheObject", 0.5f);       
+                this.Invoke("DestroyTheObject", 0.5f);
             }
         }
 

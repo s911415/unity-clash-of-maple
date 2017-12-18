@@ -9,7 +9,7 @@ namespace NTUT.CSIE.GameDev.CardSelect
 {
     public class StartButton : CommonObject
     {
-        private List<string> _selectCardSet;
+        private List<int> _selectCardSet;
         private GameObject _difficultBtn;
         private Image _image;
         private Button _button;
@@ -26,22 +26,22 @@ namespace NTUT.CSIE.GameDev.CardSelect
         // reset
         public void ResetCardSet()
         {
-            _selectCardSet = new List<string>();
+            _selectCardSet = new List<int>();
             OnCardListChanged();
         }
 
-        public void AddCard(string cardNumber)
+        public void AddCard(int cardNumber)
         {
             _selectCardSet.Add(cardNumber);
             OnCardListChanged();
         }
 
-        public string GetCard(int index)
+        public int GetCard(int index)
         {
             return _selectCardSet[index];
         }
 
-        public void RemoveCard(string cardNumber)
+        public void RemoveCard(int cardNumber)
         {
             _selectCardSet.Remove(cardNumber);
             OnCardListChanged();

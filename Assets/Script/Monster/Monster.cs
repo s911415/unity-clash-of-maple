@@ -42,6 +42,8 @@ namespace NTUT.CSIE.GameDev.Monster
         protected int _playerID = -1;
         protected Monster _target = null;
         protected NumberCollection _numberCollection;
+        [SerializeField]
+        protected bool _died;
 
         // finalTartget 敵方主堡
         private Vector3 _finalTarget;
@@ -72,6 +74,11 @@ namespace NTUT.CSIE.GameDev.Monster
             Walk();
             FindNearestTarget();
             Attack();
+
+            if (_died || _hp < 0)
+            {
+                Die();
+            }
         }
 
         public virtual void Walk()
@@ -87,7 +94,10 @@ namespace NTUT.CSIE.GameDev.Monster
 
         protected virtual void FindNearestTarget()
         {
-            if (!_target || _target._hp <= 0)
+            if (
+                !_died &&
+                (!_target || _target._hp <= 0)
+            )
             {
                 _target = null;
                 Monster[] enemiesList = GetEnemies(_info.AttackRange);
@@ -163,7 +173,12 @@ namespace NTUT.CSIE.GameDev.Monster
 
         protected virtual int CalcDamageValue()
         {
-            var offset = _attack * 0.25f;
+            const float MISS_RATE = 0.0625f;
+
+            if (Random.value < MISS_RATE)
+                return 0;
+
+            var offset = _attack * 0.15f;
             return (int)(_attack + Random.Range(-offset, offset));
         }
 
@@ -196,6 +211,7 @@ namespace NTUT.CSIE.GameDev.Monster
             this._speed = speed;
             this._id = _monsterCounter++;
             this.name = string.Format("Mob #{0}", _id);
+            this._died = false;
             return this;
         }
 
@@ -213,14 +229,7 @@ namespace NTUT.CSIE.GameDev.Monster
                 (uint)damage
             );
 
-            if (_hp < 0)
-            {
-                if (_dieAudioClip != null)
-                    _audio.PlayOneShot(_dieAudioClip);
-
-                Die();
-            }
-            else
+            if (_hp > 0)
             {
                 if (_damageAudioClip != null)
                     _audio.PlayOneShot(_damageAudioClip);
@@ -240,6 +249,15 @@ namespace NTUT.CSIE.GameDev.Monster
         public virtual void Die()
         {
             action = Action.Die;
+
+            if (_died) return;
+
+            _died = true;
+            this.Manager.GetPlayerAt(_playerID).AddMonsterKillCount(this._monsterID);
+
+            if (_dieAudioClip != null)
+                _audio.PlayOneShot(_dieAudioClip);
+
             var container = GameObject.Find("PendingRemoveMonster");
             this.transform.parent = container.transform;
         }

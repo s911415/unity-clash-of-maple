@@ -37,6 +37,8 @@ namespace NTUT.CSIE.GameDev.Scene
 
         public Player.Player GetPlayerAt(int i) => _players[i];
 
+        private uint _godReward;
+
         protected override void Awake()
         {
             base.Awake();
@@ -52,17 +54,14 @@ namespace NTUT.CSIE.GameDev.Scene
         private void InitMembers()
         {
             InitPlayersByDiff();
+            //定時給錢
+            _godReward = SetInterval(GiveEveryoneMoney, 60 * 1000);
         }
 
-        public void SpawnMonster(int monsterID, int playerID, HouseInfo houseInfo)
-        {
-            SpawnMonster(string.Format("{0:2,00}", monsterID), playerID, houseInfo);
-        }
-
-        public void SpawnMonster(string monsterID, int playerID, HouseInfo houseInfo)
+        public void SpawnMonster(Monster.Info monsterInfo, int playerID, HouseInfo houseInfo)
         {
             //var houseHeight = houseInfo.gameObject.GetComponent<>
-            var objPrefab = Resources.Load<GameObject>(string.Format(MONSTER_PREFAB_PATH, monsterID));
+            var objPrefab = Resources.Load<GameObject>(string.Format(MONSTER_PREFAB_PATH, monsterInfo.IDStr));
             var obj = Instantiate(objPrefab, _monsterListObject.transform);
             var mob = obj.GetComponent<Monster.Monster>();
             var offset = (playerID == Manager.DEFAULT_PLAYER_ID) ? 1 : -1;
@@ -89,6 +88,7 @@ namespace NTUT.CSIE.GameDev.Scene
         public void ShowInfoOnPanel(Point p)
         {
             var house = this.HouseGenerator[p] ?? _defaultHouseInfo;
+            var allowShow = false;
 
             if (house.Type != HouseInfo.HouseType.Master)
             {
@@ -96,9 +96,13 @@ namespace NTUT.CSIE.GameDev.Scene
                     p.Column < 10 ||
                     this.Manager.Difficulty == Difficulty.Level.Demo
                 )
+                {
                     _controlPanel.DisplayInfo(house);
+                    allowShow = true;
+                }
             }
-            else
+
+            if (!allowShow)
             {
                 _controlPanel.Hide();
             }
@@ -111,8 +115,6 @@ namespace NTUT.CSIE.GameDev.Scene
 
         protected virtual void Start()
         {
-            //定時給錢
-            SetInterval(GiveEveryoneMoney, 60 * 1000);
         }
 
         private void GiveEveryoneMoney()
@@ -132,6 +134,11 @@ namespace NTUT.CSIE.GameDev.Scene
             {
                 _controlPanel.Hide();
             }
+        }
+
+        protected void OnApplicationQuit()
+        {
+            ClearInterval(_godReward);
         }
 
         public NumberCollection NumberCollection => _numberCollection;
@@ -165,7 +172,7 @@ namespace NTUT.CSIE.GameDev.Scene
                 var cards = new List<Monster.Info>(p.Manager.MonsterInfoCollection.GetInfoListLessOrEqualToLevel(Difficulty.MAX_LEVEL));
                 cards.Sort((a, b) => Random.Range(-1, 2));
                 cards.RemoveRange(Manager.REQUIRE_START_CARD_COUNT, cards.Count - Manager.REQUIRE_START_CARD_COUNT);
-                var cardsID = new List<string>();
+                var cardsID = new List<int>();
 
                 foreach (var info in cards)
                     cardsID.Add(info.ID);
@@ -187,6 +194,7 @@ namespace NTUT.CSIE.GameDev.Scene
         }
         private void InitPlayer(Player.Player p, Difficulty.Level level)
         {
+            p.Info.ResetCounter();
             int money = 0;
 
             switch (level)

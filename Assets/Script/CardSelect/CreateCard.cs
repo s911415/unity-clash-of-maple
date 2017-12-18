@@ -54,7 +54,7 @@ namespace NTUT.CSIE.GameDev.CardSelect
             {
                 GameObject btn = (GameObject)Instantiate(prefab);
                 btn.GetComponent<Select>().SetNumber(info.ID);
-                btn.GetComponent<Image>().sprite = Resources.Load<Sprite>("Card/Card" + info.ID);
+                btn.GetComponent<Image>().sprite = Resources.Load<Sprite>("Card/Card" + info.IDStr);
                 btn.transform.SetParent(ParentPanel, false);
                 btn.GetComponent<Select>().flag = 0;
             }

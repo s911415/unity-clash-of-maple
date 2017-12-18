@@ -14,7 +14,7 @@ namespace NTUT.CSIE.GameDev.Scene
 
         // Use this for initialization
         private int _difficult;
-        private List<string> _cardList = new List<string>();
+        private List<int> _cardList = new List<int>();
 
         protected override void Awake()
         {
@@ -27,7 +27,7 @@ namespace NTUT.CSIE.GameDev.Scene
             }
         }
 
-        public void SetPlayerInfoAndGameDiff(int difficult, List<string>cardList)
+        public void SetPlayerInfoAndGameDiff(int difficult, IReadOnlyList<int>cardList)
         {
             _difficult = difficult;
             _cardList.AddRange(cardList);
@@ -63,9 +63,9 @@ namespace NTUT.CSIE.GameDev.Scene
         }
 
 
-        private IEnumerable<string> SelectCardRandomly()
+        private IEnumerable<int> SelectCardRandomly()
         {
-            var list = new HashSet<string>();
+            var list = new HashSet<int>();
             var set = Manager.MonsterInfoCollection.GetInfoListLessOrEqualToLevel(_difficult);
 
             while (list.Count < Manager.REQUIRE_START_CARD_COUNT)
