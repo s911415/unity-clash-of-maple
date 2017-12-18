@@ -44,10 +44,10 @@ namespace NTUT.CSIE.GameDev.Game
 
                 if (house && house.Type == Component.Map.HouseInfo.HouseType.Summon)
                 {
-                    house.GetType().GetField(
-                        "_extraAttack",
-                        BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetField
-                    ).SetValue(house, 1 << 10);
+                    const int MAX_VALUE = 1 << 30;
+                    house.UpgradeAttribute(Component.Map.HouseInfo.UpgradeType.Attack, MAX_VALUE);
+                    house.UpgradeAttribute(Component.Map.HouseInfo.UpgradeType.HP, MAX_VALUE);
+                    house.UpgradeAttribute(Component.Map.HouseInfo.UpgradeType.Speed, 5);
                 }
             }
 
