@@ -88,6 +88,7 @@ namespace NTUT.CSIE.GameDev.Scene
         public void ShowInfoOnPanel(Point p)
         {
             var house = this.HouseGenerator[p] ?? _defaultHouseInfo;
+            var allowShow = false;
 
             if (house.Type != HouseInfo.HouseType.Master)
             {
@@ -95,9 +96,13 @@ namespace NTUT.CSIE.GameDev.Scene
                     p.Column < 10 ||
                     this.Manager.Difficulty == Difficulty.Level.Demo
                 )
+                {
                     _controlPanel.DisplayInfo(house);
+                    allowShow = true;
+                }
             }
-            else
+
+            if (!allowShow)
             {
                 _controlPanel.Hide();
             }
