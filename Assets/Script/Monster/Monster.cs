@@ -17,7 +17,8 @@ namespace NTUT.CSIE.GameDev.Monster
     public class Monster : CommonObject, IHurtable
     {
         protected static ulong _monsterCounter = 0;
-
+        [SerializeField]
+        protected Action _action = Action.Walk;
         [SerializeField]
         protected AudioClip _attackAudioClip, _damageAudioClip, _dieAudioClip;
         protected AudioSource _audio;
@@ -45,6 +46,11 @@ namespace NTUT.CSIE.GameDev.Monster
         protected NumberCollection _numberCollection;
         [SerializeField]
         protected bool _died;
+        [SerializeField]
+        protected bool _freeze, _poisoning;
+        protected uint _freezeTimer = 0;
+        protected uint _poisonTimerInterval, _poisonTimerTimeout;
+        protected int _poisonValue;
 
         // finalTartget 敵方主堡
         private Vector3 _finalTarget;
@@ -72,16 +78,16 @@ namespace NTUT.CSIE.GameDev.Monster
 
         protected virtual void FixedUpdate()
         {
-            if (action == Action.Walk)
+            if (_action == Action.Walk)
             {
                 Walk();
             }
 
-            if (action == Action.Walk || action == Action.Attack)
+            if (_action == Action.Walk || _action == Action.Attack)
             {
                 FindNearestTarget();
 
-                if (!_target) action = Action.Walk;
+                if (!_target) _action = Action.Walk;
             }
 
             if (_target && IsAllowAttack(_target)) Attack();
@@ -94,15 +100,23 @@ namespace NTUT.CSIE.GameDev.Monster
 
         public virtual void Walk()
         {
-            action = Action.Walk;
+            _action = Action.Walk;
             Vector3 v3 = _finalTarget - transform.position;
             v3 = v3.normalized * _speed * 0.1f;
             v3.y = 0;
-            transform.Translate(v3);
+
+            if (!_freeze) transform.Translate(v3);
         }
 
         protected virtual void FindNearestTarget()
         {
+            if (_freeze)
+            {
+                _target = null;
+                _action = Action.Walk;
+                return;
+            }
+
             if (
                 (!_target || _target._hp <= 0)
             )
@@ -125,7 +139,7 @@ namespace NTUT.CSIE.GameDev.Monster
             {
                 if (!IsAllowAttack(_target))
                 {
-                    action = Action.Walk;
+                    _action = Action.Walk;
                 }
             }
         }
@@ -138,17 +152,22 @@ namespace NTUT.CSIE.GameDev.Monster
                 return;
             }
 
-            action = Action.Attack;
+            _action = Action.Attack;
             _attackCount = _info.AttackSpeed;
         }
 
+        /// <summary>   Damage target, Called From Animator event </summary>
         public virtual void DamageTarget()
         {
-            if (action != Action.Attack || _target == null || !_target.gameObject) return;
-
             var nearMonsters = GetEnemies(this._info.AttackRange);
+            DamageTarget(nearMonsters);
+        }
 
-            foreach (var m in nearMonsters)
+        protected virtual void DamageTarget<T>(IEnumerable<T> targetList) where T: CommonObject, IHurtable
+        {
+            if (_action != Action.Attack || _target == null || !_target.gameObject) return;
+
+            foreach (var m in targetList)
             {
                 if (!m) continue;
 
@@ -163,7 +182,7 @@ namespace NTUT.CSIE.GameDev.Monster
 
         protected virtual void Update()
         {
-            _animator.SetInteger("action", (int)action);
+            _animator.SetInteger("action", (int)_action);
 
             if (_direction == Direction.Left)
                 _sprite.flipX = false;
@@ -187,6 +206,26 @@ namespace NTUT.CSIE.GameDev.Monster
             return (int)(_attack + Random.Range(-offset, offset));
         }
 
+        public virtual void SetPoisoning(int hurt, uint timeout, uint interval)
+        {
+            ClearTimeout(_poisonTimerTimeout);
+
+            if (!_poisoning)
+            {
+                _poisoning = true;
+                _poisonTimerInterval = SetInterval(() =>
+                {
+                    this.Damage(hurt, true);
+                }, interval);
+            }
+
+            _poisonTimerTimeout = SetTimeout(() =>
+            {
+                _poisoning = false;
+                ClearInterval(_poisonTimerInterval);
+            }, timeout);
+        }
+
         protected virtual bool CheckOutOfMap()
         {
             var x = transform.localPosition.x;
@@ -197,8 +236,6 @@ namespace NTUT.CSIE.GameDev.Monster
         {
             Walk, Attack, Die
         }
-
-        public Action action = Action.Walk;
 
         public int MAX_HP => _maxHP;
 
@@ -219,13 +256,22 @@ namespace NTUT.CSIE.GameDev.Monster
             return this;
         }
 
-        public void Initialize()
+        public virtual void Initialize()
         {
             this._hp = _maxHP;
             this._died = false;
+            this._freeze = false;
         }
 
-        public virtual void Damage(int damage)
+        public virtual void Freeze(uint ms)
+        {
+            this._freeze = true;
+            ClearTimeout(_freezeTimer);
+            _freezeTimer = SetTimeout(() => this._freeze = false, ms);
+            Debug.Log(string.Format("{0}被暈眩了", this.name));
+        }
+
+        public virtual void Damage(int damage, bool silence)
         {
             _hp -= damage;
             _numberCollection.ShowNumber(
@@ -236,24 +282,33 @@ namespace NTUT.CSIE.GameDev.Monster
 
             if (_hp > 0)
             {
-                if (_damageAudioClip != null)
+                if (!silence && _damageAudioClip != null)
                     _audio.PlayOneShot(_damageAudioClip);
             }
         }
 
         public virtual void Recovery(int recover)
         {
+            var oldHP = _hp;
             _hp += recover;
-            _numberCollection.ShowNumber(
-                this.gameObject,
-                NumberCollection.Type.Blue,
-                (uint)recover
-            );
+
+            if (_hp > _maxHP) _hp = _maxHP;
+
+            var offset = _hp - oldHP;
+
+            if (offset > 0)
+            {
+                _numberCollection.ShowNumber(
+                    this.gameObject,
+                    NumberCollection.Type.Blue,
+                    (uint)offset
+                );
+            }
         }
 
         public virtual void Die()
         {
-            action = Action.Die;
+            _action = Action.Die;
 
             if (_died) return;
 
@@ -274,7 +329,7 @@ namespace NTUT.CSIE.GameDev.Monster
 
         public void AfterAttack()
         {
-            action = Action.Walk;
+            _action = Action.Walk;
         }
 
         public virtual void Skill1()
@@ -349,7 +404,7 @@ namespace NTUT.CSIE.GameDev.Monster
             return query.ToArray();
         }
 
-        public bool IsAllowAttack(Monster m)
+        public bool IsAllowAttack<T>(T m) where T: CommonObject, IHurtable
         {
             return Vector3.Distance(m.transform.position, this.transform.position) <= _info.AttackRange;
         }
@@ -362,11 +417,34 @@ namespace NTUT.CSIE.GameDev.Monster
             if (range < float.MaxValue)
             {
                 query = query.Where(
-                            m => Vector3.Distance(m.transform.position, this.transform.position) <= range
+                            m => m && this && Vector3.Distance(m.transform.position, this.transform.position) <= range
                         );
             }
 
             return query.ToArray();
+        }
+
+        protected virtual void OnDestroy()
+        {
+            CleanUp();
+        }
+
+        public virtual void ReduceAttackInTime(int reduce, uint ms)
+        {
+            int curAtt = _attack;
+            _attack -= reduce;
+            SetTimeout(() => _attack = curAtt, ms);
+        }
+
+        protected virtual void CleanUp()
+        {
+            ClearInterval(_poisonTimerInterval);
+            ClearTimeout(_poisonTimerTimeout);
+        }
+
+        public void Damage(int damage)
+        {
+            Damage(damage, false);
         }
 
         public ulong ID => _id;
