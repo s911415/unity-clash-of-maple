@@ -27,7 +27,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         public string houseName;
         private Sprite[][] _houseImages;
         [SerializeField]
-        private Sprite[] _houseImage, _houseImage2;
+        private Sprite[] _houseImage = null, _houseImage2 = null;
         // 出產怪物資訊
         private int _monsterNum;
         [SerializeField]
