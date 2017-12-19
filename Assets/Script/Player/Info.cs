@@ -9,7 +9,7 @@ namespace NTUT.CSIE.GameDev.Player
     {
         public enum STATUS
         {
-            NONE, CONNECTED, READY, SELECTING_CARD, FIGHT
+            NONE, CONNECTED, READY, SELECTING_CARD, FIGHT, OVER
         }
 
         public int id;

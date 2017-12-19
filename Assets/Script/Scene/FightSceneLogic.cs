@@ -163,11 +163,9 @@ namespace NTUT.CSIE.GameDev.Scene
             }
         }
 
-        internal static void CheckPlayer(Player.Player p)
+        internal static void CheckPlayer(Player.Info p)
         {
-            ChooseCardSceneLogic.CheckPlayer(p.Info);
-
-            if (p.Info.Status < Player.Info.STATUS.FIGHT)
+            if (p.Status < Player.Info.STATUS.FIGHT)
             {
                 var cards = new List<Monster.Info>(p.Manager.MonsterInfoCollection.GetInfoListLessOrEqualToLevel(Difficulty.MAX_LEVEL));
                 cards.Sort((a, b) => Random.Range(-1, 2));
@@ -177,8 +175,18 @@ namespace NTUT.CSIE.GameDev.Scene
                 foreach (var info in cards)
                     cardsID.Add(info.ID);
 
-                p.Info.SetCardIds(cardsID);
-                p.Info.SetStatus(Player.Info.STATUS.FIGHT);
+                p.SetCardIds(cardsID);
+                p.SetStatus(Player.Info.STATUS.FIGHT);
+            }
+        }
+
+        internal static void CheckPlayer(Player.Player p)
+        {
+            ChooseCardSceneLogic.CheckPlayer(p.Info);
+
+            if (p.Info.Status < Player.Info.STATUS.FIGHT)
+            {
+                CheckPlayer(p.Info);
                 p.AddHonor(Honor.開發者模式);
             }
         }
