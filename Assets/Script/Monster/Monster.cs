@@ -1,4 +1,5 @@
 ﻿using NTUT.CSIE.GameDev.Component;
+using NTUT.CSIE.GameDev.Component.Map;
 using NTUT.CSIE.GameDev.Component.Numbers;
 using NTUT.CSIE.GameDev.Game;
 using NTUT.CSIE.GameDev.Helpers;
@@ -43,6 +44,7 @@ namespace NTUT.CSIE.GameDev.Monster
         protected int _playerID = -1;
         [SerializeField]
         protected Monster _target = null;
+        private HouseInfo _houseTarget = null;
         protected NumberCollection _numberCollection;
         [SerializeField]
         protected bool _died;
@@ -55,6 +57,7 @@ namespace NTUT.CSIE.GameDev.Monster
         // finalTartget 敵方主堡
         private Vector3 _finalTarget;
         private bool _isArrival = false;
+        private bool _isFindHouse = false;
 
         protected Monster(int mobID)
         {
@@ -89,15 +92,17 @@ namespace NTUT.CSIE.GameDev.Monster
             {
                 Walk();
                 FindNearestTarget();
+                FindHouse();
             }
 
             if (_action == Action.Walk || _action == Action.Attack)
             {
-                if (!_target) _action = Action.Walk;
+                if (!_target && !_isFindHouse) _action = Action.Walk;
                 if (Vector3.Distance(_finalTarget, transform.localPosition) < _info.AttackRange)
                     _isArrival = true;
                 else
                     _isArrival = false;
+
             }
 
             if (_target && IsAllowAttack(_target)) Attack();
@@ -116,6 +121,24 @@ namespace NTUT.CSIE.GameDev.Monster
             v3.y = 0;
 
             if (!_freeze) transform.Translate(v3);
+        }
+
+        protected virtual void FindHouse()
+        {
+            HouseInfo[] houseList = GetSceneLogic<FightSceneLogic>().HouseGenerator.GetAllHouseInfo();
+            foreach (HouseInfo h in houseList)
+            {
+                if(Vector3.Distance(transform.position, h.transform.position) < _info.AttackRange &&
+                    (h.PlayerID != _playerID))
+                {
+                    _isFindHouse = true;
+                    _houseTarget = h;
+                    _action = Action.Attack;
+                    return;
+                }
+                _isFindHouse = false;
+                _houseTarget = null;
+            }
         }
 
         protected virtual void FindNearestTarget()
@@ -179,6 +202,15 @@ namespace NTUT.CSIE.GameDev.Monster
                 GetSceneLogic<FightSceneLogic>().GetPlayerAt(opponentID).Damage(CalcDamageValue());
                 if (_attackAudioClip != null)
                     _audio.PlayOneShot(_attackAudioClip);
+            }
+            else if (_isFindHouse)
+            {
+                if (_houseTarget == null)
+                {
+                    _action = Action.Walk;
+                    return;
+                }                    
+                _houseTarget.Damage(CalcDamageValue());
             }
             else
             {
@@ -413,7 +445,7 @@ namespace NTUT.CSIE.GameDev.Monster
             }
         }
 
-        protected Monster[] GetEnemies(float range = float.MaxValue)
+        protected Monster[]  GetEnemies(float range = float.MaxValue)
         {
             Monster[] monsterList = GetSceneLogic<FightSceneLogic>().GetAllMonsterInfo();
             var query = monsterList.Where(m => m._playerID != this._playerID);
