@@ -2,6 +2,7 @@
 {
     public class Config
     {
+        public const int HOUSE_MAX_HP = 5000;
         public const int HOUSE_PRICE = 5000;
         public const int DISCARD_MONSTER_PUNISH = 3000;
         public const int UPGRADE_ATTACK_BASIS = 50;

@@ -1,5 +1,6 @@
 ﻿using NTUT.CSIE.GameDev.Component;
 using NTUT.CSIE.GameDev.Component.Map;
+using NTUT.CSIE.GameDev.Component.Numbers;
 using NTUT.CSIE.GameDev.Game;
 using NTUT.CSIE.GameDev.Scene;
 using NTUT.CSIE.GameDev.UI;
@@ -17,6 +18,7 @@ namespace NTUT.CSIE.GameDev.Player
         public const int MAX_MONEY = 2000000000;
         [SerializeField]
         protected int _playerID;
+        protected bool _godMode;
 
         [SerializeField]
         protected Info _info;
@@ -45,13 +47,11 @@ namespace NTUT.CSIE.GameDev.Player
             _hp = MAX_HP;
             _info = Manager.GetPlayerAt(_playerID);
         }
+
         protected void Start()
         {
             InitHouses();
-        }
-
-        public void ShowHpChangedNumber(int damage)
-        {
+            _godMode = false;
         }
 
         public void Attached()
@@ -77,6 +77,8 @@ namespace NTUT.CSIE.GameDev.Player
         public int Money => _money;
 
         int IHurtable.MAX_HP => MAX_HP;
+
+        public bool Alive => _hp > 0;
 
         public Player SetMoney(int m)
         {
@@ -114,10 +116,17 @@ namespace NTUT.CSIE.GameDev.Player
 
         public void Damage(int damage)
         {
+            if (IsGodMode) damage = 0;
+
             _hp -= damage;
 
             if (_hp < 0) _hp = 0;
 
+            GetSceneLogic<FightSceneLogic>().NumberCollection.ShowNumber(
+                this.gameObject,
+                _playerID == 0 ? NumberCollection.Type.Violet : NumberCollection.Type.Red,
+                (uint)damage
+            );
             OnHPChanged?.Invoke(_hp);
         }
 
@@ -178,6 +187,18 @@ namespace NTUT.CSIE.GameDev.Player
             else
             {
                 return null;
+            }
+        }
+
+        public bool IsGodMode
+        {
+            get
+            {
+                return _godMode;
+            }
+            set
+            {
+                _godMode = value;
             }
         }
 

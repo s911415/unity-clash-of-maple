@@ -56,6 +56,11 @@ namespace NTUT.CSIE.GameDev.Scene
             InitPlayersByDiff();
             //定時給錢
             _godReward = SetInterval(GiveEveryoneMoney, 60 * 1000);
+
+            foreach (var p in _players)
+            {
+                p.OnHPChanged += OnPlayerHPChanged;
+            }
         }
 
         public void SpawnMonster(Monster.Info monsterInfo, int playerID, HouseInfo houseInfo)
@@ -139,6 +144,24 @@ namespace NTUT.CSIE.GameDev.Scene
         protected void OnApplicationQuit()
         {
             ClearInterval(_godReward);
+        }
+
+        protected void OnPlayerHPChanged(int value)
+        {
+            if (value <= 0)
+            {
+                GameOver();
+            }
+        }
+
+        protected void GameOver()
+        {
+            foreach (var p in _players)
+            {
+                p.Info.SetLastHP(p.HP);
+            }
+
+            SceneManager.LoadScene("LeaderBoard");
         }
 
         public NumberCollection NumberCollection => _numberCollection;

@@ -40,6 +40,11 @@ namespace NTUT.CSIE.GameDev.Scene
             base.Update();
         }
 
+        public void OnButtonClick()
+        {
+            Debug.Log("Click Button");
+        }
+
         #region Check Members
         private void CheckDiff()
         {
