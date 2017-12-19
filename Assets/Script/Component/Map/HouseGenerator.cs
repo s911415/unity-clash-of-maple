@@ -47,7 +47,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
             .SetPosition(row, col)
             .SetId(_houseSeq++)
             .SetPlayerID(playerID)
-            .SetDirection((playerID == Manager.DEFAULT_PLAYER_ID) ? Direction.Right : Direction.Left);
+            .SetDirection((playerID == Manager.DEFAULT_PLAYER_ID) ? Direction.Right : Direction.Left)
+            .Initialize();
             _houseArray[row, col] = houseInfo;
             return houseInfo;
         }

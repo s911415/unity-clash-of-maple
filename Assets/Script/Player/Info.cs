@@ -24,7 +24,7 @@ namespace NTUT.CSIE.GameDev.Player
         [SerializeField]
         private Dictionary<int, int> _killedMonsterCount;
         [SerializeField]
-        private int _houseDestroyedCount;
+        private int _houseDestroyedCount, _builtHouseCount;
 
         protected override void Awake()
         {
@@ -81,15 +81,25 @@ namespace NTUT.CSIE.GameDev.Player
             _houseDestroyedCount++;
         }
 
+        public void AddBuiltHouseCount()
+        {
+            _builtHouseCount++;
+        }
+
         public void ResetCounter()
         {
             _killedMonsterCount = new Dictionary<int, int>();
             _houseDestroyedCount = 0;
+            _builtHouseCount = 0;
 
             foreach (var m in this.Manager.MonsterInfoCollection.GetAllMonsterId())
             {
                 _killedMonsterCount.Add(m, 0);
             }
         }
+
+        public IReadOnlyDictionary<int, int> KilledMonsterCount => _killedMonsterCount;
+        public int HouseDestroyedCount => _houseDestroyedCount;
+        public int BuiltHouseCount => _builtHouseCount;
     }
 }
