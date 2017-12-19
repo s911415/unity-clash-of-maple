@@ -96,16 +96,25 @@ MonoBehaviour:
   hp: 0
   maxHp: 0
   houseName: "\u7A7A\u5730"
-  houseImage:
+  _houseImage:
   - {fileID: 21300000, guid: 50a0db37f402d7a4baf0c3a9028f2f04, type: 3}
-  - {fileID: 21300000, guid: b4804ebcf107d5142a8ed08d3fb1fe2d, type: 3}
-  - {fileID: 21300000, guid: bdd957924da6a4640a64e03d8d6dae77, type: 3}
+  - {fileID: 21300000, guid: a70de387f34dd0b409f03def01ca42f0, type: 3}
+  - {fileID: 21300000, guid: 1344e2fb15687fb47a5aaed9f1872329, type: 3}
   - {fileID: 0}
+  _houseImage2:
+  - {fileID: 21300000, guid: 50a0db37f402d7a4baf0c3a9028f2f04, type: 3}
+  - {fileID: 21300000, guid: bc01d50ba55842544bdfa7dfc5fd7ef7, type: 3}
+  - {fileID: 21300000, guid: 4bd77907697022143afd961e86b86a9e, type: 3}
+  - {fileID: 0}
+  _extraAttack: 0
+  _extraHp: 0
+  _extraSpeed: 0
   RemainingNextSpawnTime: 0
   _position:
     _row: 0
     _col: 0
   _direction: 1
+  _sprite: {fileID: 212437515076651744}
 --- !u!212 &212437515076651744
 SpriteRenderer:
   m_ObjectHideFlags: 1

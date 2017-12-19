@@ -138,6 +138,7 @@ namespace NTUT.CSIE.GameDev.Player
             if (CostMoney(Config.HOUSE_PRICE))
             {
                 var houseInfo = houseGen.AddHouse(p.Row, p.Column, this._playerID);
+                _info.AddBuiltHouseCount();
                 return houseInfo;
             }
             else
