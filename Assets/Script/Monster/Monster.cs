@@ -81,12 +81,11 @@ namespace NTUT.CSIE.GameDev.Monster
             if (_action == Action.Walk)
             {
                 Walk();
+                FindNearestTarget();
             }
 
             if (_action == Action.Walk || _action == Action.Attack)
             {
-                FindNearestTarget();
-
                 if (!_target) _action = Action.Walk;
             }
 
@@ -101,7 +100,7 @@ namespace NTUT.CSIE.GameDev.Monster
         public virtual void Walk()
         {
             _action = Action.Walk;
-            Vector3 v3 = _finalTarget - transform.position;
+            Vector3 v3 = _finalTarget - transform.localPosition;
             v3 = v3.normalized * _speed * 0.1f;
             v3.y = 0;
 
@@ -143,6 +142,8 @@ namespace NTUT.CSIE.GameDev.Monster
                 }
             }
         }
+
+        public bool Alive => this&& !_died&& _hp > 0;
 
         public virtual void Attack()
         {
@@ -398,7 +399,9 @@ namespace NTUT.CSIE.GameDev.Monster
             {
                 query = query.Where(
                             m => Vector3.Distance(m.transform.position, this.transform.position) <= range
-                        );
+                        )
+                        .Where(m => m.Alive)
+                        ;
             }
 
             return query.ToArray();
