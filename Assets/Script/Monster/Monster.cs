@@ -128,7 +128,7 @@ namespace NTUT.CSIE.GameDev.Monster
             HouseInfo[] houseList = GetSceneLogic<FightSceneLogic>().HouseGenerator.GetAllHouseInfo();
             foreach (HouseInfo h in houseList)
             {
-                if(Vector3.Distance(transform.position, h.transform.position) < _info.AttackRange &&
+                if(Vector3.Distance(transform.position, h.transform.position) < _info.AttackRange + 2.5f &&
                     (h.PlayerID != _playerID))
                 {
                     _isFindHouse = true;
@@ -211,6 +211,8 @@ namespace NTUT.CSIE.GameDev.Monster
                     return;
                 }                    
                 _houseTarget.Damage(CalcDamageValue());
+                if (_attackAudioClip != null)
+                    _audio.PlayOneShot(_attackAudioClip);
             }
             else
             {
@@ -228,9 +230,6 @@ namespace NTUT.CSIE.GameDev.Monster
                 if (!m) continue;
 
                 Debug.Log(string.Format("DamageTarget: {0}", m.name));
-
-                if (_attackAudioClip != null)
-                    _audio.PlayOneShot(_attackAudioClip);
 
                 m.Damage(CalcDamageValue());
             }
