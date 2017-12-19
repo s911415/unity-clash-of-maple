@@ -54,6 +54,7 @@ namespace NTUT.CSIE.GameDev.Monster
 
         // finalTartget 敵方主堡
         private Vector3 _finalTarget;
+        private bool _isArrival = false;
 
         protected Monster(int mobID)
         {
@@ -78,6 +79,12 @@ namespace NTUT.CSIE.GameDev.Monster
 
         protected virtual void FixedUpdate()
         {
+            if (_isArrival)
+            {
+                _action = Action.Attack;
+                return;
+            }
+
             if (_action == Action.Walk)
             {
                 Walk();
@@ -87,6 +94,10 @@ namespace NTUT.CSIE.GameDev.Monster
             if (_action == Action.Walk || _action == Action.Attack)
             {
                 if (!_target) _action = Action.Walk;
+                if (Vector3.Distance(_finalTarget, transform.localPosition) < _info.AttackRange)
+                    _isArrival = true;
+                else
+                    _isArrival = false;
             }
 
             if (_target && IsAllowAttack(_target)) Attack();
@@ -160,8 +171,20 @@ namespace NTUT.CSIE.GameDev.Monster
         /// <summary>   Damage target, Called From Animator event </summary>
         public virtual void DamageTarget()
         {
-            var nearMonsters = GetEnemies(this._info.AttackRange);
-            DamageTarget(nearMonsters);
+            if (_isArrival)
+            {
+                int opponentID = Math.Abs(_playerID - 1);
+                if (_playerID == 0) Debug.Log("Damage house" + opponentID);
+                else Debug.Log("Robot: Damage house" + opponentID);
+                GetSceneLogic<FightSceneLogic>().GetPlayerAt(opponentID).Damage(CalcDamageValue());
+                if (_attackAudioClip != null)
+                    _audio.PlayOneShot(_attackAudioClip);
+            }
+            else
+            {
+                var nearMonsters = GetEnemies(this._info.AttackRange);
+                DamageTarget(nearMonsters);
+            }
         }
 
         protected virtual void DamageTarget<T>(IEnumerable<T> targetList) where T: CommonObject, IHurtable
