@@ -30,11 +30,7 @@ namespace NTUT.CSIE.GameDev.Game
             //For Test
             if (Input.GetKey(KeyCode.F3))
             {
-                _scene.NumberCollection.ShowNumber(GameObject.Find("Player0"), NumberCollection.Type.Blue, 50);
-                /*foreach ( var m in GameObject.Find("MonsterTemplate").GetComponentsInChildren<Monster.Monster>())
-                {
-                    m.Damage(0);
-                }*/
+                _scene.GetPlayerAt(1).Damage(Random.Range(150, 1500));
             }
 
             //For Test
@@ -49,6 +45,12 @@ namespace NTUT.CSIE.GameDev.Game
                     house.UpgradeAttribute(Component.Map.HouseInfo.UpgradeType.HP, MAX_VALUE);
                     house.UpgradeAttribute(Component.Map.HouseInfo.UpgradeType.Speed, 5);
                 }
+            }
+
+            if (Input.GetKeyDown(KeyCode.F10))
+            {
+                _scene.GetPlayerAt(0).IsGodMode = !_scene.GetPlayerAt(0).IsGodMode;
+                Debug.Log("God Mode: " + _scene.GetPlayerAt(0).IsGodMode);
             }
 
             if (

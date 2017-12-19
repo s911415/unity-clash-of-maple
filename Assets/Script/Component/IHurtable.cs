@@ -12,9 +12,13 @@ namespace NTUT.CSIE.GameDev.Component
         {
             get;
         }
+        bool Alive
+        {
+            get;
+        }
         void Damage(int damage);
         void Recovery(int recover);
 
-        void ShowHpChangedNumber(int damage);
+
     }
 }

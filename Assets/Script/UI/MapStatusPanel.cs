@@ -14,7 +14,7 @@ namespace NTUT.CSIE.GameDev.UI
     {
         List<Monster.Info> _cardSet = new List<Monster.Info>();
         public GameObject cardPrefab;
-
+        [SerializeField]
         Sprite[] _buildingLevel = new Sprite[3];
         Transform picturePanel;
         Transform describePanel;
@@ -28,9 +28,6 @@ namespace NTUT.CSIE.GameDev.UI
         // Use this for initialization
         void Start()
         {
-            _buildingLevel[0] = Resources.Load<Sprite>("Building/empty");
-            _buildingLevel[1] = Resources.Load<Sprite>("Building/Building");
-            _buildingLevel[2] = Resources.Load<Sprite>("Building/produceBuilding");
             _cardSet.AddRange(
                 Manager.GetPlayerAt(Manager.DEFAULT_PLAYER_ID)
                 .GetCardIds()
@@ -109,8 +106,8 @@ namespace NTUT.CSIE.GameDev.UI
 
             describePanel = this.transform.Find("Describe");
             picturePanel.Find("Image").GetComponent<Image>().sprite = _buildingLevel[(int)houseInfo.Type];
-            picturePanel.Find("Hp").GetComponent<Text>().text = houseInfo.hp.ToString() + "/" + houseInfo.maxHp.ToString();
-            picturePanel.Find("Name").GetComponent<Text>().text = houseInfo.houseName.ToString() + " " + houseInfo.ID.ToString().PadLeft(2, '0');
+            picturePanel.Find("Hp").GetComponent<Text>().text = $"{houseInfo.HP}/{houseInfo.MAX_HP}";
+            picturePanel.Find("Name").GetComponent<Text>().text = $"{houseInfo.houseName} {houseInfo.ID:00}";
 
             switch (houseInfo.Type)
             {

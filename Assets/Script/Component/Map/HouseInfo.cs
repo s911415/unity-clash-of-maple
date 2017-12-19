@@ -22,8 +22,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
         // 房屋基本資訊
         [SerializeField]
         private HouseType type;
-        public int hp;
-        public int maxHp;
+        [SerializeField]
+        protected int _hp;
         public string houseName;
         private Sprite[][] _houseImages;
         [SerializeField]
@@ -39,8 +39,6 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private Point _position;
         [SerializeField]
         private Direction _direction = Direction.Right;
-        [SerializeField]
-        private SpriteRenderer _sprite;
         private int _playerID;
         private int _upgAttackCnt, _upgHpCnt, _upgSpeedCnt;
         private NumberCollection _numberCollection;
@@ -52,7 +50,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         public HouseInfo()
         {
-            hp = maxHp = 0;
+            _hp = 0;
             houseName = "空地";
             _extraAttack = _extraHp = _extraSpeed = 0;
             _upgAttackCnt = _upgHpCnt = _upgSpeedCnt = 0;
@@ -74,12 +72,12 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
                 if (type == HouseType.Empty)
                 {
-                    hp = maxHp = 0;
+                    _hp = 0;
                     houseName = "空地";
                 }
                 else if (type == HouseType.Building)
                 {
-                    hp = maxHp = MAX_HP;
+                    _hp = MAX_HP;
                     houseName = "建築";
                 }
                 else if (type == HouseType.Summon)
@@ -90,6 +88,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
                 {
                     houseName = "主塔";
                 }
+
+                _houseRenderer.sprite = _houseImages[_playerID][(int)type];
             }
 
             get
@@ -97,6 +97,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
                 return type;
             }
         }
+
+        public bool Alive => _hp > 0 && !_died;
 
         public HouseInfo SetPosition(int row, int col)
         {
@@ -126,9 +128,9 @@ namespace NTUT.CSIE.GameDev.Component.Map
             _houseRenderer.sprite = _houseImages[_playerID][(int)type];
 
             if (_direction == Direction.Left)
-                _sprite.flipX = true;
+                _houseRenderer.flipX = true;
             else
-                _sprite.flipX = false;
+                _houseRenderer.flipX = false;
 
             _died = false;
         }
@@ -138,7 +140,6 @@ namespace NTUT.CSIE.GameDev.Component.Map
             set
             {
                 _monsterNum = value;
-                this.SetMonsterAbility(value);
             }
         }
 
@@ -169,11 +170,6 @@ namespace NTUT.CSIE.GameDev.Component.Map
             {
                 _playerID = value;
             }
-        }
-
-        private void SetMonsterAbility(int num)
-        {
-            // read monster info
         }
 
         private void Update()
@@ -239,14 +235,14 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         public void Damage(int attack)
         {
-            hp -= attack;
+            _hp -= attack;
             _numberCollection.ShowNumber(
                 this.gameObject,
                 _playerID == 0 ? NumberCollection.Type.Violet : NumberCollection.Type.Red,
                 (uint)attack
             );
 
-            if (hp <= 0)
+            if (_hp <= 0)
             {
                 Die();
             }
@@ -254,7 +250,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         public void Recovery(int recovery)
         {
-            hp += recovery;
+            _hp += recovery;
             _numberCollection.ShowNumber(this.gameObject, NumberCollection.Type.Blue, (uint)recovery);
         }
 
@@ -289,7 +285,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
         public int RealHP => MonsterInfo == null ? 0 : (MonsterInfo.MaxHP + _extraHp);
         public int RealSpeed => MonsterInfo == null ? 0 : (MonsterInfo.Speed + _extraSpeed);
 
-        public int MAX_HP => 5000;
+        public int HP => _hp;
+        public int MAX_HP => Config.HOUSE_MAX_HP;
 
         public int UpgradeAttackCount => _upgAttackCnt;
         public int UpgradeSpeedCount => _upgSpeedCnt;
@@ -310,10 +307,6 @@ namespace NTUT.CSIE.GameDev.Component.Map
             }
 
             return 0;
-        }
-
-        public void ShowHpChangedNumber(int damage)
-        {
         }
 
         public void UpgradeAttribute(UpgradeType type, int value)

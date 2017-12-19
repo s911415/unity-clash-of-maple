@@ -51,6 +51,7 @@ namespace NTUT.CSIE.GameDev.Monster
         protected uint _freezeTimer = 0;
         protected uint _poisonTimerInterval, _poisonTimerTimeout;
         protected int _poisonValue;
+        private FightSceneLogic _scene;
 
         // finalTartget 敵方主堡
         private Vector3 _finalTarget;
@@ -62,15 +63,16 @@ namespace NTUT.CSIE.GameDev.Monster
 
         protected virtual void Start()
         {
+            _scene = GetSceneLogic<FightSceneLogic>();
             // 開始先鎖定主堡位置
-            var gen = GetSceneLogic<FightSceneLogic>().MapGridGenerator;
+            var gen = _scene.MapGridGenerator;
             _finalTarget = (_playerID == 0) ? gen[4, 18].transform.localPosition : gen[4, 1].transform.localPosition;
             _finalTarget += new Vector3(-2.5f * VectorOffset, 0, -5);
             _animator = GetComponent<Animator>();
             _sprite = transform.Find("Image").GetComponent<SpriteRenderer>();
             _audio = GetComponent<AudioSource>();
             _body = GetComponent<Rigidbody>();
-            _numberCollection = GetSceneLogic<FightSceneLogic>().NumberCollection;
+            _numberCollection = _scene.NumberCollection;
             Debug.Assert(_sprite != null);
             Debug.Assert(_body != null);
             this.GetComponent<Collider>().enabled = false;
@@ -211,6 +213,8 @@ namespace NTUT.CSIE.GameDev.Monster
         {
             ClearTimeout(_poisonTimerTimeout);
 
+            if (IsGodMode) return;
+
             if (!_poisoning)
             {
                 _poisoning = true;
@@ -266,6 +270,8 @@ namespace NTUT.CSIE.GameDev.Monster
 
         public virtual void Freeze(uint ms)
         {
+            if (IsGodMode) return;
+
             this._freeze = true;
             ClearTimeout(_freezeTimer);
             _freezeTimer = SetTimeout(() => this._freeze = false, ms);
@@ -274,6 +280,8 @@ namespace NTUT.CSIE.GameDev.Monster
 
         public virtual void Damage(int damage, bool silence)
         {
+            if (IsGodMode) damage = 0;
+
             _hp -= damage;
             _numberCollection.ShowNumber(
                 this.gameObject,
@@ -323,6 +331,8 @@ namespace NTUT.CSIE.GameDev.Monster
             this.transform.parent = container.transform;
         }
 
+        public bool IsGodMode => _scene.GetPlayerAt(_playerID).IsGodMode;
+
         public void Remove()
         {
             Destroy(gameObject);
@@ -331,25 +341,6 @@ namespace NTUT.CSIE.GameDev.Monster
         public void AfterAttack()
         {
             _action = Action.Walk;
-        }
-
-        public virtual void Skill1()
-        {
-        }
-
-        public virtual void Skill2()
-        {
-        }
-
-
-
-        public virtual void Idle()
-        {
-        }
-
-        public void ShowHpChangedNumber(int damage)
-        {
-            throw new NotImplementedException();
         }
 
         public virtual int PlayerID
@@ -392,7 +383,7 @@ namespace NTUT.CSIE.GameDev.Monster
 
         protected Monster[] GetEnemies(float range = float.MaxValue)
         {
-            Monster[] monsterList = GetSceneLogic<FightSceneLogic>().GetAllMonsterInfo();
+            Monster[] monsterList = _scene.GetAllMonsterInfo();
             var query = monsterList.Where(m => m._playerID != this._playerID);
 
             if (range < float.MaxValue)
@@ -414,7 +405,7 @@ namespace NTUT.CSIE.GameDev.Monster
 
         protected Monster[] GetFriends(float range = float.MaxValue)
         {
-            Monster[] monsterList = GetSceneLogic<FightSceneLogic>().GetAllMonsterInfo();
+            Monster[] monsterList = _scene.GetAllMonsterInfo();
             var query = monsterList.Where(m => m._playerID == this._playerID);
 
             if (range < float.MaxValue)
