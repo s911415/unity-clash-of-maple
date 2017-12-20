@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using NTUT.CSIE.GameDev.Component.Message;
 
 namespace NTUT.CSIE.GameDev.Scene
 {
@@ -34,6 +35,9 @@ namespace NTUT.CSIE.GameDev.Scene
 
         [SerializeField]
         protected List<Player.Player> _players;
+
+        [SerializeField]
+        protected MessageConsole _console;
 
         public Player.Player GetPlayerAt(int i) => _players[i];
 
@@ -169,6 +173,7 @@ namespace NTUT.CSIE.GameDev.Scene
         public MapGridGenerator MapGridGenerator => _mapGenerator;
         public HouseGenerator HouseGenerator => _mapGenerator.HouseGenerator;
         public MapStatusPanel ControlPanel => _controlPanel;
+        public MessageConsole Console => _console;
 
         #region Check Members
         private void CheckDiff()
