@@ -26,6 +26,8 @@ namespace NTUT.CSIE.GameDev.Component.Numbers
 
         public void ShowNumber(GameObject target, Type type, uint number)
         {
+            if (!target) return;
+
             const int NUMBER_OFFSET = -5;
             const int MARGIN_WIDTH = -5;
             int[] numbers = number.ToString().Select(n => (int)System.Char.GetNumericValue(n)).ToArray<int>();

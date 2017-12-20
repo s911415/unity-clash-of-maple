@@ -11,7 +11,7 @@ using NTUT.CSIE.GameDev.Component.Numbers;
 
 namespace NTUT.CSIE.GameDev.Component.Map
 {
-    public class HouseInfo : CommonObject, IHurtable
+    public class HouseInfo : HurtableObject
     {
         private const int NONE = -1;
         public int scale = 1;
@@ -103,7 +103,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
             }
         }
 
-        public bool Alive => _hp > 0 && !_died;
+        public override bool Alive => _hp > 0 && !_died;
 
         public HouseInfo SetPosition(int row, int col)
         {
@@ -233,12 +233,13 @@ namespace NTUT.CSIE.GameDev.Component.Map
             }
         }
 
-        protected virtual void Start()
+        protected override void Start()
         {
+            base.Start();
             _numberCollection = _scene.NumberCollection;
         }
 
-        public void Damage(int attack)
+        public override void Damage(int attack)
         {
             _hp -= attack;
             _numberCollection.ShowNumber(
@@ -253,7 +254,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
             }
         }
 
-        public void Recovery(int recovery)
+        public override void Recovery(int recovery)
         {
             _hp += recovery;
             _numberCollection.ShowNumber(this.gameObject, NumberCollection.Type.Blue, (uint)recovery);
@@ -290,8 +291,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
         public int RealHP => MonsterInfo == null ? 0 : (MonsterInfo.MaxHP + _extraHp);
         public int RealSpeed => MonsterInfo == null ? 0 : (MonsterInfo.Speed + _extraSpeed);
 
-        public int HP => _hp;
-        public int MAX_HP => Config.HOUSE_MAX_HP;
+        public override int HP => _hp;
+        public override int MAX_HP => Config.HOUSE_MAX_HP;
 
         public int UpgradeAttackCount => _upgAttackCnt;
         public int UpgradeSpeedCount => _upgSpeedCnt;

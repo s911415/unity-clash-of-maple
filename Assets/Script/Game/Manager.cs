@@ -117,6 +117,8 @@ namespace NTUT.CSIE.GameDev.Game
 
                 foreach (var t in keyClone)
                     _ClearTimeout(t);
+
+                _managerInstance = null;
             }
         }
 
