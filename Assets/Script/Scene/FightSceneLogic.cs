@@ -120,7 +120,10 @@ namespace NTUT.CSIE.GameDev.Scene
 
         public Monster.Monster[] GetAllMonsterInfo()
         {
-            return GameObject.Find("MonsterList").GetComponentsInChildren<Monster.Monster>();
+            if (!_monsterListObject)
+                return new Monster.Monster[0];
+
+            return _monsterListObject.GetComponentsInChildren<Monster.Monster>();
         }
 
         protected virtual void Start()

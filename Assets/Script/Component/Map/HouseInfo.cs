@@ -43,6 +43,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private int _upgAttackCnt, _upgHpCnt, _upgSpeedCnt;
         private NumberCollection _numberCollection;
         private bool _died = false;
+        private FightSceneLogic _scene;
 
         public delegate void HouseDestroyEvent(Point p);
         public event HouseDestroyEvent OnHouseDestroy;
@@ -65,6 +66,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
             Debug.Assert(_houseImage != null && _houseImage.Length == 4);
             Debug.Assert(_houseImage2 != null && _houseImage2.Length == 4);
             _houseImages = new Sprite[][] { _houseImage, _houseImage2 };
+            _scene = GetSceneLogic<FightSceneLogic>();
         }
 
         public HouseType Type
@@ -124,7 +126,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         public void Initialize()
         {
             this.name = string.Format("House #{0} ({1}, {2})", _houseId, _position.Row, _position.Column);
-            var gen = GetSceneLogic<FightSceneLogic>().MapGridGenerator;
+            var gen = _scene.MapGridGenerator;
             var pos = Helper.Clone(gen[_position.Row, _position.Column].gameObject.transform.localPosition);
             pos.y = 0;
             gameObject.transform.localPosition = pos;
@@ -194,7 +196,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private void Spawn()
         {
             Debug.Log(string.Format("召喚: {0}", MonsterInfo.Name));
-            GetSceneLogic<FightSceneLogic>().SpawnMonster(MonsterInfo, _playerID, this);
+            _scene.SpawnMonster(MonsterInfo, _playerID, this);
         }
 
         private void Die()
@@ -202,7 +204,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
             if (_died) return;
 
             _died = true;
-            GetSceneLogic<FightSceneLogic>().HouseGenerator.DestroyHouse(this._position);
+            _scene.HouseGenerator.DestroyHouse(this._position);
             OnHouseDestroy?.Invoke(_position);
         }
 
@@ -233,7 +235,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         protected virtual void Start()
         {
-            _numberCollection = GetSceneLogic<FightSceneLogic>().NumberCollection;
+            _numberCollection = _scene.NumberCollection;
         }
 
         public void Damage(int attack)

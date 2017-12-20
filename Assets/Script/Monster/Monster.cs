@@ -256,7 +256,7 @@ namespace NTUT.CSIE.GameDev.Monster
                     _audio.PlayOneShot(_attackAudioClip);
 
                 // 打一棟房子
-                DamageTarget(new List<HouseInfo> { _houseTarget });
+                DamageTarget(new HouseInfo[] { _houseTarget });
             }
             else
             {
