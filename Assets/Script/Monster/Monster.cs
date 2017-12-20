@@ -125,6 +125,7 @@ namespace NTUT.CSIE.GameDev.Monster
                              _target.transform.localPosition :
                              _finalTarget
                          ) - transform.localPosition;
+            v3.z -= 5;
             v3 = v3.normalized * (_speed * 0.1f);
             v3.y = 0;
 
@@ -474,13 +475,17 @@ namespace NTUT.CSIE.GameDev.Monster
             var monsterList = GetEnemies(range);
             list.AddRange(houseList);
             list.AddRange(monsterList);
-            list.Add(_scene.GetPlayerAt(1 - _playerID));
+            var p = _scene.GetPlayerAt(1 - _playerID);
+
+            if (Vector3.Distance(p.gameObject.transform.localPosition, this.transform.localPosition) <= range )
+                list.Add(p);
+
             return list;
         }
 
         public bool IsAllowAttack(HurtableObject m)
         {
-            return Vector3.Distance(m.transform.position, this.transform.position) <= _info.AttackRange;
+            return Vector3.Distance(m.transform.localPosition, this.transform.localPosition) <= _info.AttackRange;
         }
 
         protected Monster[] GetFriends(float range = float.MaxValue)

@@ -14,6 +14,13 @@ TagManager:
   - MapStatus
   - Dialog
   - SceneLogic
+  - Win
+  - Lose
+  - Name
+  - Achievement
+  - Number_of_buildings
+  - Kill_monster
+  - 'Total_amount '
   layers:
   - Default
   - TransparentFX
