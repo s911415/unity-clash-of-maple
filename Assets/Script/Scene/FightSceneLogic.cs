@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using NTUT.CSIE.GameDev.Component.Message;
 
 namespace NTUT.CSIE.GameDev.Scene
 {
@@ -35,6 +36,9 @@ namespace NTUT.CSIE.GameDev.Scene
         [SerializeField]
         protected List<Player.Player> _players;
 
+        [SerializeField]
+        protected MessageConsole _console;
+
         public Player.Player GetPlayerAt(int i) => _players[i];
 
         private uint _godReward;
@@ -55,7 +59,7 @@ namespace NTUT.CSIE.GameDev.Scene
         {
             InitPlayersByDiff();
             //定時給錢
-            _godReward = SetInterval(GiveEveryoneMoney, 60 * 1000);
+            _godReward = SetInterval(GiveEveryoneMoney, Config.GIVE_MONEY_INTERVAL);
 
             foreach (var p in _players)
             {
@@ -77,6 +81,7 @@ namespace NTUT.CSIE.GameDev.Scene
             newLocPos.y = 0;
             newLocPos.z -= 5f;
             mob.transform.localPosition = newLocPos;
+            mob.OnMonsterKilled += _players[playerID].OnMonsterKilled;
 
             if (playerID == Manager.DEFAULT_PLAYER_ID)
             {
@@ -115,7 +120,10 @@ namespace NTUT.CSIE.GameDev.Scene
 
         public Monster.Monster[] GetAllMonsterInfo()
         {
-            return GameObject.Find("MonsterList").GetComponentsInChildren<Monster.Monster>();
+            if (!_monsterListObject)
+                return new Monster.Monster[0];
+
+            return _monsterListObject.GetComponentsInChildren<Monster.Monster>();
         }
 
         protected virtual void Start()
@@ -124,10 +132,10 @@ namespace NTUT.CSIE.GameDev.Scene
 
         private void GiveEveryoneMoney()
         {
-            Debug.Log("發$囉");
+            _console.Show($"來自上天的獎勵，獲得{Config.GIVE_MONEY_AMOUNT}元");
             _players.ForEach(p =>
             {
-                p.AddMoney(1250);
+                p.AddMoney(Config.GIVE_MONEY_AMOUNT);
             });
         }
 
@@ -169,6 +177,7 @@ namespace NTUT.CSIE.GameDev.Scene
         public MapGridGenerator MapGridGenerator => _mapGenerator;
         public HouseGenerator HouseGenerator => _mapGenerator.HouseGenerator;
         public MapStatusPanel ControlPanel => _controlPanel;
+        public MessageConsole Console => _console;
 
         #region Check Members
         private void CheckDiff()

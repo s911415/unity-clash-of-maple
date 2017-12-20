@@ -10,7 +10,8 @@
     "cost": 100,
     "spawnInterval": 30,
     "attackRange": 5,
-    "attackSpeed": 0.625
+    "attackSpeed": 0.625,
+    "bonus": 80
   },
   {
     "id": 1,
@@ -23,7 +24,8 @@
     "cost": 120,
     "spawnInterval": 40,
     "attackRange": 5,
-    "attackSpeed": 0.363636364
+    "attackSpeed": 0.363636364,
+    "bonus": 96
   },
   {
     "id": 2,
@@ -36,7 +38,8 @@
     "cost": 300,
     "spawnInterval": 40,
     "attackRange": 5,
-    "attackSpeed": 0.727272727
+    "attackSpeed": 0.727272727,
+    "bonus": 240
   },
   {
     "id": 3,
@@ -49,7 +52,8 @@
     "cost": 4500,
     "spawnInterval": 240,
     "attackRange": 15,
-    "attackSpeed": 3.166666667
+    "attackSpeed": 3.166666667,
+    "bonus": 3600
   },
   {
     "id": 4,
@@ -62,7 +66,8 @@
     "cost": 700,
     "spawnInterval": 180,
     "attackRange": 20,
-    "attackSpeed": 1.65
+    "attackSpeed": 1.65,
+    "bonus": 560
   },
   {
     "id": 5,
@@ -75,7 +80,8 @@
     "cost": 5000,
     "spawnInterval": 270,
     "attackRange": 15,
-    "attackSpeed": 1.8125
+    "attackSpeed": 1.8125,
+    "bonus": 4000
   },
   {
     "id": 6,
@@ -88,7 +94,8 @@
     "cost": 150,
     "spawnInterval": 40,
     "attackRange": 5,
-    "attackSpeed": 1.166666667
+    "attackSpeed": 1.166666667,
+    "bonus": 120
   },
   {
     "id": 7,
@@ -101,7 +108,8 @@
     "cost": 200,
     "spawnInterval": 45,
     "attackRange": 5,
-    "attackSpeed": 0.454545455
+    "attackSpeed": 0.454545455,
+    "bonus": 160
   },
   {
     "id": 8,
@@ -114,7 +122,8 @@
     "cost": 250,
     "spawnInterval": 45,
     "attackRange": 5,
-    "attackSpeed": 0.833333333
+    "attackSpeed": 0.833333333,
+    "bonus": 200
   },
   {
     "id": 9,
@@ -127,7 +136,8 @@
     "cost": 430,
     "spawnInterval": 120,
     "attackRange": 10,
-    "attackSpeed": 1.375
+    "attackSpeed": 1.375,
+    "bonus": 344
   },
   {
     "id": 10,
@@ -140,7 +150,8 @@
     "cost": 230,
     "spawnInterval": 45,
     "attackRange": 5,
-    "attackSpeed": 1.25
+    "attackSpeed": 1.25,
+    "bonus": 184
   },
   {
     "id": 11,
@@ -153,6 +164,7 @@
     "cost": 500,
     "spawnInterval": 150,
     "attackRange": 10,
-    "attackSpeed": 0.75
+    "attackSpeed": 0.75,
+    "bonus": 400
   }
 ]

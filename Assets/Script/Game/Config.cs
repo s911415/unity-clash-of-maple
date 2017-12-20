@@ -8,5 +8,7 @@
         public const int UPGRADE_ATTACK_BASIS = 50;
         public const int UPGRADE_SPEED_BASIS = 30;
         public const int UPGRADE_HP_BASIS = 40;
+        public const uint GIVE_MONEY_INTERVAL = 60 * 1000;
+        public const int GIVE_MONEY_AMOUNT = 1250;
     }
 }

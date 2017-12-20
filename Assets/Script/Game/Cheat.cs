@@ -28,9 +28,10 @@ namespace NTUT.CSIE.GameDev.Game
             if (_scene == null) return;
 
             //For Test
-            if (Input.GetKey(KeyCode.F3))
+            if (Input.GetKeyUp(KeyCode.F3))
             {
                 _scene.GetPlayerAt(1).Damage(Random.Range(150, 1500));
+                _scene.Console.Show("Text");
             }
 
             //For Test
