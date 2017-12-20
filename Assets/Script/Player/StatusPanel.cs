@@ -37,16 +37,16 @@ namespace NTUT.CSIE.GameDev.Player
         private void Update()
         {
             // Call event from Editor
-// #if UNITY_EDITOR
+            // #if UNITY_EDITOR
             _player.Attached();
-// #endif
+            // #endif
         }
 
         private void OnHPChanged(int value)
         {
-            var text = string.Format("{0}/{1}", value, Player.MAX_HP);
+            var text = string.Format("{0}/{1}", value, _player.MAX_HP);
             _hpText.text = text;
-            _hpBar.Value = (float)value / (float)Player.MAX_HP;
+            _hpBar.Value = (float)value / (float)_player.MAX_HP;
         }
 
         private void OnMoneyChanged(int value)

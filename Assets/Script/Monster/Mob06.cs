@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using NTUT.CSIE.GameDev.Component;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,9 +12,9 @@ namespace NTUT.CSIE.GameDev.Monster
         {
         }
 
-        protected override void DamageTarget<T>(IEnumerable<T> targetList)
+        protected override void DamageTargets(IEnumerable<HurtableObject> targetList)
         {
-            base.DamageTarget(targetList);
+            base.DamageTargets(targetList);
 
             foreach (var m in targetList)
             {

@@ -15,7 +15,7 @@ using Random = UnityEngine.Random;
 namespace NTUT.CSIE.GameDev.Monster
 {
     [Serializable]
-    public class Monster : CommonObject, IHurtable
+    public class Monster : HurtableObject
     {
         protected static ulong _monsterCounter = 0;
         [SerializeField]
@@ -43,8 +43,7 @@ namespace NTUT.CSIE.GameDev.Monster
         [SerializeField]
         protected int _playerID = -1;
         [SerializeField]
-        protected Monster _target = null;
-        private HouseInfo _houseTarget = null;
+        protected HurtableObject _target = null;
         protected NumberCollection _numberCollection;
         [SerializeField]
         protected bool _died;
@@ -60,15 +59,15 @@ namespace NTUT.CSIE.GameDev.Monster
         // finalTartget 敵方主堡
         private Vector3 _finalTarget;
         private bool _isArrival = false;
-        private bool _isFindHouse = false;
 
         protected Monster(int mobID)
         {
             this._monsterID = mobID;
         }
 
-        protected virtual void Start()
+        protected override void Start()
         {
+            base.Start();
             _scene = GetSceneLogic<FightSceneLogic>();
             // 開始先鎖定主堡位置
             var gen = _scene.MapGridGenerator;
@@ -94,16 +93,15 @@ namespace NTUT.CSIE.GameDev.Monster
 
             if (_action == Action.Walk)
             {
-                Walk();
                 FindNearestTarget();
-                FindHouse();
+                Walk();
             }
 
             if (_action == Action.Walk || _action == Action.Attack)
             {
-                if (!_target && !_isFindHouse) _action = Action.Walk;
+                if (!_target) _action = Action.Walk;
 
-                if (Vector3.Distance(_finalTarget, transform.localPosition) < _info.AttackRange)
+                if (Vector3.Distance(_finalTarget, transform.localPosition) < 1)
                     _isArrival = true;
                 else
                     _isArrival = false;
@@ -117,11 +115,17 @@ namespace NTUT.CSIE.GameDev.Monster
             }
         }
 
+        public override int HP => _hp;
+
         public virtual void Walk()
         {
             _action = Action.Walk;
-            Vector3 v3 = _finalTarget - transform.localPosition;
-            v3 = v3.normalized * _speed * 0.1f;
+            Vector3 v3 = (
+                             _target && _target.Alive ?
+                             _target.transform.localPosition :
+                             _finalTarget
+                         ) - transform.localPosition;
+            v3 = v3.normalized * (_speed * 0.1f);
             v3.y = 0;
 
             if (!_freeze)
@@ -135,27 +139,7 @@ namespace NTUT.CSIE.GameDev.Monster
                     _direction = Direction.Left;
                 }
 
-                transform.Translate(v3);
-            }
-        }
-
-        protected virtual void FindHouse()
-        {
-            HouseInfo[] houseList = GetSceneLogic<FightSceneLogic>().HouseGenerator.GetAllHouseInfo();
-
-            foreach (HouseInfo h in houseList)
-            {
-                if (Vector3.Distance(transform.position, h.transform.position) < _info.AttackRange + 1.5f &&
-                        (h.PlayerID != _playerID))
-                {
-                    _isFindHouse = true;
-                    _houseTarget = h;
-                    _action = Action.Attack;
-                    return;
-                }
-
-                _isFindHouse = false;
-                _houseTarget = null;
+                transform.Translate(v3, Space.Self);
             }
         }
 
@@ -169,17 +153,18 @@ namespace NTUT.CSIE.GameDev.Monster
             }
 
             if (
-                (!_target || _target._hp <= 0)
+                (!_target || !_target.Alive)
             )
             {
                 _target = null;
-                Monster[] enemiesList = GetEnemies(_info.AttackRange);
+                var enemiesList = GetAttackableObject();
+                var currentPos = this.transform.localPosition;
                 float[] distanceArray = enemiesList.Select(
-                                            m => Vector3.Distance(m.transform.position, this.transform.position)
+                                            m => Vector3.Distance(m.transform.localPosition, currentPos)
                                         ).ToArray();
                 int minDistanceIndex = Helper.GetMinIndex(distanceArray);
 
-                if (minDistanceIndex < 0 || distanceArray[minDistanceIndex] > _info.AttackRange) return;
+                if (minDistanceIndex < 0) return;
 
                 if (enemiesList[minDistanceIndex] != this)
                 {
@@ -195,24 +180,7 @@ namespace NTUT.CSIE.GameDev.Monster
             }
         }
 
-        protected IHurtable GetTarget<T>() where T : CommonObject, IHurtable
-        {
-            if (_isArrival)
-            {
-                int opponentID = 1 - _playerID;
-                return _scene.GetPlayerAt(opponentID);
-            }
-            else if (_isFindHouse && _houseTarget)
-            {
-                return _houseTarget;
-            }
-            else
-            {
-                return _target;
-            }
-        }
-
-        public bool Alive => this&& !_died&& _hp > 0;
+        public override bool Alive => this&& !_died&& _hp > 0;
 
         public virtual void Attack()
         {
@@ -241,31 +209,18 @@ namespace NTUT.CSIE.GameDev.Monster
                 if (_attackAudioClip != null)
                     _audio.PlayOneShot(_attackAudioClip);
             }
-            else if (_isFindHouse)
-            {
-                if (_houseTarget == null)
-                {
-                    _action = Action.Walk;
-                    _isFindHouse = false;
-                    return;
-                }
-
-                _houseTarget.Damage(CalcDamageValue());
-
-                if (_attackAudioClip != null)
-                    _audio.PlayOneShot(_attackAudioClip);
-
-                // 打一棟房子
-                DamageTarget(new HouseInfo[] { _houseTarget });
-            }
             else
             {
-                var nearMonsters = GetEnemies(this._info.AttackRange);
-                DamageTarget(nearMonsters);
+                var nearAttackableObject = GetAttackableObject(this._info.AttackRange);
+                DamageTargets(nearAttackableObject);
             }
         }
+        protected virtual void DamageOneTarget(HurtableObject target)
+        {
+            DamageTargets(new HurtableObject[] { target });
+        }
 
-        protected virtual void DamageTarget<T>(IEnumerable<T> targetList) where T: CommonObject, IHurtable
+        protected virtual void DamageTargets(IEnumerable<HurtableObject> targetList)
         {
             if (_action != Action.Attack || _target == null || !_target.gameObject) return;
 
@@ -337,7 +292,7 @@ namespace NTUT.CSIE.GameDev.Monster
             Walk, Attack, Die
         }
 
-        public int MAX_HP => _maxHP;
+        public override int MAX_HP => _maxHP;
 
         protected override void Awake()
         {
@@ -391,7 +346,7 @@ namespace NTUT.CSIE.GameDev.Monster
             }
         }
 
-        public virtual void Recovery(int recover)
+        public override void Recovery(int recover)
         {
             var oldHP = _hp;
             _hp += recover;
@@ -476,15 +431,16 @@ namespace NTUT.CSIE.GameDev.Monster
             }
         }
 
-        protected Monster[]  GetEnemies(float range = float.MaxValue)
+        protected Monster[] GetEnemies(float range = float.MaxValue)
         {
             Monster[] monsterList = _scene.GetAllMonsterInfo();
             var query = monsterList.Where(m => m._playerID != this._playerID);
 
             if (range < float.MaxValue)
             {
+                var myPos = this.transform.localPosition;
                 query = query.Where(
-                            m => Vector3.Distance(m.transform.position, this.transform.position) <= range
+                            m => Vector3.Distance(m.transform.localPosition, myPos) <= range
                         )
                         .Where(m => m.Alive)
                         ;
@@ -493,7 +449,36 @@ namespace NTUT.CSIE.GameDev.Monster
             return query.ToArray();
         }
 
-        public bool IsAllowAttack<T>(T m) where T: CommonObject, IHurtable
+        protected HouseInfo[] GetEnemyHouses(float range = float.MaxValue)
+        {
+            HouseInfo[] houseList = _scene.HouseGenerator.GetAllHouseInfo();
+            var query = houseList.Where(m => m.PlayerID != this._playerID);
+
+            if (range < float.MaxValue)
+            {
+                var myPos = this.transform.localPosition;
+                query = query.Where(
+                            m => Vector3.Distance(m.transform.position, myPos) <= range
+                        )
+                        .Where(m => m.Alive)
+                        ;
+            }
+
+            return query.ToArray();
+        }
+
+        protected IReadOnlyList<HurtableObject> GetAttackableObject(float range = float.MaxValue)
+        {
+            List<HurtableObject> list = new List<HurtableObject>();
+            var houseList = GetEnemyHouses(range);
+            var monsterList = GetEnemies(range);
+            list.AddRange(houseList);
+            list.AddRange(monsterList);
+            list.Add(_scene.GetPlayerAt(1 - _playerID));
+            return list;
+        }
+
+        public bool IsAllowAttack(HurtableObject m)
         {
             return Vector3.Distance(m.transform.position, this.transform.position) <= _info.AttackRange;
         }
@@ -513,7 +498,7 @@ namespace NTUT.CSIE.GameDev.Monster
             return query.ToArray();
         }
 
-        protected virtual void OnDestroy()
+        protected virtual void OnApplicationQuit()
         {
             CleanUp();
         }
@@ -531,9 +516,33 @@ namespace NTUT.CSIE.GameDev.Monster
             ClearTimeout(_poisonTimerTimeout);
         }
 
-        public void Damage(int damage)
+        public override void Damage(int damage)
         {
             Damage(damage, false);
+        }
+
+        protected bool IsInRange(HurtableObject obj)
+        {
+            var myPos = this.transform.localPosition;
+            var objPos = obj.transform.localPosition;
+            var rect1Center = myPos + _collider.bounds.center;
+            var rect1Size = _collider.bounds.size;
+            var rect2Center = objPos + obj.Bound.center;
+            var rect2Size = obj.Bound.size;
+            var rect1 = new
+            {
+                x = rect1Center.x  - rect1Size.x / 2, y = rect1Center.z - rect1Size.z / 2,
+                width = rect1Size.x, height = rect1Size.z
+            };
+            var rect2 = new
+            {
+                x = rect2Center.x - rect2Size.x / 2, y = rect2Center.z - rect2Size.z / 2,
+                width = rect2Size.x, height = rect2Size.z
+            };
+            return (rect1.x < rect2.x + rect2.width &&
+                    rect1.x + rect1.width > rect2.x &&
+                    rect1.y < rect2.y + rect2.height &&
+                    rect1.height + rect1.y > rect2.y);
         }
 
         public ulong ID => _id;

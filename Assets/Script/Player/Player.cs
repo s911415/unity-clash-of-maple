@@ -10,11 +10,11 @@ using UnityEngine;
 
 namespace NTUT.CSIE.GameDev.Player
 {
-    public class Player : CommonObject, IHurtable
+    public class Player : HurtableObject
     {
         public delegate void ValueChangedEventHandler<T>(T value);
         private const int INIT_HOUSES = 6;
-        public const int MAX_HP = 50000;
+        public const int _MAX_HP = 50000;
         public const int MAX_MONEY = 2000000000;
         [SerializeField]
         protected int _playerID;
@@ -23,7 +23,7 @@ namespace NTUT.CSIE.GameDev.Player
         [SerializeField]
         protected Info _info;
 
-        [SerializeField, Range(0, MAX_HP)]
+        [SerializeField, Range(0, _MAX_HP)]
         protected int _hp;
 
         [SerializeField, Range(0, MAX_MONEY)]
@@ -41,6 +41,7 @@ namespace NTUT.CSIE.GameDev.Player
         public event ValueChangedEventHandler<int> OnMoneyChanged;
         public event ValueChangedEventHandler<ICollection<Tower>> OnTowersChanged;
         public event ValueChangedEventHandler<ICollection<Honors.Honor>> OnHonorsChanged;
+        public override int MAX_HP => _MAX_HP;
         protected override void Awake()
         {
             base.Awake();
@@ -51,8 +52,9 @@ namespace NTUT.CSIE.GameDev.Player
             _scene = GetSceneLogic<FightSceneLogic>();
         }
 
-        protected void Start()
+        protected override void Start()
         {
+            base.Start();
             InitHouses();
             _godMode = false;
         }
@@ -76,12 +78,10 @@ namespace NTUT.CSIE.GameDev.Player
             }
         }
 
-        public int HP => _hp;
+        public override int HP => _hp;
         public int Money => _money;
 
-        int IHurtable.MAX_HP => MAX_HP;
-
-        public bool Alive => _hp > 0;
+        public override bool Alive => _hp > 0;
 
         public Player SetMoney(int m)
         {
@@ -117,7 +117,7 @@ namespace NTUT.CSIE.GameDev.Player
             return this;
         }
 
-        public void Damage(int damage)
+        public override void Damage(int damage)
         {
             if (IsGodMode) damage = 0;
 
@@ -133,7 +133,7 @@ namespace NTUT.CSIE.GameDev.Player
             OnHPChanged?.Invoke(_hp);
         }
 
-        public void Recovery(int recover)
+        public override void Recovery(int recover)
         {
             _hp += recover;
 

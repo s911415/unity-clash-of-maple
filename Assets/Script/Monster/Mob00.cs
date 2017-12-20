@@ -14,9 +14,9 @@ namespace NTUT.CSIE.GameDev.Monster
         {
         }
 
-        protected override void DamageTarget<T>(IEnumerable<T> targetList)
+        protected override void DamageTargets(IEnumerable<HurtableObject> targetList)
         {
-            base.DamageTarget(targetList);
+            base.DamageTargets(targetList);
 
             foreach (var m in targetList)
             {
