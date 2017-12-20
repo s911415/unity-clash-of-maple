@@ -44,6 +44,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private NumberCollection _numberCollection;
         private bool _died = false;
         private FightSceneLogic _scene;
+        [SerializeField]
+        private GameObject _explosionPrefab;
 
         public delegate void HouseDestroyEvent(Point p);
         public event HouseDestroyEvent OnHouseDestroy;
@@ -204,7 +206,10 @@ namespace NTUT.CSIE.GameDev.Component.Map
             if (_died) return;
 
             _died = true;
+            GameObject explosion = Instantiate(_explosionPrefab);
+            explosion.transform.position = transform.position + new Vector3(0f, 0f, -0.7f);
             _scene.HouseGenerator.DestroyHouse(this._position);
+            Debug.Log("eee");
             OnHouseDestroy?.Invoke(_position);
         }
 

@@ -126,6 +126,8 @@ MonoBehaviour:
     _row: 0
     _col: 0
   _direction: 1
+  _explosionPrefab: {fileID: 1469792933130234, guid: 8ba9721da7b56e847a729400a52df02a,
+    type: 2}
 --- !u!212 &212437515076651744
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -477,7 +477,7 @@ namespace NTUT.CSIE.GameDev.Monster
             list.AddRange(monsterList);
             var p = _scene.GetPlayerAt(1 - _playerID);
 
-            if (Vector3.Distance(p.gameObject.transform.localPosition, this.transform.localPosition) <= range )
+            if (Vector3.Distance(p.gameObject.transform.localPosition, this.transform.localPosition) <= range)
                 list.Add(p);
 
             return list;
