@@ -126,6 +126,8 @@ MonoBehaviour:
     _row: 0
     _col: 0
   _direction: 1
+  _explosionPrefab: {fileID: 1469792933130234, guid: 8ba9721da7b56e847a729400a52df02a,
+    type: 2}
 --- !u!212 &212437515076651744
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -135,7 +137,6 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -151,7 +152,6 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5

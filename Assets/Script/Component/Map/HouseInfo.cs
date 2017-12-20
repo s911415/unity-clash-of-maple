@@ -39,6 +39,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private Point _position;
         [SerializeField]
         private Direction _direction = Direction.Right;
+        [SerializeField]
+        private GameObject _explosionPrefab;
         private int _playerID;
         private int _upgAttackCnt, _upgHpCnt, _upgSpeedCnt;
         private NumberCollection _numberCollection;
@@ -204,7 +206,10 @@ namespace NTUT.CSIE.GameDev.Component.Map
             if (_died) return;
 
             _died = true;
+            GameObject explosion = Instantiate(_explosionPrefab);
+            explosion.transform.position = transform.position + new Vector3(0f, 0f, -0.7f);
             _scene.HouseGenerator.DestroyHouse(this._position);
+            Debug.Log("eee");
             OnHouseDestroy?.Invoke(_position);
         }
 
