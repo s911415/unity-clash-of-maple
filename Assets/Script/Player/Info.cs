@@ -1,4 +1,5 @@
 ﻿using NTUT.CSIE.GameDev.Game;
+using NTUT.CSIE.GameDev.Player.Honors;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,6 +26,8 @@ namespace NTUT.CSIE.GameDev.Player
         private Dictionary<int, int> _killedMonsterCount;
         [SerializeField]
         private int _houseDestroyedCount, _builtHouseCount, _lastHP;
+        [SerializeField]
+        private List<Honor> _achievement;
 
         protected override void Awake()
         {
@@ -99,6 +102,16 @@ namespace NTUT.CSIE.GameDev.Player
             }
         }
 
+        private int GetTotallyAmountMonster()
+        {
+            int amount=0;
+            foreach(var m in this.Manager.MonsterInfoCollection.GetAllMonsterId())
+            {
+                amount += _killedMonsterCount[m];
+            }
+            return amount;
+        }
+
         public void SetLastHP(int value)
         {
             _lastHP = value;
@@ -107,7 +120,9 @@ namespace NTUT.CSIE.GameDev.Player
         public int LastHP => _lastHP;
 
         public IReadOnlyDictionary<int, int> KilledMonsterCount => _killedMonsterCount;
+        public int TotallyAmountMonster => GetTotallyAmountMonster();
         public int HouseDestroyedCount => _houseDestroyedCount;
         public int BuiltHouseCount => _builtHouseCount;
+        public List<Honor> Achievement => _achievement;
     }
 }

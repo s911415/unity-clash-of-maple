@@ -159,6 +159,7 @@ namespace NTUT.CSIE.GameDev.Scene
             foreach (var p in _players)
             {
                 p.Info.SetLastHP(p.HP);
+                p.Info.SetStatus(Player.Info.STATUS.OVER);
             }
 
             SceneManager.LoadScene("LeaderBoard");

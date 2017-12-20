@@ -15,6 +15,7 @@ namespace NTUT.CSIE.GameDev.Scene
 {
     public class LeaderBoardSceneLogic : BasicSceneLogic
     {
+        public const int DEFAULT_PLAYERID = 0;
         protected override void Awake()
         {
             base.Awake();
@@ -27,22 +28,63 @@ namespace NTUT.CSIE.GameDev.Scene
             CheckDiff();
             CheckPlayers();
         }
+
         private void InitMembers()
         {
         }
-
+        
         protected virtual void Start()
         {
+            ShowImage();
         }
 
         protected override void Update()
         {
-            base.Update();
+            base.Update();          
+        }
+
+        private void ShowImage()
+        {
+                var winner = GameObject.FindGameObjectWithTag("Win");
+                var loser = GameObject.FindGameObjectWithTag("Lose");
+                winner.SetActive(((GetWinner() == DEFAULT_PLAYERID)));
+                loser.SetActive(!(GetWinner() == DEFAULT_PLAYERID));
         }
 
         public void OnButtonClick()
         {
             Debug.Log("Click Button");
+        }
+
+        public int GetWinner()
+        {
+            var playerInfo = this.Manager.Players.Where(p => p.LastHP > 0).FirstOrDefault();
+            if (playerInfo)
+            {                                                                                                                               
+                return playerInfo.id;
+            }
+
+            return -1;
+        }
+
+        public void QuitGame()
+        {
+            #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+            #else
+                Application.Quit();
+            #endif
+        }
+
+        public int GetLoser()
+        {
+            var playerInfo = this.Manager.Players.Where(p => p.LastHP <= 0).FirstOrDefault();
+            if (playerInfo)
+            {
+                return playerInfo.id;
+            }
+
+            return -1;
         }
 
         #region Check Members
@@ -69,7 +111,18 @@ namespace NTUT.CSIE.GameDev.Scene
             {
                 p.ResetCounter();
                 p.SetStatus(Player.Info.STATUS.OVER);
+                if (p.id == 0)
+                {
+                    p.SetName("Player0");
+                    p.SetLastHP(500);
+                }
+                else
+                {
+                    p.SetName("Robot");
+                    p.SetLastHP(0);
+                }
             }
+
         }
         #endregion
 

@@ -58,7 +58,7 @@ namespace NTUT.CSIE.GameDev.Scene
         {
             if (p.Status < Player.Info.STATUS.READY)
             {
-                p.SetName("Player" + p.id);
+                p.SetName((p.id==0)?"Player0":"Robot");
             }
         }
 
