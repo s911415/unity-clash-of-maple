@@ -28,6 +28,11 @@ namespace NTUT.CSIE.GameDev.Component
             return Distance(this, p);
         }
 
+        public override string ToString()
+        {
+            return $"({_row}, {_col})";
+        }
+
         public int Row => _row;
         public int Column => _col;
     }

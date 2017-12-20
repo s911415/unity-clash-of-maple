@@ -54,6 +54,8 @@ namespace NTUT.CSIE.GameDev.Monster
         protected uint _poisonTimerInterval, _poisonTimerTimeout;
         protected int _poisonValue;
         private FightSceneLogic _scene;
+        public delegate void MonsterKilledEvent(int monsterID);
+        public event MonsterKilledEvent OnMonsterKilled;
 
         // finalTartget 敵方主堡
         private Vector3 _finalTarget;
@@ -100,11 +102,11 @@ namespace NTUT.CSIE.GameDev.Monster
             if (_action == Action.Walk || _action == Action.Attack)
             {
                 if (!_target && !_isFindHouse) _action = Action.Walk;
+
                 if (Vector3.Distance(_finalTarget, transform.localPosition) < _info.AttackRange)
                     _isArrival = true;
                 else
                     _isArrival = false;
-
             }
 
             if (_target && IsAllowAttack(_target)) Attack();
@@ -122,22 +124,36 @@ namespace NTUT.CSIE.GameDev.Monster
             v3 = v3.normalized * _speed * 0.1f;
             v3.y = 0;
 
-            if (!_freeze) transform.Translate(v3);
+            if (!_freeze)
+            {
+                if (v3.x > 0)
+                {
+                    _direction = Direction.Right;
+                }
+                else if (v3.x < 0)
+                {
+                    _direction = Direction.Left;
+                }
+
+                transform.Translate(v3);
+            }
         }
 
         protected virtual void FindHouse()
         {
             HouseInfo[] houseList = GetSceneLogic<FightSceneLogic>().HouseGenerator.GetAllHouseInfo();
+
             foreach (HouseInfo h in houseList)
             {
-                if(Vector3.Distance(transform.position, h.transform.position) < _info.AttackRange + 1.5f &&
-                    (h.PlayerID != _playerID))
+                if (Vector3.Distance(transform.position, h.transform.position) < _info.AttackRange + 1.5f &&
+                        (h.PlayerID != _playerID))
                 {
                     _isFindHouse = true;
                     _houseTarget = h;
                     _action = Action.Attack;
                     return;
                 }
+
                 _isFindHouse = false;
                 _houseTarget = null;
             }
@@ -179,6 +195,23 @@ namespace NTUT.CSIE.GameDev.Monster
             }
         }
 
+        protected IHurtable GetTarget<T>() where T : CommonObject, IHurtable
+        {
+            if (_isArrival)
+            {
+                int opponentID = 1 - _playerID;
+                return _scene.GetPlayerAt(opponentID);
+            }
+            else if (_isFindHouse && _houseTarget)
+            {
+                return _houseTarget;
+            }
+            else
+            {
+                return _target;
+            }
+        }
+
         public bool Alive => this&& !_died&& _hp > 0;
 
         public virtual void Attack()
@@ -199,9 +232,12 @@ namespace NTUT.CSIE.GameDev.Monster
             if (_isArrival)
             {
                 int opponentID = Math.Abs(_playerID - 1);
+
                 if (_playerID == 0) Debug.Log("Damage house" + opponentID);
                 else Debug.Log("Robot: Damage house" + opponentID);
+
                 GetSceneLogic<FightSceneLogic>().GetPlayerAt(opponentID).Damage(CalcDamageValue());
+
                 if (_attackAudioClip != null)
                     _audio.PlayOneShot(_attackAudioClip);
             }
@@ -210,15 +246,17 @@ namespace NTUT.CSIE.GameDev.Monster
                 if (_houseTarget == null)
                 {
                     _action = Action.Walk;
+                    _isFindHouse = false;
                     return;
-                }                    
+                }
+
                 _houseTarget.Damage(CalcDamageValue());
+
                 if (_attackAudioClip != null)
                     _audio.PlayOneShot(_attackAudioClip);
+
                 // 打一棟房子
-                List<HouseInfo> houseList = new List<HouseInfo>();
-                houseList.Add(_houseTarget);
-                DamageTarget(houseList);
+                DamageTarget(new List<HouseInfo> { _houseTarget });
             }
             else
             {
@@ -236,7 +274,6 @@ namespace NTUT.CSIE.GameDev.Monster
                 if (!m) continue;
 
                 Debug.Log(string.Format("DamageTarget: {0}", m.name));
-
                 m.Damage(CalcDamageValue());
             }
         }
@@ -380,13 +417,13 @@ namespace NTUT.CSIE.GameDev.Monster
             if (_died) return;
 
             _died = true;
-            this.Manager.GetPlayerAt(_playerID).AddMonsterKillCount(this._monsterID);
 
             if (_dieAudioClip != null)
                 _audio.PlayOneShot(_dieAudioClip);
 
             var container = GameObject.Find("PendingRemoveMonster");
             this.transform.parent = container.transform;
+            OnMonsterKilled?.Invoke(this._monsterID);
         }
 
         public bool IsGodMode => _scene.GetPlayerAt(_playerID).IsGodMode;

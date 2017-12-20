@@ -59,7 +59,7 @@ namespace NTUT.CSIE.GameDev.Scene
         {
             InitPlayersByDiff();
             //定時給錢
-            _godReward = SetInterval(GiveEveryoneMoney, 60 * 1000);
+            _godReward = SetInterval(GiveEveryoneMoney, Config.GIVE_MONEY_INTERVAL);
 
             foreach (var p in _players)
             {
@@ -81,6 +81,7 @@ namespace NTUT.CSIE.GameDev.Scene
             newLocPos.y = 0;
             newLocPos.z -= 5f;
             mob.transform.localPosition = newLocPos;
+            mob.OnMonsterKilled += _players[playerID].OnMonsterKilled;
 
             if (playerID == Manager.DEFAULT_PLAYER_ID)
             {
@@ -128,10 +129,10 @@ namespace NTUT.CSIE.GameDev.Scene
 
         private void GiveEveryoneMoney()
         {
-            Debug.Log("發$囉");
+            _console.Show($"來自上天的獎勵，獲得{Config.GIVE_MONEY_AMOUNT}元");
             _players.ForEach(p =>
             {
-                p.AddMoney(1250);
+                p.AddMoney(Config.GIVE_MONEY_AMOUNT);
             });
         }
 

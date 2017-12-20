@@ -35,6 +35,8 @@ namespace NTUT.CSIE.GameDev.Player
         [SerializeField]
         protected HashSet<Honors.Honor> _honors;
 
+        private FightSceneLogic _scene;
+
         public event ValueChangedEventHandler<int> OnHPChanged;
         public event ValueChangedEventHandler<int> OnMoneyChanged;
         public event ValueChangedEventHandler<ICollection<Tower>> OnTowersChanged;
@@ -46,6 +48,7 @@ namespace NTUT.CSIE.GameDev.Player
             _honors = new HashSet<Honors.Honor>();
             _hp = MAX_HP;
             _info = Manager.GetPlayerAt(_playerID);
+            _scene = GetSceneLogic<FightSceneLogic>();
         }
 
         protected void Start()
@@ -122,7 +125,7 @@ namespace NTUT.CSIE.GameDev.Player
 
             if (_hp < 0) _hp = 0;
 
-            GetSceneLogic<FightSceneLogic>().NumberCollection.ShowNumber(
+            _scene.NumberCollection.ShowNumber(
                 this.gameObject,
                 _playerID == 0 ? NumberCollection.Type.Violet : NumberCollection.Type.Red,
                 (uint)damage
@@ -141,13 +144,13 @@ namespace NTUT.CSIE.GameDev.Player
 
         public HouseInfo BuyHouse(Point p)
         {
-            var scene = GetSceneLogic<FightSceneLogic>();
-            var houseGen = scene.HouseGenerator;
+            var houseGen = _scene.HouseGenerator;
 
             if (CostMoney(Config.HOUSE_PRICE))
             {
                 var houseInfo = houseGen.AddHouse(p.Row, p.Column, this._playerID);
                 _info.AddBuiltHouseCount();
+                houseInfo.OnHouseDestroy += this.OnHouseDestroyed;
                 return houseInfo;
             }
             else
@@ -156,10 +159,25 @@ namespace NTUT.CSIE.GameDev.Player
             }
         }
 
+        private void OnHouseDestroyed(Point p)
+        {
+            _info.AddHouseDestroyedCount();
+            _scene.Console.Show(Color.red, $"你在{p}的房子被打垮了。");
+        }
+
+        public void OnMonsterKilled(int monsterID)
+        {
+            _info.AddMonsterKillCount(monsterID);
+            var originalBouns = this.Manager.MonsterInfoCollection[monsterID].Bonus;
+            int offset = (int)(originalBouns * .2f);
+            var bouns = Random.Range(originalBouns - offset, originalBouns + offset);
+            AddMoney(bouns);
+            _scene.Console.Show(Color.gray, $"拾獲{bouns}元");
+        }
+
         public HouseInfo SetHouseMonster(Point p, int cardSelectIndex)
         {
-            var scene = GetSceneLogic<FightSceneLogic>();
-            var houseGen = scene.HouseGenerator;
+            var houseGen = _scene.HouseGenerator;
             var monsterID = Info.GetCardIds()[cardSelectIndex];
             var monsterInfo = this.Manager.MonsterInfoCollection[monsterID];
 
@@ -204,21 +222,20 @@ namespace NTUT.CSIE.GameDev.Player
 
         public void InitHouses()
         {
-            var scene = GetSceneLogic<FightSceneLogic>();
-            var houseGen = scene.HouseGenerator;
+            var houseGen = _scene.HouseGenerator;
             int[,] row = { { 1, 4, 7, 1, 4, 7 }, { 1, 4, 7, 1, 4, 7 } };
             int[,] col = { { 4, 4, 4, 7, 7, 7 }, { 12, 12, 12, 15, 15, 15 } };
 
             for (int i = 0; i < INIT_HOUSES; i++)
             {
-                houseGen.AddHouse(row[_playerID, i], col[_playerID, i], _playerID);
+                var house = houseGen.AddHouse(row[_playerID, i], col[_playerID, i], _playerID);
+                house.OnHouseDestroy += OnHouseDestroyed;
             }
         }
 
         public HouseInfo DiscardHouseMonster(Point p)
         {
-            var scene = GetSceneLogic<FightSceneLogic>();
-            var houseGen = scene.HouseGenerator;
+            var houseGen = _scene.HouseGenerator;
 
             if (CostMoney(Config.DISCARD_MONSTER_PUNISH))
             {

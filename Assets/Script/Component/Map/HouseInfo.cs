@@ -44,6 +44,9 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private NumberCollection _numberCollection;
         private bool _died = false;
 
+        public delegate void HouseDestroyEvent(Point p);
+        public event HouseDestroyEvent OnHouseDestroy;
+
         public enum HouseType {Empty, Building, Summon, Master}
 
         public enum UpgradeType {Attack, HP, Speed}
@@ -200,7 +203,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
             _died = true;
             GetSceneLogic<FightSceneLogic>().HouseGenerator.DestroyHouse(this._position);
-            this.Manager.GetPlayerAt(_playerID).AddHouseDestroyedCount();
+            OnHouseDestroy?.Invoke(_position);
         }
 
         public HouseInfo SetDirection(Direction dir)
