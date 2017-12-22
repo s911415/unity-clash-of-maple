@@ -13,6 +13,10 @@ namespace NTUT.CSIE.GameDev.Component.Map
 {
     public class HouseInfo : HurtableObject
     {
+        [SerializeField]
+        private AudioSource _audio;
+        [SerializeField]
+        private AudioClip _explosionClip, _damageClip;
         private const int NONE = -1;
         public int scale = 1;
         [SerializeField]
@@ -46,6 +50,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private FightSceneLogic _scene;
         [SerializeField]
         private GameObject _explosionPrefab;
+        [SerializeField]
+        private bool _inTerroristAttack;
 
         public delegate void HouseDestroyEvent(Point p);
         public event HouseDestroyEvent OnHouseDestroy;
@@ -125,6 +131,12 @@ namespace NTUT.CSIE.GameDev.Component.Map
             return this;
         }
 
+        public void TerroristAttack(uint time)
+        {
+            _inTerroristAttack = true;
+            SetTimeout(() => _inTerroristAttack = false, time);
+        }
+
         public void Initialize()
         {
             this.name = string.Format("House #{0} ({1}, {2})", _houseId, _position.Row, _position.Column);
@@ -197,6 +209,9 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         private void Spawn()
         {
+            if (_inTerroristAttack)
+                return;
+
             Debug.Log(string.Format("召喚: {0}", MonsterInfo.Name));
             _scene.SpawnMonster(MonsterInfo, _playerID, this);
         }
@@ -209,7 +224,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
             GameObject explosion = Instantiate(_explosionPrefab);
             explosion.transform.position = transform.position + new Vector3(0f, 0f, -0.7f);
             _scene.HouseGenerator.DestroyHouse(this._position);
-            Debug.Log("eee");
+            _audio.PlayOneShot(_explosionClip);
             OnHouseDestroy?.Invoke(_position);
         }
 
@@ -252,6 +267,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
                 _playerID == 0 ? NumberCollection.Type.Violet : NumberCollection.Type.Red,
                 (uint)attack
             );
+            _audio.PlayOneShot(_damageClip);
 
             if (_hp <= 0)
             {

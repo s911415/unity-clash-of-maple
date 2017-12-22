@@ -12,13 +12,12 @@ namespace NTUT.CSIE.GameDev.Player
 {
     public class Player : HurtableObject
     {
+        public enum UniqueSkill { Attack, Defense }
         public delegate void ValueChangedEventHandler<T>(T value);
-        public delegate void ValueChangedEventHandler();
+        public delegate void ModelChangedEventHandler();
         public delegate void MonsterKilledEventHandler(int monsterID, IReadOnlyDictionary<int, int> monsterKilledSummary);
         public delegate void HouseCreatedEventHandler(HouseInfo house);
         private const int INIT_HOUSES = 6;
-        public const int _MAX_HP = 50000;
-        public const int MAX_MONEY = 2000000000;
         [SerializeField]
         protected int _playerID;
         protected bool _godMode;
@@ -26,10 +25,10 @@ namespace NTUT.CSIE.GameDev.Player
         [SerializeField]
         protected Info _info;
 
-        [SerializeField, Range(0, _MAX_HP)]
+        [SerializeField, Range(0, Config.PLAYER_MAX_HP)]
         protected int _hp;
 
-        [SerializeField, Range(0, MAX_MONEY)]
+        [SerializeField, Range(0, Config.PLAYER_MAX_MONEY)]
         protected int _money;
 
         [SerializeField]
@@ -40,12 +39,12 @@ namespace NTUT.CSIE.GameDev.Player
 
         private FightSceneLogic _scene;
 
-        private bool _died;
+        private bool _died, _uniqueSkillUsed;
 
         public event ValueChangedEventHandler<int> OnHPChanged;
         public event ValueChangedEventHandler<int> OnMoneyChanged;
-        public event ValueChangedEventHandler OnHonorsChanged;
-        public event ValueChangedEventHandler OnDied;
+        public event ModelChangedEventHandler OnHonorsChanged;
+        public event ModelChangedEventHandler OnDied;
         public event HouseCreatedEventHandler OnHouseCreated;
         public event MonsterKilledEventHandler OnKilledMonster;
 
@@ -54,7 +53,7 @@ namespace NTUT.CSIE.GameDev.Player
         [SerializeField]
         private int _houseDestroyedCount, _builtHouseCount;
 
-        public override int MAX_HP => _MAX_HP;
+        public override int MAX_HP => Config.PLAYER_MAX_HP;
         protected override void Awake()
         {
             base.Awake();
@@ -63,15 +62,16 @@ namespace NTUT.CSIE.GameDev.Player
             _hp = MAX_HP;
             _info = Manager.GetPlayerAt(_playerID);
             _scene = GetSceneLogic<FightSceneLogic>();
-            InitHouses();
             _godMode = false;
             _died = false;
-            ResetCounter();
+            _uniqueSkillUsed = false;
         }
 
         protected override void Start()
         {
             base.Start();
+            InitHouses();
+            ResetCounter();
             Attached();
         }
 
@@ -130,7 +130,7 @@ namespace NTUT.CSIE.GameDev.Player
         {
             _money += m;
 
-            if (_money > MAX_MONEY) _money = MAX_MONEY;
+            if (_money > Config.PLAYER_MAX_MONEY) _money = Config.PLAYER_MAX_MONEY;
 
             OnMoneyChanged?.Invoke(m);
             return this;
@@ -151,6 +151,30 @@ namespace NTUT.CSIE.GameDev.Player
             this._honors.Add(h);
             OnHonorsChanged?.Invoke();
             return this;
+        }
+
+        public void DoUniqueSkill(UniqueSkill type)
+        {
+            if (_uniqueSkillUsed)
+                throw new System.Exception("無法使用兩次大絕");
+
+            if ((float)_hp / MAX_HP >= Config.PLAYER_UNIQUE_REQUIRE_HP)
+                throw new System.Exception($"HP少於{Config.PLAYER_UNIQUE_REQUIRE_HP:P0}才能使用大絕");
+
+            _uniqueSkillUsed = true;
+
+            if (type == UniqueSkill.Attack)
+            {
+                //TerroristAttack();
+            }
+            else if (type == UniqueSkill.Defense)
+            {
+                //this.SeaFoodBless();
+            }
+        }
+
+        public void SeaFoodBless()
+        {
         }
 
         public override void Damage(int damage)

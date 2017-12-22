@@ -71,22 +71,30 @@ namespace NTUT.CSIE.GameDev.Game
 
         protected uint SetTimeout(Action action, uint timeoutMS)
         {
-            return Manager._SetTimeout(action, timeoutMS);
+            if (Manager)
+                return Manager._SetTimeout(action, timeoutMS);
+            else
+                return 0;
         }
 
         protected uint SetInterval(Action action, uint timeoutMS)
         {
-            return Manager._SetInterval(action, timeoutMS);
+            if (Manager)
+                return Manager._SetInterval(action, timeoutMS);
+            else
+                return 0;
         }
 
         protected void ClearTimeout(uint timerId)
         {
-            Manager._ClearTimeout(timerId);
+            if (Manager)
+                Manager._ClearTimeout(timerId);
         }
 
         protected void ClearInterval(uint timerId)
         {
-            Manager._ClearTimeout(timerId);
+            if (Manager)
+                Manager._ClearTimeout(timerId);
         }
     }
 }

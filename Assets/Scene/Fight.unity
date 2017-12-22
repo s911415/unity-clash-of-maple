@@ -4683,6 +4683,8 @@ MonoBehaviour:
   _upgHP: {fileID: 618134199}
   _upgSpeed: {fileID: 994694166}
   _disCard: {fileID: 1224168728}
+  _uniAttBtn: {fileID: 2095305180}
+  _uniDefBtn: {fileID: 2127448417}
   _selectCard:
   - {fileID: 1934662802}
   - {fileID: 1358812746}
