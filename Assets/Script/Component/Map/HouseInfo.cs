@@ -223,9 +223,9 @@ namespace NTUT.CSIE.GameDev.Component.Map
             _died = true;
             GameObject explosion = Instantiate(_explosionPrefab);
             explosion.transform.position = transform.position + new Vector3(0f, 0f, -0.7f);
-            _scene.HouseGenerator.DestroyHouse(this._position);
             _audio.PlayOneShot(_explosionClip);
             OnHouseDestroy?.Invoke(_position);
+            _scene.HouseGenerator.DestroyHouse(this._position);
         }
 
         public HouseInfo SetDirection(Direction dir)

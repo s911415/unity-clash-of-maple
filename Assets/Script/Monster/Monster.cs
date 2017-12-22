@@ -200,6 +200,8 @@ namespace NTUT.CSIE.GameDev.Monster
         /// <summary>   Damage target, Called From Animator event </summary>
         public virtual void DamageTarget()
         {
+            if (_action != Action.Attack) return;
+
             const uint FAIL_COUNT = 2;
 
             if (_attackAudioClip != null)
@@ -494,9 +496,6 @@ namespace NTUT.CSIE.GameDev.Monster
             if (InRange(p.gameObject.transform.localPosition, range))
                 list.Add(p);
 
-            if (list.Count == 0)
-                _failAttackCount++;
-
             return list;
         }
 
@@ -526,7 +525,7 @@ namespace NTUT.CSIE.GameDev.Monster
             return query.ToArray();
         }
 
-        protected virtual void OnApplicationQuit()
+        protected virtual void OnDestroy()
         {
             CleanUp();
         }
