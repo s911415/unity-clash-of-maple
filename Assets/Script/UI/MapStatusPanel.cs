@@ -16,31 +16,44 @@ namespace NTUT.CSIE.GameDev.UI
         public GameObject cardPrefab;
         [SerializeField]
         Sprite[] _buildingLevel = new Sprite[3];
-        Transform picturePanel;
-        Transform describePanel;
         public Text upgradeAttackText, upgradeHPText, upgradeSpeedText;
 
         [SerializeField]
         protected Button _buyOK, _buyCancel, _upgAtt, _upgHP, _upgSpeed, _disCard;
         [SerializeField]
         protected Button[] _selectCard;
+        [SerializeField]
+        private GameObject _pictureObj, _describeObj, _miniMapObj, _buyPanel, _selectPanel, _upgradePanel, _masterPanel;
 
-        // Use this for initialization
-        void Start()
+        [SerializeField]
+        private Image _picImage;
+        [SerializeField]
+        private Text _picHpText, _picNameText;
+
+        private FightSceneLogic _scene;
+
+        protected override void Awake()
         {
+            base.Awake();
             _cardSet.AddRange(
                 Manager.GetPlayerAt(Manager.DEFAULT_PLAYER_ID)
                 .GetCardIds()
                 .Select(mobID => this.Manager.MonsterInfoCollection[mobID])
             );
+            _scene = GetSceneLogic<FightSceneLogic>();
             BindButtonEvent();
+        }
+
+        // Use this for initialization
+        void Start()
+        {
+            this.gameObject.SetActive(false);
         }
 
         private void BindButtonEvent()
         {
-            var scene = GetSceneLogic<FightSceneLogic>();
-            var player = scene.GetPlayerAt(Manager.DEFAULT_PLAYER_ID);
-            System.Action noMoneyMsg = () => new DialogBuilder().SetContent("你沒錢").Show(scene.Window);
+            var player = _scene.GetPlayerAt(Manager.DEFAULT_PLAYER_ID);
+            System.Action noMoneyMsg = () => new DialogBuilder().SetContent("你沒錢").Show(_scene.Window);
             System.Action<HouseInfo> checkInfoAndShow = (houseInfo) =>
             {
                 if (houseInfo != null)
@@ -55,7 +68,7 @@ namespace NTUT.CSIE.GameDev.UI
             };
             _buyOK.onClick.AddListener(() =>
             {
-                var houseInfo = player.BuyHouse(scene.MapGridGenerator.CurPoint);
+                var houseInfo = player.BuyHouse(_scene.MapGridGenerator.CurPoint);
                 checkInfoAndShow.Invoke(houseInfo);
             });
             _buyCancel.onClick.AddListener(() => Hide());
@@ -65,7 +78,7 @@ namespace NTUT.CSIE.GameDev.UI
                 int finalI = i; // Important, if use i, i always equals to _selectCard.Length
                 _selectCard[i].onClick.AddListener(() =>
                 {
-                    var houseInfo = player.SetHouseMonster(scene.MapGridGenerator.CurPoint, finalI);
+                    var houseInfo = player.SetHouseMonster(_scene.MapGridGenerator.CurPoint, finalI);
                     checkInfoAndShow.Invoke(houseInfo);
                 });
             }
@@ -73,41 +86,56 @@ namespace NTUT.CSIE.GameDev.UI
             _upgAtt.onClick.AddListener(() =>
             {
                 checkInfoAndShow.Invoke(
-                    player.UpgradeHouse(scene.MapGridGenerator.CurPoint, HouseInfo.UpgradeType.Attack)
+                    player.UpgradeHouse(_scene.MapGridGenerator.CurPoint, HouseInfo.UpgradeType.Attack)
                 );
             });
             _upgHP.onClick.AddListener(() =>
             {
                 checkInfoAndShow.Invoke(
-                    player.UpgradeHouse(scene.MapGridGenerator.CurPoint, HouseInfo.UpgradeType.HP)
+                    player.UpgradeHouse(_scene.MapGridGenerator.CurPoint, HouseInfo.UpgradeType.HP)
                 );
             });
             _upgSpeed.onClick.AddListener(() =>
             {
                 checkInfoAndShow.Invoke(
-                    player.UpgradeHouse(scene.MapGridGenerator.CurPoint, HouseInfo.UpgradeType.Speed)
+                    player.UpgradeHouse(_scene.MapGridGenerator.CurPoint, HouseInfo.UpgradeType.Speed)
                 );
             });
             _disCard.onClick.AddListener(() =>
             {
-                var houseInfo = player.DiscardHouseMonster(scene.MapGridGenerator.CurPoint);
+                var houseInfo = player.DiscardHouseMonster(_scene.MapGridGenerator.CurPoint);
                 checkInfoAndShow.Invoke(houseInfo);
             });
+        }
+
+        /// <summary>   Sets an image. </summary>
+        ///
+        /// <param name="img">          The image. </param>
+        /// <param name="hpText">       The hp text. </param>
+        /// <param name="houseName">    Name of the house. </param>
+        protected void SetImage(Sprite img, string hpText, string houseName)
+        {
+            if (img) _picImage.sprite = img;
+
+            _picHpText.text = hpText ?? "";
+            _picNameText.text = houseName ?? "";
+        }
+
+
+        protected void SetImage(Sprite img, string houseName)
+        {
+            SetImage(img, houseName, "");
         }
 
         // display about mapgrid
         public void DisplayInfo(HouseInfo houseInfo)
         {
             Show();
-            picturePanel = this.transform.Find("Picture");
 
             for (int i = 0; i < 3; i++)
-                picturePanel.transform.GetChild(i).gameObject.SetActive(true);
+                _pictureObj.transform.GetChild(i).gameObject.SetActive(true);
 
-            describePanel = this.transform.Find("Describe");
-            picturePanel.Find("Image").GetComponent<Image>().sprite = _buildingLevel[(int)houseInfo.Type];
-            picturePanel.Find("Hp").GetComponent<Text>().text = $"{houseInfo.HP}/{houseInfo.MAX_HP}";
-            picturePanel.Find("Name").GetComponent<Text>().text = $"{houseInfo.houseName} {houseInfo.ID:00}";
+            SetImage(_buildingLevel[(int)houseInfo.Type], $"{houseInfo.HP}/{houseInfo.MAX_HP}", $"{houseInfo.houseName} {houseInfo.ID:00}");
 
             switch (houseInfo.Type)
             {
@@ -123,6 +151,10 @@ namespace NTUT.CSIE.GameDev.UI
                     this.Upgrade();
                     break;
 
+                case HouseInfo.HouseType.Master:
+                    this.ShowMaster();
+                    break;
+
                 default:
                     Debug.Log("Type error");
                     break;
@@ -133,17 +165,19 @@ namespace NTUT.CSIE.GameDev.UI
         public void Buy()
         {
             this.CloseDescribePanel();
-            describePanel.Find("Buy").gameObject.SetActive(true);
-            describePanel.Find("Buy").Find("BuildImage").Find("Image").GetComponent<Image>().sprite = _buildingLevel[1];
+            _buyPanel.SetActive(true);
+            SetImage(_buildingLevel[0], "空地");
+            // _buyPanel.transform.Find("BuildImage").Find("Image").GetComponent<Image>().sprite = _buildingLevel[1];
         }
 
         public void Select()
         {
             this.CloseDescribePanel();
-            describePanel.Find("Select").gameObject.SetActive(true);
+            _selectPanel.gameObject.SetActive(true);
 
             for (int i = 0; i < 6; i++)
-                describePanel.Find("Select")
+                _selectPanel
+                .transform
                 .GetChild(i)
                 .GetComponent<Image>()
                 .sprite = Resources.Load<Sprite>("Card/Card" + _cardSet[i].IDStr);
@@ -151,27 +185,35 @@ namespace NTUT.CSIE.GameDev.UI
 
         public void Upgrade()
         {
-            var houseInfo = GetSceneLogic<FightSceneLogic>().MapGridGenerator.CurHouseInfo;
+            var houseInfo = _scene.MapGridGenerator.CurHouseInfo;
             this.CloseDescribePanel();
-            describePanel.Find("Upgrade").gameObject.SetActive(true);
-            describePanel.Find("Upgrade").GetChild(0).GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Monster/" + houseInfo.MonsterInfo.IDStr);
+            _upgradePanel.SetActive(true);
+            _upgradePanel.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Monster/" + houseInfo.MonsterInfo.IDStr);
             upgradeAttackText.text = string.Format("攻擊：{0}", houseInfo.RealAttack);
             upgradeHPText.text = string.Format("血量：{0}", houseInfo.RealHP);
             upgradeSpeedText.text = string.Format("速度：{0}", houseInfo.RealSpeed);
         }
 
+        public void ShowMaster()
+        {
+            this.CloseDescribePanel();
+            _masterPanel.SetActive(true);
+            SetImage(_buildingLevel[10 + _scene.MapGridGenerator.CurHouseInfo.PlayerID], "主塔");
+        }
+
         public void CloseDescribePanel()
         {
             // 把描述介面全關閉 需要再另開起
-            describePanel.Find("Buy").gameObject.SetActive(false);
-            describePanel.Find("Select").gameObject.SetActive(false);
-            describePanel.Find("Upgrade").gameObject.SetActive(false);
+            foreach (Transform t in _describeObj.transform)
+            {
+                t.gameObject.SetActive(false);
+            }
         }
 
         public void CloseAllPanel()
         {
             for (int i = 0; i < 3; i++)
-                picturePanel.transform.GetChild(i).gameObject.SetActive(false);
+                _pictureObj.transform.GetChild(i).gameObject.SetActive(false);
 
             CloseDescribePanel();
         }
