@@ -25,15 +25,21 @@ namespace NTUT.CSIE.GameDev.UI
         [SerializeField]
         protected Button[] _selectCard;
 
-        // Use this for initialization
-        void Start()
+        protected override void Awake()
         {
+            base.Awake();
             _cardSet.AddRange(
                 Manager.GetPlayerAt(Manager.DEFAULT_PLAYER_ID)
                 .GetCardIds()
                 .Select(mobID => this.Manager.MonsterInfoCollection[mobID])
             );
             BindButtonEvent();
+        }
+
+        // Use this for initialization
+        void Start()
+        {
+            this.gameObject.SetActive(false);
         }
 
         private void BindButtonEvent()
