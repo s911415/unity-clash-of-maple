@@ -9,7 +9,7 @@ using NTUT.CSIE.GameDev.UI;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-
+using System.Linq;
 
 namespace NTUT.CSIE.GameDev.Player.Summary
 {
@@ -19,26 +19,26 @@ namespace NTUT.CSIE.GameDev.Player.Summary
         protected Text _name, _achievement, _numberOfBuildings, _killMonster, _totalAmount;
         [SerializeField]
         protected GameObject _thisObj;
-        private LeaderBoardSceneLogic _scene;
+        [SerializeField]
+        protected int _playerID = -1;
 
         private void Start()
         {
-            var obj = GameObject.FindGameObjectWithTag("SceneLogic");
-            _scene = obj.GetComponent<LeaderBoardSceneLogic>();
-            SetText();
+            if (_playerID == -1)
+                this.gameObject.SetActive(false);
+            else
+                SetText();
         }
 
         private void SetText()
         {
-            var playerInfo = _scene.Manager.Players;
-            int i = (_thisObj.name == "Composing") ? 0 : 1;
-
-            _name.text = playerInfo[i].Name;
-            //_achievement[i].GetComponent<Text>().text = playerInfo[i].Achievement;
-            _numberOfBuildings.text = playerInfo[i].BuiltHouseCount.ToString();
-            _killMonster.text = playerInfo[1-i].TotallyAmountMonster.ToString();
-            //_totalAmount[i].GetComponent<Text>().text=playerInfo[i]
-
+            var playerInfo = this.Manager.GetPlayerAt(_playerID);
+            var result = playerInfo.Result;
+            _name.text = playerInfo.Name;
+            _achievement.text = string.Join(", ", result.Achievement.Select(h => h.Name).ToArray());
+            _numberOfBuildings.text = result.BuiltHouse.ToString();
+            _killMonster.text = result.TotallyAmountMonster.ToString();
+            _totalAmount.text = result.Money.ToString();
         }
     }
 }

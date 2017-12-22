@@ -380,6 +380,8 @@ namespace NTUT.CSIE.GameDev.Monster
             var container = GameObject.Find("PendingRemoveMonster");
             this.transform.parent = container.transform;
             OnMonsterKilled?.Invoke(this._monsterID);
+            var rival = _scene.GetPlayerAt(1 - _playerID);
+            rival.KilledMonster(_monsterID);
         }
 
         public bool IsGodMode => _scene.GetPlayerAt(_playerID).IsGodMode;

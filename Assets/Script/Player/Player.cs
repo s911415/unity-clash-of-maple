@@ -13,6 +13,9 @@ namespace NTUT.CSIE.GameDev.Player
     public class Player : HurtableObject
     {
         public delegate void ValueChangedEventHandler<T>(T value);
+        public delegate void ValueChangedEventHandler();
+        public delegate void MonsterKilledEventHandler(int monsterID, IReadOnlyDictionary<int, int> monsterKilledSummary);
+        public delegate void HouseCreatedEventHandler(HouseInfo house);
         private const int INIT_HOUSES = 6;
         public const int _MAX_HP = 50000;
         public const int MAX_MONEY = 2000000000;
@@ -37,10 +40,20 @@ namespace NTUT.CSIE.GameDev.Player
 
         private FightSceneLogic _scene;
 
+        private bool _died;
+
         public event ValueChangedEventHandler<int> OnHPChanged;
         public event ValueChangedEventHandler<int> OnMoneyChanged;
-        public event ValueChangedEventHandler<ICollection<Tower>> OnTowersChanged;
-        public event ValueChangedEventHandler<ICollection<Honors.Honor>> OnHonorsChanged;
+        public event ValueChangedEventHandler OnHonorsChanged;
+        public event ValueChangedEventHandler OnDied;
+        public event HouseCreatedEventHandler OnHouseCreated;
+        public event MonsterKilledEventHandler OnKilledMonster;
+
+        [SerializeField]
+        private Dictionary<int, int> _beenKilledMonsterCount;
+        [SerializeField]
+        private int _houseDestroyedCount, _builtHouseCount;
+
         public override int MAX_HP => _MAX_HP;
         protected override void Awake()
         {
@@ -50,13 +63,16 @@ namespace NTUT.CSIE.GameDev.Player
             _hp = MAX_HP;
             _info = Manager.GetPlayerAt(_playerID);
             _scene = GetSceneLogic<FightSceneLogic>();
+            InitHouses();
+            _godMode = false;
+            _died = false;
+            ResetCounter();
         }
 
         protected override void Start()
         {
             base.Start();
-            InitHouses();
-            _godMode = false;
+            Attached();
         }
 
         public void Attached()
@@ -64,8 +80,12 @@ namespace NTUT.CSIE.GameDev.Player
             //Call event
             OnHPChanged?.Invoke(_hp);
             OnMoneyChanged?.Invoke(_money);
-            OnTowersChanged?.Invoke(_towers);
-            OnHonorsChanged?.Invoke(_honors);
+            OnHonorsChanged?.Invoke();
+        }
+
+        public void KilledMonster(int monsterID)
+        {
+            OnKilledMonster?.Invoke(monsterID, this.MyKilledMonsterInfo);
         }
 
         public Info Info
@@ -75,6 +95,22 @@ namespace NTUT.CSIE.GameDev.Player
                 if (_info == null) _info = Manager.GetPlayerAt(_playerID);
 
                 return _info;
+            }
+        }
+
+        public Result Result
+        {
+            get
+            {
+                return new Result(
+                           _playerID,
+                           _money,
+                           _hp,
+                           _builtHouseCount,
+                           _houseDestroyedCount,
+                           this.MyKilledMonsterInfo,
+                           _honors
+                       );
             }
         }
 
@@ -96,7 +132,7 @@ namespace NTUT.CSIE.GameDev.Player
 
             if (_money > MAX_MONEY) _money = MAX_MONEY;
 
-            OnMoneyChanged?.Invoke(_money);
+            OnMoneyChanged?.Invoke(m);
             return this;
         }
 
@@ -106,14 +142,14 @@ namespace NTUT.CSIE.GameDev.Player
                 return false;
 
             _money -= m;
-            OnMoneyChanged?.Invoke(_money);
+            OnMoneyChanged?.Invoke(-m);
             return true;
         }
 
         public Player AddHonor(Honors.Honor h)
         {
             this._honors.Add(h);
-            OnHonorsChanged?.Invoke(_honors);
+            OnHonorsChanged?.Invoke();
             return this;
         }
 
@@ -130,7 +166,10 @@ namespace NTUT.CSIE.GameDev.Player
                 _playerID == 0 ? NumberCollection.Type.Violet : NumberCollection.Type.Red,
                 (uint)damage
             );
-            OnHPChanged?.Invoke(_hp);
+
+            if (_hp == 0) Die();
+
+            OnHPChanged?.Invoke(damage);
         }
 
         public override void Recovery(int recover)
@@ -139,18 +178,27 @@ namespace NTUT.CSIE.GameDev.Player
 
             if (_hp > MAX_HP) _hp = MAX_HP;
 
-            OnHPChanged?.Invoke(_hp);
+            OnHPChanged?.Invoke(recover);
         }
 
-        public HouseInfo BuyHouse(Point p)
+        public void Die()
+        {
+            if (_died) return;
+
+            _died = true;
+            OnDied?.Invoke();
+        }
+
+        public HouseInfo BuyHouse(Point p, bool free = false)
         {
             var houseGen = _scene.HouseGenerator;
 
-            if (CostMoney(Config.HOUSE_PRICE))
+            if (free || CostMoney(Config.HOUSE_PRICE))
             {
                 var houseInfo = houseGen.AddHouse(p.Row, p.Column, this._playerID);
-                _info.AddBuiltHouseCount();
+                _builtHouseCount++;
                 houseInfo.OnHouseDestroy += this.OnHouseDestroyed;
+                OnHouseCreated?.Invoke(houseInfo);
                 return houseInfo;
             }
             else
@@ -161,18 +209,16 @@ namespace NTUT.CSIE.GameDev.Player
 
         private void OnHouseDestroyed(Point p)
         {
-            _info.AddHouseDestroyedCount();
-            _scene.Console.Show(Color.red, $"你在{p}的房子被打垮了。");
+            _houseDestroyedCount++;
         }
 
         public void OnMonsterKilled(int monsterID)
         {
-            _info.AddMonsterKillCount(monsterID);
+            _beenKilledMonsterCount[monsterID]++;
             var originalBouns = this.Manager.MonsterInfoCollection[monsterID].Bonus;
             int offset = (int)(originalBouns * .2f);
             var bouns = Random.Range(originalBouns - offset, originalBouns + offset);
             AddMoney(bouns);
-            _scene.Console.Show(Color.gray, $"拾獲{bouns}元");
         }
 
         public HouseInfo SetHouseMonster(Point p, int cardSelectIndex)
@@ -222,14 +268,15 @@ namespace NTUT.CSIE.GameDev.Player
 
         public void InitHouses()
         {
-            var houseGen = _scene.HouseGenerator;
-            int[,] row = { { 1, 4, 7, 1, 4, 7 }, { 1, 4, 7, 1, 4, 7 } };
-            int[,] col = { { 4, 4, 4, 7, 7, 7 }, { 12, 12, 12, 15, 15, 15 } };
+            Point[,] defaultPoint =
+            {
+                { new Point(1, 4), new Point(4, 4), new Point(7, 4), new Point(1, 7), new Point(4, 7), new Point(7, 7), },
+                { new Point(1, 12), new Point(4, 12), new Point(7, 12), new Point(1, 15), new Point(4, 15), new Point(7, 15), },
+            };
 
             for (int i = 0; i < INIT_HOUSES; i++)
             {
-                var house = houseGen.AddHouse(row[_playerID, i], col[_playerID, i], _playerID);
-                house.OnHouseDestroy += OnHouseDestroyed;
+                BuyHouse(defaultPoint[_playerID, i], true);
             }
         }
 
@@ -244,6 +291,19 @@ namespace NTUT.CSIE.GameDev.Player
             else
             {
                 return null;
+            }
+        }
+
+
+        public void ResetCounter()
+        {
+            _beenKilledMonsterCount = new Dictionary<int, int>();
+            _houseDestroyedCount = 0;
+            _builtHouseCount = 0;
+
+            foreach (var m in this.Manager.MonsterInfoCollection.GetAllMonsterId())
+            {
+                _beenKilledMonsterCount.Add(m, 0);
             }
         }
 
@@ -267,6 +327,24 @@ namespace NTUT.CSIE.GameDev.Player
             }
 
             return basis * (currentCount + 1);
+        }
+
+        public IReadOnlyDictionary<int, int> BeenKilledByRivalMonsterCount => _beenKilledMonsterCount;
+
+        public IReadOnlyCollection<Honors.Honor> Honors => _honors;
+
+        private IReadOnlyDictionary<int, int> _rivalMonsterKilled;
+        public IReadOnlyDictionary<int, int> MyKilledMonsterInfo
+        {
+            get
+            {
+                if (_rivalMonsterKilled == null)
+                {
+                    _rivalMonsterKilled = _scene.GetPlayerAt(1 - _playerID)._beenKilledMonsterCount;
+                }
+
+                return _rivalMonsterKilled;
+            }
         }
     }
 }

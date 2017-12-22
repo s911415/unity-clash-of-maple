@@ -23,17 +23,14 @@ namespace NTUT.CSIE.GameDev.Player
         [SerializeField]
         private List<int> _cardIds = new List<int>();
         [SerializeField]
-        private Dictionary<int, int> _killedMonsterCount;
-        [SerializeField]
-        private int _houseDestroyedCount, _builtHouseCount, _lastHP;
-        [SerializeField]
-        private List<Honor> _achievement;
+        private Result _result;
 
         protected override void Awake()
         {
             base.Awake();
             _status = STATUS.NONE;
             _name = string.Empty;
+            _result = null;
         }
 
         internal Info SetName(string name)
@@ -74,55 +71,11 @@ namespace NTUT.CSIE.GameDev.Player
             return "";
         }
 
-        public void AddMonsterKillCount(int mobID)
+        public void SetResult(Result result)
         {
-            _killedMonsterCount[mobID]++;
+            this._result = result;
         }
 
-        public void AddHouseDestroyedCount()
-        {
-            _houseDestroyedCount++;
-        }
-
-        public void AddBuiltHouseCount()
-        {
-            _builtHouseCount++;
-        }
-
-        public void ResetCounter()
-        {
-            _killedMonsterCount = new Dictionary<int, int>();
-            _houseDestroyedCount = 0;
-            _builtHouseCount = 0;
-            _lastHP = 0;
-
-            foreach (var m in this.Manager.MonsterInfoCollection.GetAllMonsterId())
-            {
-                _killedMonsterCount.Add(m, 0);
-            }
-        }
-
-        private int GetTotallyAmountMonster()
-        {
-            int amount=0;
-            foreach(var m in this.Manager.MonsterInfoCollection.GetAllMonsterId())
-            {
-                amount += _killedMonsterCount[m];
-            }
-            return amount;
-        }
-
-        public void SetLastHP(int value)
-        {
-            _lastHP = value;
-        }
-
-        public int LastHP => _lastHP;
-
-        public IReadOnlyDictionary<int, int> KilledMonsterCount => _killedMonsterCount;
-        public int TotallyAmountMonster => GetTotallyAmountMonster();
-        public int HouseDestroyedCount => _houseDestroyedCount;
-        public int BuiltHouseCount => _builtHouseCount;
-        public List<Honor> Achievement => _achievement;
+        public Result Result => _result;
     }
 }

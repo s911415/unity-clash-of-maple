@@ -13,7 +13,7 @@ namespace NTUT.CSIE.GameDev.Component
     ///
     public class CameraMoveOnEdge : MonoBehaviour
     {
-        public int boundary = 50;
+        public int boundary = 35;
         public int speed = 5;
         public GameObject referenceObject = null;
 
@@ -39,30 +39,31 @@ namespace NTUT.CSIE.GameDev.Component
             Vector3 pos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
             Vector3 orgPos = new Vector3(pos.x, pos.y, pos.z);
             bool anyChange = false;
+            float moveSpeed = IsBooster ? speed * 10 : speed;
 
             if (!SpecialKeyController.GetKeyState(SpecialKeyController.VK_SCROLL))
             {
                 if (Input.mousePosition.x > _screenWidth - boundary)
                 {
-                    pos.x += speed * Time.deltaTime; // move on +X axis
+                    pos.x += moveSpeed * Time.deltaTime; // move on +X axis
                     anyChange = true;
                 }
 
                 if (Input.mousePosition.x < 0 + boundary)
                 {
-                    pos.x -= speed * Time.deltaTime; // move on -X axis
+                    pos.x -= moveSpeed * Time.deltaTime; // move on -X axis
                     anyChange = true;
                 }
 
                 if (Input.mousePosition.y > _screenHeight - boundary)
                 {
-                    pos.z += speed * Time.deltaTime; // move on +Z axis
+                    pos.z += moveSpeed * Time.deltaTime; // move on +Z axis
                     anyChange = true;
                 }
 
                 if (Input.mousePosition.y < 0 + boundary)
                 {
-                    pos.z -= speed * Time.deltaTime; // move on -Z axis
+                    pos.z -= moveSpeed * Time.deltaTime; // move on -Z axis
                     anyChange = true;
                 }
             }
@@ -95,6 +96,7 @@ namespace NTUT.CSIE.GameDev.Component
             GUI.Box(new Rect((Screen.width / 2) - 70, Screen.height - 30, 140, 25), "Mouse X = " + Input.mousePosition.x);
             GUI.Box(new Rect(5, (Screen.height / 2) - 12, 140, 25), "Mouse Y = " + Input.mousePosition.y);*/
         }
+
         private void OnMouseEnter()
         {
             Debug.Log("Mouse Enter");
@@ -104,5 +106,7 @@ namespace NTUT.CSIE.GameDev.Component
         {
             Debug.Log("Mouse Exit");
         }
+
+        public bool IsBooster => Input.GetKey(KeyCode.LeftControl);
     }
 }

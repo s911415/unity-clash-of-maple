@@ -63,7 +63,7 @@ namespace NTUT.CSIE.GameDev.Scene
 
             foreach (var p in _players)
             {
-                p.OnHPChanged += OnPlayerHPChanged;
+                p.OnDied += GameOver;
             }
         }
 
@@ -154,20 +154,12 @@ namespace NTUT.CSIE.GameDev.Scene
             ClearInterval(_godReward);
         }
 
-        protected void OnPlayerHPChanged(int value)
-        {
-            if (value <= 0)
-            {
-                GameOver();
-            }
-        }
-
         protected void GameOver()
         {
             foreach (var p in _players)
             {
-                p.Info.SetLastHP(p.HP);
                 p.Info.SetStatus(Player.Info.STATUS.OVER);
+                p.Info.SetResult(p.Result);
             }
 
             SceneManager.LoadScene("LeaderBoard");
@@ -198,6 +190,8 @@ namespace NTUT.CSIE.GameDev.Scene
 
         internal static void CheckPlayer(Player.Info p)
         {
+            ChooseCardSceneLogic.CheckPlayer(p);
+
             if (p.Status < Player.Info.STATUS.FIGHT)
             {
                 var cards = new List<Monster.Info>(p.Manager.MonsterInfoCollection.GetInfoListLessOrEqualToLevel(Difficulty.MAX_LEVEL));
@@ -215,8 +209,6 @@ namespace NTUT.CSIE.GameDev.Scene
 
         internal static void CheckPlayer(Player.Player p)
         {
-            ChooseCardSceneLogic.CheckPlayer(p.Info);
-
             if (p.Info.Status < Player.Info.STATUS.FIGHT)
             {
                 CheckPlayer(p.Info);
@@ -235,7 +227,6 @@ namespace NTUT.CSIE.GameDev.Scene
         }
         private void InitPlayer(Player.Player p, Difficulty.Level level)
         {
-            p.Info.ResetCounter();
             int money = 0;
 
             switch (level)
