@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33848942345926304}
   - component: {fileID: 114799889304223114}
   - component: {fileID: 65245836818180722}
+  - component: {fileID: 82090321303323742}
   m_Layer: 0
   m_Name: House
   m_TagString: Untagged
@@ -91,6 +92,86 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 10, y: 10, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!82 &82090321303323742
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1242297440098950}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!114 &114799889304223114
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -102,6 +183,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 354687f5d01230041b6549ebeacf02a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _audio: {fileID: 82090321303323742}
+  _explosionClip: {fileID: 8300000, guid: 7d32a4fbdebea564fbff88e8f2f23cb6, type: 3}
+  _damageClip: {fileID: 8300000, guid: f8404dd1a016b304090448bb7b0b03f9, type: 3}
   scale: 0
   _houseId: 0
   _houseRenderer: {fileID: 212437515076651744}
@@ -128,6 +212,7 @@ MonoBehaviour:
   _direction: 1
   _explosionPrefab: {fileID: 1469792933130234, guid: 8ba9721da7b56e847a729400a52df02a,
     type: 2}
+  _inTerroristAttack: 0
 --- !u!212 &212437515076651744
 SpriteRenderer:
   m_ObjectHideFlags: 1

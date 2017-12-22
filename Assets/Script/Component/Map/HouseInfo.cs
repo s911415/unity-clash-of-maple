@@ -13,6 +13,10 @@ namespace NTUT.CSIE.GameDev.Component.Map
 {
     public class HouseInfo : HurtableObject
     {
+        [SerializeField]
+        private AudioSource _audio;
+        [SerializeField]
+        private AudioClip _explosionClip, _damageClip;
         private const int NONE = -1;
         public int scale = 1;
         [SerializeField]
@@ -220,7 +224,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
             GameObject explosion = Instantiate(_explosionPrefab);
             explosion.transform.position = transform.position + new Vector3(0f, 0f, -0.7f);
             _scene.HouseGenerator.DestroyHouse(this._position);
-            Debug.Log("eee");
+            _audio.PlayOneShot(_explosionClip);
             OnHouseDestroy?.Invoke(_position);
         }
 
@@ -263,6 +267,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
                 _playerID == 0 ? NumberCollection.Type.Violet : NumberCollection.Type.Red,
                 (uint)attack
             );
+            _audio.PlayOneShot(_damageClip);
 
             if (_hp <= 0)
             {
