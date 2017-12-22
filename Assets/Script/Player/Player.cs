@@ -62,16 +62,16 @@ namespace NTUT.CSIE.GameDev.Player
             _hp = MAX_HP;
             _info = Manager.GetPlayerAt(_playerID);
             _scene = GetSceneLogic<FightSceneLogic>();
-            InitHouses();
             _godMode = false;
             _died = false;
             _uniqueSkillUsed = false;
-            ResetCounter();
         }
 
         protected override void Start()
         {
             base.Start();
+            InitHouses();
+            ResetCounter();
             Attached();
         }
 

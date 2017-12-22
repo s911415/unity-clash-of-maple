@@ -55,6 +55,7 @@ namespace NTUT.CSIE.GameDev.Monster
         private FightSceneLogic _scene;
         public delegate void MonsterKilledEvent(int monsterID);
         public event MonsterKilledEvent OnMonsterKilled;
+        private uint _failAttackCount = 0;
 
         // finalTartget 敵方主堡
         private Vector3 _finalTarget;
@@ -101,7 +102,7 @@ namespace NTUT.CSIE.GameDev.Monster
             {
                 if (!_target) _action = Action.Walk;
 
-                if (Vector3.Distance(_finalTarget, transform.localPosition) < 1)
+                if (InRange(_finalTarget, 1))
                     _isArrival = true;
                 else
                     _isArrival = false;
@@ -126,6 +127,7 @@ namespace NTUT.CSIE.GameDev.Monster
                              _finalTarget
                          ) - transform.localPosition;
             v3.z -= 5;
+            v3.y = 0;
             v3 = v3.normalized * (_speed * 0.1f);
             v3.y = 0;
 
@@ -198,21 +200,31 @@ namespace NTUT.CSIE.GameDev.Monster
         /// <summary>   Damage target, Called From Animator event </summary>
         public virtual void DamageTarget()
         {
+            const uint FAIL_COUNT = 2;
+
+            if (_attackAudioClip != null)
+                _audio.PlayOneShot(_attackAudioClip);
+
             if (_isArrival)
             {
                 int opponentID = Math.Abs(_playerID - 1);
-
-                if (_playerID == 0) Debug.Log("Damage house" + opponentID);
-                else Debug.Log("Robot: Damage house" + opponentID);
-
                 GetSceneLogic<FightSceneLogic>().GetPlayerAt(opponentID).Damage(CalcDamageValue());
-
-                if (_attackAudioClip != null)
-                    _audio.PlayOneShot(_attackAudioClip);
             }
             else
             {
                 var nearAttackableObject = GetAttackableObject(this._info.AttackRange);
+
+                if (nearAttackableObject.Count == 0)
+                    _failAttackCount++;
+                else
+                    _failAttackCount = 0;
+
+                if (_failAttackCount > FAIL_COUNT)
+                {
+                    _target = null;
+                    _action = Action.Walk;
+                }
+
                 DamageTargets(nearAttackableObject);
             }
         }
@@ -434,16 +446,16 @@ namespace NTUT.CSIE.GameDev.Monster
             }
         }
 
-        protected Monster[] GetEnemies(float range = float.MaxValue)
+        protected Monster[] GetEnemies(float range = float.PositiveInfinity)
         {
             Monster[] monsterList = _scene.GetAllMonsterInfo();
             var query = monsterList.Where(m => m._playerID != this._playerID);
 
-            if (range < float.MaxValue)
+            if (!float.IsInfinity(range))
             {
                 var myPos = this.transform.localPosition;
                 query = query.Where(
-                            m => Vector3.Distance(m.transform.localPosition, myPos) <= range
+                            m => m && this && InRange(m.transform.localPosition, range)
                         )
                         .Where(m => m.Alive)
                         ;
@@ -452,16 +464,16 @@ namespace NTUT.CSIE.GameDev.Monster
             return query.ToArray();
         }
 
-        protected HouseInfo[] GetEnemyHouses(float range = float.MaxValue)
+        protected HouseInfo[] GetEnemyHouses(float range = float.PositiveInfinity)
         {
             HouseInfo[] houseList = _scene.HouseGenerator.GetAllHouseInfo();
             var query = houseList.Where(m => m.PlayerID != this._playerID);
 
-            if (range < float.MaxValue)
+            if (!float.IsInfinity(range))
             {
                 var myPos = this.transform.localPosition;
                 query = query.Where(
-                            m => Vector3.Distance(m.transform.position, myPos) <= range
+                            m => m && this && InRange(m.transform.position, range)
                         )
                         .Where(m => m.Alive)
                         ;
@@ -470,7 +482,7 @@ namespace NTUT.CSIE.GameDev.Monster
             return query.ToArray();
         }
 
-        protected IReadOnlyList<HurtableObject> GetAttackableObject(float range = float.MaxValue)
+        protected IReadOnlyList<HurtableObject> GetAttackableObject(float range = float.PositiveInfinity)
         {
             List<HurtableObject> list = new List<HurtableObject>();
             var houseList = GetEnemyHouses(range);
@@ -479,26 +491,35 @@ namespace NTUT.CSIE.GameDev.Monster
             list.AddRange(monsterList);
             var p = _scene.GetPlayerAt(1 - _playerID);
 
-            if (Vector3.Distance(p.gameObject.transform.localPosition, this.transform.localPosition) <= range)
+            if (InRange(p.gameObject.transform.localPosition, range))
                 list.Add(p);
+
+            if (list.Count == 0)
+                _failAttackCount++;
 
             return list;
         }
 
-        public bool IsAllowAttack(HurtableObject m)
+        private bool InRange(Vector3 v, float range)
         {
-            return Vector3.Distance(m.transform.localPosition, this.transform.localPosition) <= _info.AttackRange;
+            var d = Vector3.Distance(this.transform.localPosition, v);
+            return Helper.CompareFloat(d, range) <= 0;
         }
 
-        protected Monster[] GetFriends(float range = float.MaxValue)
+        public bool IsAllowAttack(HurtableObject m)
+        {
+            return InRange(m.transform.localPosition, _info.AttackRange);
+        }
+
+        protected Monster[] GetFriends(float range = float.PositiveInfinity)
         {
             Monster[] monsterList = _scene.GetAllMonsterInfo();
             var query = monsterList.Where(m => m._playerID == this._playerID);
 
-            if (range < float.MaxValue)
+            if (!float.IsInfinity(range))
             {
                 query = query.Where(
-                            m => m && this && Vector3.Distance(m.transform.position, this.transform.position) <= range
+                            m => m && this && InRange(m.transform.localPosition, range)
                         );
             }
 

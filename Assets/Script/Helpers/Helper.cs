@@ -27,5 +27,18 @@ namespace NTUT.CSIE.GameDev.Helpers
 
         public static Vector3 Clone(Vector3 v) => new Vector3(v.x, v.y, v.z);
 
+        public static int CompareFloat(float a, float b)
+        {
+            const float RATE = 10f;
+            float diff = (a * RATE) - (b * RATE);
+            diff = Mathf.Floor(diff);
+
+            if (diff == +0.0f || diff == -0.0f) return 0;
+
+            if (diff < 0) return -1;
+
+            return 1;
+        }
+
     }
 }
