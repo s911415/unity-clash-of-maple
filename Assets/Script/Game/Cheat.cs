@@ -35,7 +35,7 @@ namespace NTUT.CSIE.GameDev.Game
             }
 
             //For Test
-            if (Input.GetKeyDown(KeyCode.F9))
+            if (Input.GetKey(KeyCode.F9))
             {
                 var house = _scene.HouseGenerator[_scene.MapGridGenerator.CurPoint];
 

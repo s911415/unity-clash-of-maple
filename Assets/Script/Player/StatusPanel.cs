@@ -19,49 +19,53 @@ namespace NTUT.CSIE.GameDev.Player
         [SerializeField]
         protected RectBar _hpBar;
 
+        protected override void Awake()
+        {
+            base.Awake();
+            BindEvents();
+        }
+
         private void Start()
         {
             _nameText.text = _player.Info.Name;
-            BindEvents();
         }
 
         private void BindEvents()
         {
             _player.OnHPChanged += OnHPChanged;
             _player.OnMoneyChanged += OnMoneyChanged;
-            _player.OnTowersChanged += OnTowersChanged;
             _player.OnHonorsChanged += OnHonorsChanged;
-            _player.Attached();
         }
 
         private void Update()
         {
             // Call event from Editor
             // #if UNITY_EDITOR
-            _player.Attached();
+            //_player.Attached();
             // #endif
         }
 
         private void OnHPChanged(int value)
         {
-            var text = string.Format("{0}/{1}", value, _player.MAX_HP);
+            Debug.Log($"Player{_player.Info.id}: HP: {_player.HP}");
+            var text = string.Format("{0}/{1}", _player.HP, _player.MAX_HP);
             _hpText.text = text;
-            _hpBar.Value = (float)value / (float)_player.MAX_HP;
+            _hpBar.Value = (float)_player.HP / (float)_player.MAX_HP;
         }
 
         private void OnMoneyChanged(int value)
         {
-            var text = String.Format("${0:#,##0}", value);
+            var text = String.Format("${0:#,##0}", _player.Money);
             _moneyText.text = text;
         }
 
-        private void OnTowersChanged(ICollection<Tower> list)
+        private void OnTowersChanged()
         {
         }
 
-        private void OnHonorsChanged(ICollection<Honors.Honor> list)
+        private void OnHonorsChanged()
         {
-            var text = String.Join(System.Environment.NewLine, list);
+            var text = String.Join(System.Environment.NewLine, _player.Honors);
             _honorsText.text = text;
         }
     }

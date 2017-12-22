@@ -32,7 +32,7 @@ namespace NTUT.CSIE.GameDev.Scene
         private void InitMembers()
         {
         }
-        
+
         protected virtual void Start()
         {
             ShowImage();
@@ -40,45 +40,66 @@ namespace NTUT.CSIE.GameDev.Scene
 
         protected override void Update()
         {
-            base.Update();          
+            base.Update();
         }
 
         private void ShowImage()
         {
-                var winner = GameObject.FindGameObjectWithTag("Win");
-                var loser = GameObject.FindGameObjectWithTag("Lose");
-                winner.SetActive(((GetWinner() == DEFAULT_PLAYERID)));
-                loser.SetActive(!(GetWinner() == DEFAULT_PLAYERID));
+            var winner = GameObject.FindGameObjectWithTag("Win");
+            var loser = GameObject.FindGameObjectWithTag("Lose");
+            winner.SetActive(((GetWinner() == DEFAULT_PLAYERID)));
+            loser.SetActive(!(GetWinner() == DEFAULT_PLAYERID));
         }
 
         public void OnButtonClick()
         {
             Debug.Log("Click Button");
+            new DialogBuilder().SetContent("是否要重新開始遊戲?")
+            .SetYesBtnStatus(true).SetNoBtnStatus(true)
+            .SetClickListener(new Dialog.ConfirmDialogEventListener(RestartGame, PromptQuitGame))
+            .Show(_window);
+            //QuitGame();
+        }
+
+        private void RestartGame()
+        {
+            Destroy(this.Manager.gameObject);
+            SceneManager.LoadScene("Splash");
+        }
+
+        private void PromptQuitGame()
+        {
+            new DialogBuilder().SetContent("是否要結束遊戲?")
+            .SetYesBtnStatus(true).SetNoBtnStatus(true)
+            .SetClickListener(new Dialog.ConfirmDialogEventListener(QuitGame, () => { }))
+            .Show(_window);
         }
 
         public int GetWinner()
         {
-            var playerInfo = this.Manager.Players.Where(p => p.LastHP > 0).FirstOrDefault();
+            var playerInfo = this.Manager.Players.Where(p => p.Result.HP > 0).FirstOrDefault();
+
             if (playerInfo)
-            {                                                                                                                               
+            {
                 return playerInfo.id;
             }
 
             return -1;
         }
 
-        public void QuitGame()
+        private void QuitGame()
         {
-            #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-            #else
-                Application.Quit();
-            #endif
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
         }
 
         public int GetLoser()
         {
-            var playerInfo = this.Manager.Players.Where(p => p.LastHP <= 0).FirstOrDefault();
+            var playerInfo = this.Manager.Players.Where(p => p.Result.HP <= 0).FirstOrDefault();
+
             if (playerInfo)
             {
                 return playerInfo.id;
@@ -109,20 +130,24 @@ namespace NTUT.CSIE.GameDev.Scene
 
             if (p.Status < Player.Info.STATUS.OVER)
             {
-                p.ResetCounter();
                 p.SetStatus(Player.Info.STATUS.OVER);
-                if (p.id == 0)
-                {
-                    p.SetName("Player0");
-                    p.SetLastHP(500);
-                }
-                else
-                {
-                    p.SetName("Robot");
-                    p.SetLastHP(0);
-                }
-            }
+                var randomKilledMonsterInfo = new Dictionary<int, int>();
 
+                foreach (var id in p.Manager.MonsterInfoCollection.GetAllMonsterId())
+                {
+                    randomKilledMonsterInfo.Add(id, Random.Range(0, 10));
+                }
+
+                p.SetResult(new Result(
+                                p.id,
+                                1000,
+                                500 * (1 - p.id),
+                                1,
+                                2,
+                                randomKilledMonsterInfo,
+                                new List<Honor> { Honor.開發者模式, Honor.除錯大師}
+                            ));
+            }
         }
         #endregion
 
