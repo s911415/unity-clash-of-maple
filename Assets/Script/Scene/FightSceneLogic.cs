@@ -100,16 +100,13 @@ namespace NTUT.CSIE.GameDev.Scene
             var house = this.HouseGenerator[p] ?? _defaultHouseInfo;
             var allowShow = false;
 
-            if (house.Type != HouseInfo.HouseType.Master)
+            if (
+                p.Column < 10 ||
+                this.Manager.Difficulty == Difficulty.Level.Demo
+            )
             {
-                if (
-                    p.Column < 10 ||
-                    this.Manager.Difficulty == Difficulty.Level.Demo
-                )
-                {
-                    _controlPanel.DisplayInfo(house);
-                    allowShow = true;
-                }
+                _controlPanel.DisplayInfo(house);
+                allowShow = true;
             }
 
             if (!allowShow)

@@ -4666,6 +4666,14 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a70de387f34dd0b409f03def01ca42f0, type: 3}
   - {fileID: 21300000, guid: 1344e2fb15687fb47a5aaed9f1872329, type: 3}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 21300000, guid: f78cc78c490dba4408c6c6c0b42b5f3d, type: 3}
+  - {fileID: 21300000, guid: fe0813eb96cf46d499c95c5328e2f238, type: 3}
   upgradeAttackText: {fileID: 2040829674}
   upgradeHPText: {fileID: 362063318}
   upgradeSpeedText: {fileID: 1757452684}
@@ -4682,6 +4690,16 @@ MonoBehaviour:
   - {fileID: 1858967803}
   - {fileID: 2045028829}
   - {fileID: 1831979227}
+  _pictureObj: {fileID: 58686008}
+  _describeObj: {fileID: 344790911}
+  _miniMapObj: {fileID: 849481619}
+  _buyPanel: {fileID: 1710795465}
+  _selectPanel: {fileID: 1382388623}
+  _upgradePanel: {fileID: 352224902}
+  _masterPanel: {fileID: 771237834}
+  _picImage: {fileID: 450076815}
+  _picHpText: {fileID: 873226432}
+  _picNameText: {fileID: 1398333162}
 --- !u!1 &1659658643 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1574642032079268, guid: 69650fc704120384ba62fbd0b8af1284,
