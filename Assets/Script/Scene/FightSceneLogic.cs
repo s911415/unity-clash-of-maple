@@ -241,7 +241,7 @@ namespace NTUT.CSIE.GameDev.Scene
                     break;
 
                 case Difficulty.Level.Demo:
-                    money = Player.Player.MAX_MONEY;
+                    money = Config.PLAYER_MAX_MONEY;
                     break;
             }
 

@@ -67,7 +67,7 @@ namespace NTUT.CSIE.GameDev.Game
         }
 
 
-        private static uint _timerID = 0;
+        private static uint _timerID = 1;
         private static Dictionary<uint, Timer> _timerList = new Dictionary<uint, Timer>();
 
         protected virtual void Update()

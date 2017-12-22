@@ -19,7 +19,7 @@ namespace NTUT.CSIE.GameDev.UI
         public Text upgradeAttackText, upgradeHPText, upgradeSpeedText;
 
         [SerializeField]
-        protected Button _buyOK, _buyCancel, _upgAtt, _upgHP, _upgSpeed, _disCard;
+        protected Button _buyOK, _buyCancel, _upgAtt, _upgHP, _upgSpeed, _disCard, _uniAttBtn, _uniDefBtn;
         [SerializeField]
         protected Button[] _selectCard;
         [SerializeField]
@@ -54,6 +54,21 @@ namespace NTUT.CSIE.GameDev.UI
         {
             var player = _scene.GetPlayerAt(Manager.DEFAULT_PLAYER_ID);
             System.Action noMoneyMsg = () => new DialogBuilder().SetContent("你沒錢").Show(_scene.Window);
+            System.Action<System.Action> doActionOrShowErrMsg = (System.Action a) =>
+            {
+                try
+                {
+                    a();
+                }
+                catch (System.Exception e)
+                {
+                    new DialogBuilder()
+                    .SetIcon(Dialog.Icon.Error)
+                    .SetTitle("錯誤")
+                    .SetContent(e.Message)
+                    .Show(_scene.Window);
+                }
+            };
             System.Action<HouseInfo> checkInfoAndShow = (houseInfo) =>
             {
                 if (houseInfo != null)
@@ -62,9 +77,7 @@ namespace NTUT.CSIE.GameDev.UI
                     DisplayInfo(houseInfo);
                 }
                 else
-                {
                     noMoneyMsg.Invoke();
-                }
             };
             _buyOK.onClick.AddListener(() =>
             {
@@ -105,6 +118,14 @@ namespace NTUT.CSIE.GameDev.UI
             {
                 var houseInfo = player.DiscardHouseMonster(_scene.MapGridGenerator.CurPoint);
                 checkInfoAndShow.Invoke(houseInfo);
+            });
+            _uniAttBtn.onClick.AddListener(() =>
+            {
+                doActionOrShowErrMsg(() => player.DoUniqueSkill(Player.Player.UniqueSkill.Attack));
+            });
+            _uniDefBtn.onClick.AddListener(() =>
+            {
+                doActionOrShowErrMsg(() => player.DoUniqueSkill(Player.Player.UniqueSkill.Defense));
             });
         }
 

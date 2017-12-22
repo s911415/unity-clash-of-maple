@@ -46,6 +46,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private FightSceneLogic _scene;
         [SerializeField]
         private GameObject _explosionPrefab;
+        [SerializeField]
+        private bool _inTerroristAttack;
 
         public delegate void HouseDestroyEvent(Point p);
         public event HouseDestroyEvent OnHouseDestroy;
@@ -125,6 +127,12 @@ namespace NTUT.CSIE.GameDev.Component.Map
             return this;
         }
 
+        public void TerroristAttack(uint time)
+        {
+            _inTerroristAttack = true;
+            SetTimeout(() => _inTerroristAttack = false, time);
+        }
+
         public void Initialize()
         {
             this.name = string.Format("House #{0} ({1}, {2})", _houseId, _position.Row, _position.Column);
@@ -197,6 +205,9 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         private void Spawn()
         {
+            if (_inTerroristAttack)
+                return;
+
             Debug.Log(string.Format("召喚: {0}", MonsterInfo.Name));
             _scene.SpawnMonster(MonsterInfo, _playerID, this);
         }
