@@ -26,15 +26,12 @@ namespace NTUT.CSIE.GameDev.UI
         protected override void Awake()
         {
             base.Awake();
-            this.gameObject.SetActive(false);
         }
 
         public void SetResult(Result value)
         {
             if (value != Result.None)
             {
-                this.gameObject.SetActive(true);
-
                 if (value == Result.Win) _audio.PlayOneShot(_winClip);
                 else if (value == Result.Lose) _audio.PlayOneShot(_loseClip);
             }

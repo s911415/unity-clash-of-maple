@@ -169,8 +169,8 @@ namespace NTUT.CSIE.GameDev.Player
             if (_uniqueSkillUsed)
                 throw new System.Exception("無法使用兩次大絕");
 
-            if ((float)_hp / MAX_HP >= Config.PLAYER_UNIQUE_REQUIRE_HP)
-                throw new System.Exception($"HP少於{Config.PLAYER_UNIQUE_REQUIRE_HP:P0}才能使用大絕");
+            if ((float)_hp / MAX_HP >= Config.PLAYER_UNIQUE_REQUIRE_HP || CurrentBuildingCount > 0)
+                throw new System.Exception($"HP少於{Config.PLAYER_UNIQUE_REQUIRE_HP:P0}, 且場上沒有建築物才能使用大絕");
 
             _uniqueSkillUsed = true;
 
@@ -390,6 +390,19 @@ namespace NTUT.CSIE.GameDev.Player
             }
 
             return basis * (currentCount + 1);
+        }
+
+        public int CurrentBuildingCount
+        {
+            get
+            {
+                return _scene.HouseGenerator
+                       .GetAllHouseInfo()
+                       .Where(h => h.PlayerID == _playerID)
+                       .Select(h => h.Type)
+                       .Where(t => t != HouseInfo.HouseType.Master)
+                       .Count();
+            }
         }
 
         public IReadOnlyDictionary<int, int> BeenKilledByRivalMonsterCount => _beenKilledMonsterCount;

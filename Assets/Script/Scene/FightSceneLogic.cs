@@ -46,6 +46,8 @@ namespace NTUT.CSIE.GameDev.Scene
         protected AudioClip _defaultBgmClip, _terroristAttackClip;
 
         [SerializeField]
+        protected GameObject _gameResult;
+        [SerializeField]
         protected ResultController _gameResultController;
         protected bool _isOver;
 
@@ -175,7 +177,7 @@ namespace NTUT.CSIE.GameDev.Scene
             }
         }
 
-        protected void OnApplicationQuit()
+        protected void OnDestroy()
         {
             ClearInterval(_godReward);
         }
@@ -195,6 +197,7 @@ namespace NTUT.CSIE.GameDev.Scene
             //Stop All Monster Action
             foreach (var m in GetAllMonsterInfo()) m.Freeze();
 
+            _gameResult.SetActive(true);
             _bgmAudio.Stop();
             _gameResultController.SetResult(_players[0].Alive ? ResultController.Result.Win : ResultController.Result.Lose);
             _gameResultController.OnAnimationFinished += () => SceneManager.LoadScene("LeaderBoard");
