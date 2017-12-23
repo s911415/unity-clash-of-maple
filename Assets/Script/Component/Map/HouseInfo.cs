@@ -16,7 +16,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         [SerializeField]
         private AudioSource _audio;
         [SerializeField]
-        private AudioClip _explosionClip, _damageClip;
+        private AudioClip _explosionClip = null, _damageClip = null;
         private const int NONE = -1;
         public int scale = 1;
         [SerializeField]
