@@ -41,6 +41,15 @@ namespace NTUT.CSIE.GameDev.Player
         private FightSceneLogic _scene;
 
         private bool _died, _uniqueSkillUsed;
+        protected bool _protectedBySeaFood;
+
+        [SerializeField]
+        protected AudioSource _audio;
+
+        [SerializeField]
+        protected Sprite _protectBySeafoodImage;
+        [SerializeField]
+        protected AudioClip _protectBySeafoodClip;
 
         public event ValueChangedEventHandler<int> OnHPChanged;
         public event ValueChangedEventHandler<int> OnMoneyChanged;
@@ -73,6 +82,7 @@ namespace NTUT.CSIE.GameDev.Player
             base.Start();
             InitHouses();
             ResetCounter();
+            _protectedBySeaFood = false;
             Attached();
         }
 
@@ -170,7 +180,7 @@ namespace NTUT.CSIE.GameDev.Player
             }
             else if (type == UniqueSkill.Defense)
             {
-                this.SeaFoodBless();
+                SeaFoodBless();
             }
         }
 
@@ -190,11 +200,25 @@ namespace NTUT.CSIE.GameDev.Player
 
         public void SeaFoodBless()
         {
+            var sprite = GetComponent<SpriteRenderer>();
+            Sprite currentSprite = sprite.sprite;
+            sprite.sprite = _protectBySeafoodImage;
+            _protectedBySeaFood = true;
+            var audioInterval = SetInterval(() =>
+            {
+                _audio.PlayOneShot(_protectBySeafoodClip);
+            }, 175);
+            SetTimeout(() =>
+            {
+                sprite.sprite = currentSprite;
+                _protectedBySeaFood = false;
+                ClearInterval(audioInterval);
+            }, Config.PLAYER_UNIQUE_SKILL_TIME);
         }
 
         public override void Damage(int damage)
         {
-            if (IsGodMode) damage = 0;
+            if (IsGodMode || _protectedBySeaFood) damage = 0;
 
             _hp -= damage;
 

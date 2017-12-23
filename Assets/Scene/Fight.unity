@@ -191,6 +191,12 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.x
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 114906176924795414, guid: 69650fc704120384ba62fbd0b8af1284,
+        type: 2}
+      propertyPath: _protectBySeafoodImage
+      value: 
+      objectReference: {fileID: 21300000, guid: 63da35b9521f03c4c8527a52e34d6bb7,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 69650fc704120384ba62fbd0b8af1284, type: 2}
   m_IsPrefabParent: 0
@@ -1596,6 +1602,12 @@ Prefab:
       propertyPath: m_FlipX
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114906176924795414, guid: 69650fc704120384ba62fbd0b8af1284,
+        type: 2}
+      propertyPath: _protectBySeafoodImage
+      value: 
+      objectReference: {fileID: 21300000, guid: b0b51aa5e9800484c9fdb9eae5ff5dc1,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 69650fc704120384ba62fbd0b8af1284, type: 2}
   m_IsPrefabParent: 0
