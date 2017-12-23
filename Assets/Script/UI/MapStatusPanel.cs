@@ -23,12 +23,15 @@ namespace NTUT.CSIE.GameDev.UI
         [SerializeField]
         protected Button[] _selectCard;
         [SerializeField]
-        private GameObject _pictureObj, _describeObj, _miniMapObj, _buyPanel, _selectPanel, _upgradePanel, _masterPanel;
+        private GameObject _pictureObj = null, _describeObj = null, _miniMapObj = null,
+                           _buyPanel = null, _selectPanel = null, _upgradePanel = null,
+                           _masterPanel = null;
 
         [SerializeField]
-        private Image _picImage;
+        private Image _picImage = null;
         [SerializeField]
-        private Text _picHpText, _picNameText;
+        private Text _picHpText = null,
+                     _picNameText = null;
 
         private FightSceneLogic _scene;
 
@@ -41,6 +44,7 @@ namespace NTUT.CSIE.GameDev.UI
                 .Select(mobID => this.Manager.MonsterInfoCollection[mobID])
             );
             _scene = GetSceneLogic<FightSceneLogic>();
+            Debug.Assert(_miniMapObj != null);
             BindButtonEvent();
         }
 

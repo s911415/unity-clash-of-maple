@@ -50,6 +50,7 @@ namespace NTUT.CSIE.GameDev.CardSelect
         public void OnClick()
         {
             CreateCard createCard = _difficultBtn.GetComponent<CreateCard>();
+            _button.interactable = false;
             GetSceneLogic<ChooseCardSceneLogic>().SetPlayerInfoAndGameDiff(createCard.gameDifficult, _selectCardSet);
             GetSceneLogic<ChooseCardSceneLogic>().OnClickStartButton();
         }

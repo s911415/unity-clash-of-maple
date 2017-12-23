@@ -1,0 +1,342 @@
+fileFormatVersion: 2
+guid: 18dc2351d9e3fb44b93b23a06240d8a6
+timeCreated: 1514036301
+licenseType: Pro
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: card_border_0
+    21300002: card_border_1
+    21300004: card_border_2
+    21300006: card_border_3
+    21300008: card_border_4
+    21300010: card_border_5
+    21300012: card_border_6
+    21300014: card_border_7
+    21300016: card_border_8
+    21300018: card_border_9
+    21300020: card_border_10
+    21300022: card_border_11
+    21300024: card_border_12
+    21300026: card_border_13
+    21300028: card_border_14
+    21300030: card_border_15
+    21300032: card_border_16
+  externalObjects: {}
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - buildTarget: Standalone
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: card_border_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2800
+        width: 961
+        height: 560
+      alignment: 9
+      pivot: {x: 0.4994797, y: 0.775}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: card_border_1
+      rect:
+        serializedVersion: 2
+        x: 961
+        y: 2800
+        width: 961
+        height: 560
+      alignment: 9
+      pivot: {x: 0.4994797, y: 0.775}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: card_border_2
+      rect:
+        serializedVersion: 2
+        x: 1922
+        y: 2800
+        width: 961
+        height: 560
+      alignment: 9
+      pivot: {x: 0.4994797, y: 0.775}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: card_border_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2240
+        width: 961
+        height: 560
+      alignment: 9
+      pivot: {x: 0.4994797, y: 0.775}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: card_border_4
+      rect:
+        serializedVersion: 2
+        x: 961
+        y: 2240
+        width: 961
+        height: 560
+      alignment: 9
+      pivot: {x: 0.4994797, y: 0.775}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: card_border_5
+      rect:
+        serializedVersion: 2
+        x: 1922
+        y: 2240
+        width: 961
+        height: 560
+      alignment: 9
+      pivot: {x: 0.4994797, y: 0.775}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: card_border_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1680
+        width: 961
+        height: 560
+      alignment: 9
+      pivot: {x: 0.4994797, y: 0.775}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: card_border_7
+      rect:
+        serializedVersion: 2
+        x: 961
+        y: 1680
+        width: 961
+        height: 560
+      alignment: 9
+      pivot: {x: 0.4994797, y: 0.775}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: card_border_8
+      rect:
+        serializedVersion: 2
+        x: 1922
+        y: 1680
+        width: 961
+        height: 560
+      alignment: 9
+      pivot: {x: 0.4994797, y: 0.775}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: card_border_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1120
+        width: 961
+        height: 560
+      alignment: 9
+      pivot: {x: 0.4994797, y: 0.775}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: card_border_10
+      rect:
+        serializedVersion: 2
+        x: 961
+        y: 1120
+        width: 961
+        height: 560
+      alignment: 9
+      pivot: {x: 0.4994797, y: 0.775}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: card_border_11
+      rect:
+        serializedVersion: 2
+        x: 1922
+        y: 1120
+        width: 961
+        height: 560
+      alignment: 9
+      pivot: {x: 0.4994797, y: 0.775}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: card_border_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 560
+        width: 961
+        height: 560
+      alignment: 9
+      pivot: {x: 0.4994797, y: 0.775}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: card_border_13
+      rect:
+        serializedVersion: 2
+        x: 961
+        y: 560
+        width: 961
+        height: 560
+      alignment: 9
+      pivot: {x: 0.4994797, y: 0.775}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: card_border_14
+      rect:
+        serializedVersion: 2
+        x: 1922
+        y: 560
+        width: 961
+        height: 560
+      alignment: 9
+      pivot: {x: 0.4994797, y: 0.775}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: card_border_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 961
+        height: 560
+      alignment: 9
+      pivot: {x: 0.4994797, y: 0.775}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: card_border_16
+      rect:
+        serializedVersion: 2
+        x: 961
+        y: 0
+        width: 961
+        height: 560
+      alignment: 9
+      pivot: {x: 0.4994797, y: 0.775}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    outline: []
+    physicsShape: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
