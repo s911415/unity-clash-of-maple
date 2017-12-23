@@ -6,6 +6,7 @@ using NTUT.CSIE.GameDev.Scene;
 using NTUT.CSIE.GameDev.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace NTUT.CSIE.GameDev.Player
@@ -165,12 +166,26 @@ namespace NTUT.CSIE.GameDev.Player
 
             if (type == UniqueSkill.Attack)
             {
-                //TerroristAttack();
+                TerroristAttack();
             }
             else if (type == UniqueSkill.Defense)
             {
-                //this.SeaFoodBless();
+                this.SeaFoodBless();
             }
+        }
+
+        public void TerroristAttack()
+        {
+            var rivalHouseArray = _scene.HouseGenerator.GetAllHouseInfo().Where(h => h.PlayerID != _playerID).ToArray();
+
+            foreach (var h in rivalHouseArray)
+                h.TerroristAttack(Config.PLAYER_UNIQUE_SKILL_TIME);
+
+            _scene.SetTerroristAttack(true);
+            SetTimeout(() =>
+            {
+                _scene.SetTerroristAttack(false);
+            }, Config.PLAYER_UNIQUE_SKILL_TIME);
         }
 
         public void SeaFoodBless()

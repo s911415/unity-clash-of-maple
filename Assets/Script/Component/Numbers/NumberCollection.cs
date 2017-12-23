@@ -40,9 +40,8 @@ namespace NTUT.CSIE.GameDev.Component.Numbers
 
             int totalWidth = numbers.Select(x => NumbersWidth[x]).Sum() - MARGIN_WIDTH * (numbers.Length - 1);
             GameObject[] go = new GameObject[numbers.Length];
-            var container = Instantiate(_numberContainer);
+            var container = Instantiate(_numberContainer, this.gameObject.transform);
             var containerRectT = container.GetComponent<RectTransform>();
-            containerRectT.SetParent(this.gameObject.transform);
             var sr = target.GetComponentInChildren<SpriteRenderer>() ?? target.GetComponent<SpriteRenderer>();
             var targetHeight = sr != null ? sr.size.y : 0;
             container.GetComponent<NumberContainer>().SetTargetPosition(
@@ -58,11 +57,10 @@ namespace NTUT.CSIE.GameDev.Component.Numbers
             )
             {
                 var num = numbers[i];
-                var o = Object.Instantiate(_numberTemplate);
+                var o = Object.Instantiate(_numberTemplate, container.transform);
                 o.name = num.ToString();
                 o.GetComponent<Image>().sprite = sprites[num];
                 var t = o.GetComponent<RectTransform>();
-                t.SetParent(container.transform);
                 t.sizeDelta = new Vector2(NumbersWidth[num], NumbersHeight[num]);
                 t.localPosition = new Vector2(
                     posX - halfWidth,

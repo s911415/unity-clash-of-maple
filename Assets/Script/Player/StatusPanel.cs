@@ -47,7 +47,6 @@ namespace NTUT.CSIE.GameDev.Player
 
         private void OnHPChanged(int value)
         {
-            Debug.Log($"Player{_player.Info.id}: HP: {_player.HP}");
             var text = string.Format("{0}/{1}", _player.HP, _player.MAX_HP);
             _hpText.text = text;
             _hpBar.Value = (float)_player.HP / (float)_player.MAX_HP;
