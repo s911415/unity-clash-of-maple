@@ -13,6 +13,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
 {
     public class HouseInfo : HurtableObject
     {
+        public delegate void ValueChangedEventHandler(HouseInfo h);
         [SerializeField]
         private AudioSource _audio;
         [SerializeField]
@@ -52,6 +53,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         private GameObject _explosionPrefab;
         [SerializeField]
         private bool _inTerroristAttack;
+        public event ValueChangedEventHandler OnHPChanged;
 
         public delegate void HouseDestroyEvent(Point p);
         public event HouseDestroyEvent OnHouseDestroy;
@@ -283,6 +285,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         public override void Damage(int attack)
         {
+            if (type == HouseType.Master) return;
+
             _hp -= attack;
             _numberCollection.ShowNumber(
                 this.gameObject,
@@ -290,6 +294,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
                 (uint)attack
             );
             _audio.PlayOneShot(_damageClip);
+            OnHPChanged?.Invoke(this);
 
             if (_hp <= 0)
             {
@@ -299,8 +304,11 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         public override void Recovery(int recovery)
         {
+            if (type == HouseType.Master) return;
+
             _hp += recovery;
             _numberCollection.ShowNumber(this.gameObject, NumberCollection.Type.Blue, (uint)recovery);
+            OnHPChanged?.Invoke(this);
         }
 
         public void ResetMonster()

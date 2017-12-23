@@ -132,6 +132,8 @@ namespace NTUT.CSIE.GameDev.Player
 
         public Player SetMoney(int m)
         {
+            if (m > Config.PLAYER_MAX_MONEY) m = Config.PLAYER_MAX_MONEY;
+
             _money = m;
             OnMoneyChanged?.Invoke(_money);
             return this;
@@ -169,8 +171,8 @@ namespace NTUT.CSIE.GameDev.Player
             if (_uniqueSkillUsed)
                 throw new System.Exception("無法使用兩次大絕");
 
-            if ((float)_hp / MAX_HP >= Config.PLAYER_UNIQUE_REQUIRE_HP || CurrentBuildingCount > 0)
-                throw new System.Exception($"HP少於{Config.PLAYER_UNIQUE_REQUIRE_HP:P0}, 且場上沒有建築物才能使用大絕");
+            if ((float)_hp / MAX_HP >= Config.PLAYER_UNIQUE_REQUIRE_HP/* || CurrentBuildingCount > 0*/)
+                throw new System.Exception($"HP少於{Config.PLAYER_UNIQUE_REQUIRE_HP:P0}才能使用大絕");
 
             _uniqueSkillUsed = true;
 
@@ -191,6 +193,15 @@ namespace NTUT.CSIE.GameDev.Player
             foreach (var h in rivalHouseArray)
                 h.TerroristAttack(Config.PLAYER_UNIQUE_SKILL_TIME);
 
+            System.Action killAll = () =>
+            {
+                var rivalMonster = _scene.GetAllMonsterInfo().Where(h => h.PlayerID != _playerID).ToArray();
+
+                foreach (var m in rivalMonster)
+                    m.Die();
+            };
+            SetTimeout(killAll, 3500);
+            killAll();
             _scene.SetTerroristAttack(true);
             SetTimeout(() =>
             {
@@ -204,9 +215,17 @@ namespace NTUT.CSIE.GameDev.Player
             Sprite currentSprite = sprite.sprite;
             sprite.sprite = _protectBySeafoodImage;
             _protectedBySeaFood = true;
-            var audioInterval = SetInterval(() =>
+            uint audioInterval = 0;
+            audioInterval = SetInterval(() =>
             {
-                _audio.PlayOneShot(_protectBySeafoodClip);
+                if (!_audio)
+                {
+                    ClearInterval(audioInterval);
+                }
+                else
+                {
+                    _audio.PlayOneShot(_protectBySeafoodClip);
+                }
             }, 175);
             SetTimeout(() =>
             {
@@ -404,6 +423,8 @@ namespace NTUT.CSIE.GameDev.Player
                        .Count();
             }
         }
+
+        public bool IsUniqueSkillUsed => _uniqueSkillUsed;
 
         public IReadOnlyDictionary<int, int> BeenKilledByRivalMonsterCount => _beenKilledMonsterCount;
 

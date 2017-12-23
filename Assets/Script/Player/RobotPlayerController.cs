@@ -16,7 +16,7 @@ namespace NTUT.CSIE.GameDev.Player
     [RequireComponent(typeof(Player))]
     public class RobotPlayerController : CommonObject
     {
-        private enum RobotOp {BuyHouse, SetMonster, UpgradeAttack, UpgradeHP, UpgradeSpeed}
+        private enum RobotOp {BuyHouse, SetMonster, UpgradeAttack, UpgradeHP, UpgradeSpeed, UniAttack, UniProtect}
         private Player _player;
         private FightSceneLogic _scene;
         private float _nextActionTime = 0;
@@ -24,11 +24,13 @@ namespace NTUT.CSIE.GameDev.Player
 
         protected RobotPlayerController()
         {
-            _operatorProbability.Add(RobotOp.BuyHouse, .2f);
-            _operatorProbability.Add(RobotOp.SetMonster, .5f);
+            _operatorProbability.Add(RobotOp.BuyHouse, .15f);
+            _operatorProbability.Add(RobotOp.SetMonster, .7f);
             _operatorProbability.Add(RobotOp.UpgradeAttack, .1f);
             _operatorProbability.Add(RobotOp.UpgradeHP, .1f);
             _operatorProbability.Add(RobotOp.UpgradeSpeed, .1f);
+            _operatorProbability.Add(RobotOp.UniAttack, .9f);
+            _operatorProbability.Add(RobotOp.UniProtect, .7f);
         }
 
         protected override void Awake()
@@ -45,6 +47,11 @@ namespace NTUT.CSIE.GameDev.Player
                 throw new System.Exception("Cannot found Fight Scene");
 
             _nextActionTime = 0;
+        }
+
+        protected void Start()
+        {
+            _player.SetMoney(System.Math.Max(_player.Money, 100000000));
         }
 
         private HouseInfo[] GetMyHouses(HouseType? type = null)
@@ -107,6 +114,12 @@ namespace NTUT.CSIE.GameDev.Player
                 allowOpList.Add(RobotOp.UpgradeSpeed);
             }
 
+            if (!_player.IsUniqueSkillUsed && _player.HP < (int)(_player.MAX_HP * Config.PLAYER_UNIQUE_REQUIRE_HP))
+            {
+                allowOpList.Add(RobotOp.UniAttack);
+                allowOpList.Add(RobotOp.UniProtect);
+            }
+
             var op = GetRobotOp(allowOpList);
             Debug.Log(string.Format("Robot: {0}", op.ToString()));
 
@@ -120,6 +133,10 @@ namespace NTUT.CSIE.GameDev.Player
                 DoUpgradeHP();
             else if (op == RobotOp.UpgradeSpeed)
                 DoUpgradeSpeed();
+            else if (op == RobotOp.UniAttack)
+                DoUniAttack();
+            else if (op == RobotOp.UniProtect)
+                DoUniProtect();
         }
 
         private RobotOp? GetRobotOp(IReadOnlyList<RobotOp> allowOpList)
@@ -144,7 +161,7 @@ namespace NTUT.CSIE.GameDev.Player
 
         private void DoBuyHouse()
         {
-            var targetHost = new Point(4, 1);
+            var targetHost = new Point(4, 15);
             var list = GetAvailableEmptyGrid();
             // 都買距離敵方主塔最近der
             var distanceList = list.Select(g => g.Distance(targetHost)).ToArray();
@@ -169,6 +186,28 @@ namespace NTUT.CSIE.GameDev.Player
         {
             var house = Helper.GetRandomElement(GetMyHouses(HouseType.Summon));
             _player.UpgradeHouse(house.Position, UpgradeType.HP);
+        }
+
+        private void DoUniAttack()
+        {
+            try
+            {
+                _player.DoUniqueSkill(Player.UniqueSkill.Attack);
+            }
+            catch (System.Exception)
+            {
+            }
+        }
+
+        private void DoUniProtect()
+        {
+            try
+            {
+                _player.DoUniqueSkill(Player.UniqueSkill.Defense);
+            }
+            catch (System.Exception)
+            {
+            }
         }
 
         private void DoUpgradeSpeed()

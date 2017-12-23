@@ -12,6 +12,7 @@ namespace NTUT.CSIE.GameDev.UI
 {
     public class MapStatusPanel : CommonObject
     {
+        private delegate void PanelCloseEventHandler();
         List<Monster.Info> _cardSet = new List<Monster.Info>();
         public GameObject cardPrefab;
         [SerializeField]
@@ -34,6 +35,7 @@ namespace NTUT.CSIE.GameDev.UI
                      _picNameText = null;
 
         private FightSceneLogic _scene;
+        private event PanelCloseEventHandler OnPanelClosed;
 
         protected override void Awake()
         {
@@ -57,7 +59,7 @@ namespace NTUT.CSIE.GameDev.UI
         private void BindButtonEvent()
         {
             var player = _scene.GetPlayerAt(Manager.DEFAULT_PLAYER_ID);
-            System.Action noMoneyMsg = () => new DialogBuilder().SetContent("你沒錢").Show(_scene.Window);
+            System.Action noMoneyMsg = () => new DialogBuilder().SetContent("你沒錢┐(￣ヘ￣)┌").Show(_scene.Window);
             System.Action<System.Action> doActionOrShowErrMsg = (System.Action a) =>
             {
                 try
@@ -142,8 +144,9 @@ namespace NTUT.CSIE.GameDev.UI
         {
             if (img) _picImage.sprite = img;
 
-            _picHpText.text = hpText ?? "";
-            _picNameText.text = houseName ?? "";
+            if (hpText != null) _picHpText.text = hpText;
+
+            if (houseName != null) _picNameText.text = houseName;
         }
 
 
@@ -161,6 +164,12 @@ namespace NTUT.CSIE.GameDev.UI
                 _pictureObj.transform.GetChild(i).gameObject.SetActive(true);
 
             SetImage(_buildingLevel[(int)houseInfo.Type], $"{houseInfo.HP}/{houseInfo.MAX_HP}", $"{houseInfo.houseName} {houseInfo.ID:00}");
+            PanelCloseEventHandler removeHpUpdateEvent = null;
+            removeHpUpdateEvent = () =>
+            {
+                houseInfo.OnHPChanged -= UpdateHpText;
+                OnPanelClosed -= removeHpUpdateEvent;
+            };
 
             switch (houseInfo.Type)
             {
@@ -170,10 +179,14 @@ namespace NTUT.CSIE.GameDev.UI
 
                 case HouseInfo.HouseType.Building:
                     this.Select();
+                    houseInfo.OnHPChanged += UpdateHpText;
+                    OnPanelClosed += removeHpUpdateEvent;
                     break;
 
                 case HouseInfo.HouseType.Summon:
                     this.Upgrade();
+                    houseInfo.OnHPChanged += UpdateHpText;
+                    OnPanelClosed += removeHpUpdateEvent;
                     break;
 
                 case HouseInfo.HouseType.Master:
@@ -183,6 +196,16 @@ namespace NTUT.CSIE.GameDev.UI
                 default:
                     Debug.Log("Type error");
                     break;
+            }
+        }
+
+        private void UpdateHpText(HouseInfo houseInfo)
+        {
+            SetImage(null, $"{houseInfo.HP}/{houseInfo.MAX_HP}", null);
+
+            if (!houseInfo.Alive && _scene.MapGridGenerator.CurPoint == houseInfo.Position)
+            {
+                Hide();
             }
         }
 
@@ -233,6 +256,8 @@ namespace NTUT.CSIE.GameDev.UI
             {
                 t.gameObject.SetActive(false);
             }
+
+            OnPanelClosed?.Invoke();
         }
 
         public void CloseAllPanel()
@@ -241,7 +266,9 @@ namespace NTUT.CSIE.GameDev.UI
                 _pictureObj.transform.GetChild(i).gameObject.SetActive(false);
 
             CloseDescribePanel();
+            OnPanelClosed?.Invoke();
         }
+
         // Update is called once per frame
         void Update()
         {
@@ -250,6 +277,7 @@ namespace NTUT.CSIE.GameDev.UI
         public void Hide()
         {
             this.gameObject.SetActive(false);
+            OnPanelClosed?.Invoke();
         }
 
         public void Show()
