@@ -35,5 +35,28 @@ namespace NTUT.CSIE.GameDev.Component
 
         public int Row => _row;
         public int Column => _col;
+
+        public static bool operator ==(Point p1, Point p2)
+        {
+            return p1._row == p2._row && p1._col == p2._col;
+        }
+
+        public static bool operator !=(Point p1, Point p2)
+        {
+            return p1._row != p2._row || p1._col != p2._col;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Point)
+            {
+                Point p = (Point)obj;
+                return p == this;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
