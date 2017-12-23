@@ -82,10 +82,17 @@ namespace NTUT.CSIE.GameDev.Monster
             Debug.Assert(_sprite != null);
             Debug.Assert(_body != null);
             this.GetComponent<Collider>().enabled = false;
+            _audio.spatialBlend = 0.75f;
         }
 
         protected virtual void FixedUpdate()
         {
+            if (_freeze)
+            {
+                _action = Action.Walk;
+                return;
+            }
+
             if (_isArrival)
             {
                 _action = Action.Attack;
@@ -243,7 +250,7 @@ namespace NTUT.CSIE.GameDev.Monster
             {
                 if (!m) continue;
 
-                Debug.Log(string.Format("DamageTarget: {0}", m.name));
+                // Debug.Log(string.Format("DamageTarget: {0}", m.name));
                 m.Damage(CalcDamageValue());
             }
         }
@@ -340,6 +347,13 @@ namespace NTUT.CSIE.GameDev.Monster
             this._freeze = true;
             ClearTimeout(_freezeTimer);
             _freezeTimer = SetTimeout(() => this._freeze = false, ms);
+            Debug.Log(string.Format("{0}被暈眩了", this.name));
+        }
+
+
+        public virtual void Freeze()
+        {
+            this._freeze = true;
             Debug.Log(string.Format("{0}被暈眩了", this.name));
         }
 

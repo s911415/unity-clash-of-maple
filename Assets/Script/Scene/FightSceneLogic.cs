@@ -39,6 +39,18 @@ namespace NTUT.CSIE.GameDev.Scene
         [SerializeField]
         protected MessageConsole _console;
 
+        [SerializeField]
+        protected AudioSource _audio, _bgmAudio;
+
+        [SerializeField]
+        protected AudioClip _defaultBgmClip, _terroristAttackClip;
+
+        [SerializeField]
+        protected GameObject _gameResult;
+        [SerializeField]
+        protected ResultController _gameResultController;
+        protected bool _isOver;
+
         public Player.Player GetPlayerAt(int i) => _players[i];
 
         private uint _godReward;
@@ -48,6 +60,7 @@ namespace NTUT.CSIE.GameDev.Scene
             base.Awake();
             CheckMembers();
             InitMembers();
+            _bgmAudio.clip = _defaultBgmClip;
         }
 
         private void CheckMembers()
@@ -55,11 +68,13 @@ namespace NTUT.CSIE.GameDev.Scene
             CheckDiff();
             CheckPlayers();
         }
+
         private void InitMembers()
         {
             InitPlayersByDiff();
             //定時給錢
             _godReward = SetInterval(GiveEveryoneMoney, Config.GIVE_MONEY_INTERVAL);
+            _isOver = false;
 
             foreach (var p in _players)
             {
@@ -115,6 +130,22 @@ namespace NTUT.CSIE.GameDev.Scene
             }
         }
 
+        public void SetTerroristAttack(bool flag)
+        {
+            _bgmAudio.Stop();
+
+            if (flag)
+            {
+                _bgmAudio.Stop();
+                _bgmAudio.PlayOneShot(_terroristAttackClip);
+            }
+            else
+            {
+                _bgmAudio.clip = _defaultBgmClip;
+                _bgmAudio.Play();
+            }
+        }
+
         public Monster.Monster[] GetAllMonsterInfo()
         {
             if (!_monsterListObject)
@@ -146,20 +177,30 @@ namespace NTUT.CSIE.GameDev.Scene
             }
         }
 
-        protected void OnApplicationQuit()
+        protected void OnDestroy()
         {
             ClearInterval(_godReward);
         }
 
         protected void GameOver()
         {
+            if (_isOver) return;
+
+            _isOver = true;
+
             foreach (var p in _players)
             {
                 p.Info.SetStatus(Player.Info.STATUS.OVER);
                 p.Info.SetResult(p.Result);
             }
 
-            SceneManager.LoadScene("LeaderBoard");
+            //Stop All Monster Action
+            foreach (var m in GetAllMonsterInfo()) m.Freeze();
+
+            _gameResult.SetActive(true);
+            _bgmAudio.Stop();
+            _gameResultController.SetResult(_players[0].Alive ? ResultController.Result.Win : ResultController.Result.Lose);
+            _gameResultController.OnAnimationFinished += () => SceneManager.LoadScene("LeaderBoard");
         }
 
         public NumberCollection NumberCollection => _numberCollection;

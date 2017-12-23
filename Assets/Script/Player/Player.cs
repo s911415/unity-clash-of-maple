@@ -6,6 +6,7 @@ using NTUT.CSIE.GameDev.Scene;
 using NTUT.CSIE.GameDev.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace NTUT.CSIE.GameDev.Player
@@ -40,6 +41,15 @@ namespace NTUT.CSIE.GameDev.Player
         private FightSceneLogic _scene;
 
         private bool _died, _uniqueSkillUsed;
+        protected bool _protectedBySeaFood;
+
+        [SerializeField]
+        protected AudioSource _audio;
+
+        [SerializeField]
+        protected Sprite _protectBySeafoodImage;
+        [SerializeField]
+        protected AudioClip _protectBySeafoodClip;
 
         public event ValueChangedEventHandler<int> OnHPChanged;
         public event ValueChangedEventHandler<int> OnMoneyChanged;
@@ -72,6 +82,7 @@ namespace NTUT.CSIE.GameDev.Player
             base.Start();
             InitHouses();
             ResetCounter();
+            _protectedBySeaFood = false;
             Attached();
         }
 
@@ -158,28 +169,56 @@ namespace NTUT.CSIE.GameDev.Player
             if (_uniqueSkillUsed)
                 throw new System.Exception("無法使用兩次大絕");
 
-            if ((float)_hp / MAX_HP >= Config.PLAYER_UNIQUE_REQUIRE_HP)
-                throw new System.Exception($"HP少於{Config.PLAYER_UNIQUE_REQUIRE_HP:P0}才能使用大絕");
+            if ((float)_hp / MAX_HP >= Config.PLAYER_UNIQUE_REQUIRE_HP || CurrentBuildingCount > 0)
+                throw new System.Exception($"HP少於{Config.PLAYER_UNIQUE_REQUIRE_HP:P0}, 且場上沒有建築物才能使用大絕");
 
             _uniqueSkillUsed = true;
 
             if (type == UniqueSkill.Attack)
             {
-                //TerroristAttack();
+                TerroristAttack();
             }
             else if (type == UniqueSkill.Defense)
             {
-                //this.SeaFoodBless();
+                SeaFoodBless();
             }
+        }
+
+        public void TerroristAttack()
+        {
+            var rivalHouseArray = _scene.HouseGenerator.GetAllHouseInfo().Where(h => h.PlayerID != _playerID).ToArray();
+
+            foreach (var h in rivalHouseArray)
+                h.TerroristAttack(Config.PLAYER_UNIQUE_SKILL_TIME);
+
+            _scene.SetTerroristAttack(true);
+            SetTimeout(() =>
+            {
+                _scene.SetTerroristAttack(false);
+            }, Config.PLAYER_UNIQUE_SKILL_TIME);
         }
 
         public void SeaFoodBless()
         {
+            var sprite = GetComponent<SpriteRenderer>();
+            Sprite currentSprite = sprite.sprite;
+            sprite.sprite = _protectBySeafoodImage;
+            _protectedBySeaFood = true;
+            var audioInterval = SetInterval(() =>
+            {
+                _audio.PlayOneShot(_protectBySeafoodClip);
+            }, 175);
+            SetTimeout(() =>
+            {
+                sprite.sprite = currentSprite;
+                _protectedBySeaFood = false;
+                ClearInterval(audioInterval);
+            }, Config.PLAYER_UNIQUE_SKILL_TIME);
         }
 
         public override void Damage(int damage)
         {
-            if (IsGodMode) damage = 0;
+            if (IsGodMode || _protectedBySeaFood) damage = 0;
 
             _hp -= damage;
 
@@ -351,6 +390,19 @@ namespace NTUT.CSIE.GameDev.Player
             }
 
             return basis * (currentCount + 1);
+        }
+
+        public int CurrentBuildingCount
+        {
+            get
+            {
+                return _scene.HouseGenerator
+                       .GetAllHouseInfo()
+                       .Where(h => h.PlayerID == _playerID)
+                       .Select(h => h.Type)
+                       .Where(t => t != HouseInfo.HouseType.Master)
+                       .Count();
+            }
         }
 
         public IReadOnlyDictionary<int, int> BeenKilledByRivalMonsterCount => _beenKilledMonsterCount;

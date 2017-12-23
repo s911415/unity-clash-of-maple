@@ -19,9 +19,15 @@ namespace NTUT.CSIE.GameDev.Component.Numbers
         public void SetTargetPosition(Vector3 p)
         {
             _targetPosition = Helper.Clone(p);
+            UpdatePosition();
         }
 
         protected void Update()
+        {
+            UpdatePosition();
+        }
+
+        protected void UpdatePosition()
         {
             this.transform.position = Camera.main.WorldToScreenPoint(_targetPosition);
         }

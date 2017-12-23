@@ -134,7 +134,29 @@ namespace NTUT.CSIE.GameDev.Component.Map
         public void TerroristAttack(uint time)
         {
             _inTerroristAttack = true;
-            SetTimeout(() => _inTerroristAttack = false, time);
+            System.Action Explosion = null;
+            uint explosionTimer = 0;
+            Explosion = () =>
+            {
+                if (!this)
+                {
+                    ClearTimeout(explosionTimer);
+                    return;
+                }
+
+                const float RAND_VAL = 0.25f;
+                _audio.PlayOneShot(_explosionClip);
+                var exp = Instantiate(_explosionPrefab, this.transform);
+                exp.transform.localRotation = Quaternion.identity;
+                exp.transform.localPosition = new Vector3(Random.Range(-RAND_VAL, RAND_VAL), Random.Range(-RAND_VAL, RAND_VAL) - 2.75f, -0.25f);
+                explosionTimer = SetTimeout(Explosion, (uint)Random.Range(300, 700));
+            };
+            explosionTimer = SetTimeout(Explosion, 3500);
+            SetTimeout(() =>
+            {
+                _inTerroristAttack = false;
+                ClearTimeout(explosionTimer);
+            }, time);
         }
 
         public void Initialize()
@@ -212,7 +234,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
             if (_inTerroristAttack)
                 return;
 
-            Debug.Log(string.Format("召喚: {0}", MonsterInfo.Name));
+            // Debug.Log(string.Format("召喚: {0}", MonsterInfo.Name));
             _scene.SpawnMonster(MonsterInfo, _playerID, this);
         }
 
