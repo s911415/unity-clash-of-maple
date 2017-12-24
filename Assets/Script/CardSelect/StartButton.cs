@@ -49,6 +49,7 @@ namespace NTUT.CSIE.GameDev.CardSelect
 
         public void OnClick()
         {
+            this.DeleteLargerCard();
             CreateCard createCard = _difficultBtn.GetComponent<CreateCard>();
             _button.interactable = false;
             GetSceneLogic<ChooseCardSceneLogic>().SetPlayerInfoAndGameDiff(createCard.gameDifficult, _selectCardSet);
@@ -68,6 +69,19 @@ namespace NTUT.CSIE.GameDev.CardSelect
             {
                 _image.color = Color.gray;
                 _button.interactable = false;
+            }
+        }
+
+        private void DeleteLargerCard()
+        {
+            GameObject[] allcard = GameObject.FindGameObjectsWithTag("Card");
+
+            foreach (GameObject redundancy in allcard)
+            {
+                if (redundancy.GetComponent<Select>().flag == 1)
+                {
+                    Destroy(redundancy);
+                }
             }
         }
 
