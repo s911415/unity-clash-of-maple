@@ -7,11 +7,13 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using NTUT.CSIE.GameDev.Component;
 
 namespace NTUT.CSIE.GameDev.UI
 {
     public class MapStatusPanel : CommonObject
     {
+        private enum Mode { None, Buy, Select, Upgrade, Master}
         private delegate void PanelCloseEventHandler();
         List<Monster.Info> _cardSet = new List<Monster.Info>();
         public GameObject cardPrefab;
@@ -22,17 +24,22 @@ namespace NTUT.CSIE.GameDev.UI
         [SerializeField]
         protected Button _buyOK, _buyCancel, _upgAtt, _upgHP, _upgSpeed, _disCard, _uniAttBtn, _uniDefBtn;
         [SerializeField]
-        protected Button[] _selectCard;
+        protected SelectCardButton[] _selectCard;
         [SerializeField]
         private GameObject _pictureObj = null, _describeObj = null, _miniMapObj = null,
                            _buyPanel = null, _selectPanel = null, _upgradePanel = null,
                            _masterPanel = null;
+        private Mode _mode;
 
         [SerializeField]
         private Image _picImage = null;
         [SerializeField]
         private Text _picHpText = null,
-                     _picNameText = null;
+                     _picNameText = null,
+                     _remSecText = null;
+
+        [SerializeField]
+        private Text _monsterInfoText, _monsterDescText;
 
         private FightSceneLogic _scene;
         private event PanelCloseEventHandler OnPanelClosed;
@@ -54,6 +61,7 @@ namespace NTUT.CSIE.GameDev.UI
         void Start()
         {
             this.gameObject.SetActive(false);
+            _mode = Mode.None;
         }
 
         private void BindButtonEvent()
@@ -95,11 +103,23 @@ namespace NTUT.CSIE.GameDev.UI
             for (int i = 0; i < _selectCard.Length; i++)
             {
                 int finalI = i; // Important, if use i, i always equals to _selectCard.Length
-                _selectCard[i].onClick.AddListener(() =>
+                _selectCard[i].Button.onClick.AddListener(() =>
                 {
                     var houseInfo = player.SetHouseMonster(_scene.MapGridGenerator.CurPoint, finalI);
                     checkInfoAndShow.Invoke(houseInfo);
                 });
+                _selectCard[i].OnMouseOver += () =>
+                {
+                    var mobID = player.Info.GetCardIds()[finalI];
+                    Monster.Info mobInfo = Manager.Manager.MonsterInfoCollection[mobID];
+                    _monsterInfoText.text = $"名稱: {mobInfo.Name}, 價錢: {mobInfo.Cost}";
+                    _monsterDescText.text = mobInfo.Description;
+                };
+                _selectCard[i].OnMouseLeave += () =>
+                {
+                    _monsterInfoText.text = "";
+                    _monsterDescText.text = "";
+                };
             }
 
             _upgAtt.onClick.AddListener(() =>
@@ -215,6 +235,7 @@ namespace NTUT.CSIE.GameDev.UI
             this.CloseDescribePanel();
             _buyPanel.SetActive(true);
             SetImage(_buildingLevel[0], "空地");
+            _mode = Mode.Buy;
             // _buyPanel.transform.Find("BuildImage").Find("Image").GetComponent<Image>().sprite = _buildingLevel[1];
         }
 
@@ -224,11 +245,13 @@ namespace NTUT.CSIE.GameDev.UI
             _selectPanel.gameObject.SetActive(true);
 
             for (int i = 0; i < 6; i++)
-                _selectPanel
-                .transform
-                .GetChild(i)
+            {
+                _selectCard[i].gameObject
                 .GetComponent<Image>()
                 .sprite = Resources.Load<Sprite>("Card/Card" + _cardSet[i].IDStr);
+            }
+
+            _mode = Mode.Select;
         }
 
         public void Upgrade()
@@ -240,6 +263,7 @@ namespace NTUT.CSIE.GameDev.UI
             upgradeAttackText.text = string.Format("攻擊：{0}", houseInfo.RealAttack);
             upgradeHPText.text = string.Format("血量：{0}", houseInfo.RealHP);
             upgradeSpeedText.text = string.Format("速度：{0}", houseInfo.RealSpeed);
+            _mode = Mode.Upgrade;
         }
 
         public void ShowMaster()
@@ -247,6 +271,7 @@ namespace NTUT.CSIE.GameDev.UI
             this.CloseDescribePanel();
             _masterPanel.SetActive(true);
             SetImage(_buildingLevel[10 + _scene.MapGridGenerator.CurHouseInfo.PlayerID], "主塔");
+            _mode = Mode.Master;
         }
 
         public void CloseDescribePanel()
@@ -270,8 +295,17 @@ namespace NTUT.CSIE.GameDev.UI
         }
 
         // Update is called once per frame
-        void Update()
+        protected void Update()
         {
+            if (_mode == Mode.Upgrade)
+            {
+                HouseInfo h = _scene.MapGridGenerator.CurHouseInfo;
+
+                if (h)
+                {
+                    _remSecText.text = $"剩餘: {h.RemainingNextSpawnTime}秒";
+                }
+            }
         }
 
         public void Hide()
