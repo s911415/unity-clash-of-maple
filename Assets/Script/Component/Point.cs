@@ -58,5 +58,10 @@ namespace NTUT.CSIE.GameDev.Component
                 return false;
             }
         }
+
+        public override int GetHashCode()
+        {
+            return _row.GetHashCode() ^ _col.GetHashCode();
+        }
     }
 }
