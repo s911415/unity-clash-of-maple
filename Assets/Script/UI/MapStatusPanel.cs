@@ -39,7 +39,8 @@ namespace NTUT.CSIE.GameDev.UI
                      _remSecText = null;
 
         [SerializeField]
-        private Text _monsterInfoText, _monsterDescText;
+        private Text _monsterInfoText = null,
+                     _monsterDescText = null;
 
         private FightSceneLogic _scene;
         private event PanelCloseEventHandler OnPanelClosed;
