@@ -10,6 +10,7 @@ namespace NTUT.CSIE.GameDev.CardSelect
         public bool selected;
         private int _number;
         private GameObject _startButton;
+        bool _isFinshAnimation = false;
         // set number
         public void SetNumber(int number)
         {
@@ -71,15 +72,17 @@ namespace NTUT.CSIE.GameDev.CardSelect
             if (selected)
                 this.GetComponent<Image>().color = Color.white;
             else
-                this.GetComponent<Image>().color = new Color(0.6f, 0.6f, 0.6f);
+                this.GetComponent<Image>().color = new Color(0.6f, 0.6f, 0.6f);            
         }
+
 
         GameObject cloneObject = null;
         public int flag = 0;//辨識是原來的卡片還是新複製的卡片 原來的卡片=0 複製出的卡片=1
         //滑鼠進入事件parameter=2 離開parameter=1
         public void AdjustScale(int parameter)
         {
-            if (parameter == 2 && !cloneObject && flag == 0) //滑鼠進入原來卡片
+            // 滑鼠進入原卡片且複製prefab不為空 複製卡片
+            if (parameter == 2 && !cloneObject && flag == 0)
             {
                 this.DeleteRedundancy();
                 cloneObject = (GameObject)Instantiate(gameObject);//複製新的卡片
@@ -92,10 +95,29 @@ namespace NTUT.CSIE.GameDev.CardSelect
                 cloneObject.GetComponent<RectTransform>().sizeDelta = new Vector2(84f, 120f);
                 cloneObject.GetComponent<Animator>().Play("CardAnimation");
             }
-            else if (parameter == 1 && flag == 1 && this.GetComponent<Animator>())
+            //// 滑鼠離開卡片 刪除他的複製卡片
+            //else if (parameter == 1 && flag == 0)
+            //{
+            //    GameObject[] allcard = GameObject.FindGameObjectsWithTag("Card");
+
+            //    foreach (GameObject redundancy in allcard)
+            //    {
+            //        if (redundancy.GetComponent<Select>().flag == 1 && redundancy.GetComponent<Select>()._number == this._number)
+            //        {
+            //            Destroy(redundancy);
+            //        }
+            //    }
+            //}
+            // 離開複製卡片且動畫結束
+            else if (parameter == 1 && flag == 1 && _isFinshAnimation)
             {
-                this.Invoke("DestroyTheObject", 0.5f);
+                this.DestroyTheObject();
             }
+        }
+
+        public void FinishAnimation()
+        {
+            _isFinshAnimation = true;
         }
 
         private void DestroyTheObject()
