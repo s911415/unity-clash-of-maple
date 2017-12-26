@@ -28,6 +28,12 @@ namespace NTUT.CSIE.GameDev.Scene
         private MapGridGenerator _mapGenerator;
 
         [SerializeField]
+        private ItemGenerator _itemGenerator;
+
+        [SerializeField]
+        private SkillGenerator _skillGenerator;
+
+        [SerializeField]
         private HouseInfo _defaultHouseInfo;
 
         [SerializeField]
@@ -211,6 +217,10 @@ namespace NTUT.CSIE.GameDev.Scene
         public HouseGenerator HouseGenerator => _mapGenerator.HouseGenerator;
         public MapStatusPanel ControlPanel => _controlPanel;
         public MessageConsole Console => _console;
+
+        public ItemGenerator ItemGenerator => _itemGenerator;
+
+        public SkillGenerator SkillGenerator => _skillGenerator;
 
         #region Check Members
         private void CheckDiff()

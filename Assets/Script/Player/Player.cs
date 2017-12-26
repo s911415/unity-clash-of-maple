@@ -3,6 +3,7 @@ using NTUT.CSIE.GameDev.Component.Map;
 using NTUT.CSIE.GameDev.Component.Numbers;
 using NTUT.CSIE.GameDev.Game;
 using NTUT.CSIE.GameDev.Helpers;
+using NTUT.CSIE.GameDev.Player.Honors;
 using NTUT.CSIE.GameDev.Scene;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,10 +55,12 @@ namespace NTUT.CSIE.GameDev.Player
 
         public event ValueChangedEventHandler<int> OnHPChanged;
         public event ValueChangedEventHandler<int> OnMoneyChanged;
+        public event ValueChangedEventHandler<Honor> OnHonorAdded;
         public event ModelChangedEventHandler OnHonorsChanged;
         public event ModelChangedEventHandler OnDied;
         public event HouseCreatedEventHandler OnHouseCreated;
-        public event MonsterKilledEventHandler OnKilledMonster;
+        public event ValueChangedEventHandler<int> OnItemCollected;
+        private Dictionary<int, int> _itemCollectedCount;
 
         [SerializeField]
         private Dictionary<int, int> _killedMonsterCount;
@@ -165,16 +168,32 @@ namespace NTUT.CSIE.GameDev.Player
 
         public Player AddHonor(Honors.Honor h)
         {
-            this._honors.Add(h);
+            if (!_honors.Contains(h))
+            {
+                this._honors.Add(h);
+                OnHonorAdded?.Invoke(h);
+            }
+
             OnHonorsChanged?.Invoke();
             return this;
+        }
+
+        public void OnCollectItem(int itemID)
+        {
+            if (!_itemCollectedCount.ContainsKey(itemID))
+                _itemCollectedCount.Add(itemID, 1);
+            else
+                _itemCollectedCount[itemID]++;
+
+            OnItemCollected?.Invoke(itemID);
+            CheckItems();
         }
 
         protected void FixedUpdate()
         {
             float now = Time.time;
 
-            if (now  - _lastAttackTime > Config.PLAYER_ATTACK_INTERVAL)
+            if (this.Alive && now  - _lastAttackTime > Config.PLAYER_ATTACK_INTERVAL)
             {
                 var mobList = GetNearMobs();
 
@@ -430,10 +449,34 @@ namespace NTUT.CSIE.GameDev.Player
             }
         }
 
+        protected void CheckItems()
+        {
+            System.Func<int, int> GetNumber = (itemID) =>
+            {
+                if (!_itemCollectedCount.ContainsKey(itemID))
+                    _itemCollectedCount.Add(itemID, 0);
+
+                return _itemCollectedCount[itemID];
+            };
+
+            if (GetNumber(1) > 20)
+                AddHonor(Honor.松果大帝);
+
+            if (GetNumber(2) > 10)
+                AddHonor(Honor.衛生股長);
+
+            if (GetNumber(3) > 30)
+                AddHonor(Honor.燈泡大師);
+
+            if (GetNumber(5) > 50)
+                AddHonor(Honor.除錯大師);
+        }
+
 
         public void ResetCounter()
         {
             _killedMonsterCount = new Dictionary<int, int>();
+            _itemCollectedCount = new Dictionary<int, int>();
             _houseDestroyedCount = 0;
             _builtHouseCount = 0;
 
@@ -481,8 +524,6 @@ namespace NTUT.CSIE.GameDev.Player
         public bool IsUniqueSkillUsed => _uniqueSkillUsed;
 
         public IReadOnlyCollection<Honors.Honor> Honors => _honors;
-
-        private IReadOnlyDictionary<int, int> _rivalMonsterKilled;
 
         public IReadOnlyDictionary<int, int> MyKilledMonsterInfo => _killedMonsterCount;
     }

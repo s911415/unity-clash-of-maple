@@ -11,6 +11,11 @@ namespace NTUT.CSIE.GameDev.Monster
         {
         }
 
+        protected override void DropItem()
+        {
+            _scene.ItemGenerator.DropItem(this.transform.localPosition, 2, _playerID);
+        }
+
         public override void Initialize()
         {
             base.Initialize();
