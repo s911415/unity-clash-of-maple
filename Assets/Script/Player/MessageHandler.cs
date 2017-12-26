@@ -18,14 +18,14 @@ namespace NTUT.CSIE.GameDev.Player
     {
         private Player _player;
         private MessageConsole _console;
-        private FightSceneLogic _scene;
+        // private FightSceneLogic _scene;
 
         protected override void Awake()
         {
             base.Awake();
             _console = GetSceneLogic<FightSceneLogic>().Console;
             _player = GetComponent<Player>();
-            _scene = GetSceneLogic<FightSceneLogic>();
+            // _scene = GetSceneLogic<FightSceneLogic>();
             Debug.Assert(_console != null);
             Debug.Assert(_player != null);
         }

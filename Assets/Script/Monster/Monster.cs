@@ -469,10 +469,12 @@ namespace NTUT.CSIE.GameDev.Monster
             {
                 var myPos = this.transform.localPosition;
                 query = query.Where(
-                            m => m && this && InRange(m.transform.localPosition, range)
-                        )
-                        .Where(m => m.Alive)
-                        ;
+                            m =>
+                            m &&
+                            this &&
+                            InRange(m.transform.localPosition, range) &&
+                            m.Alive
+                        );
             }
 
             return query.ToArray();
@@ -487,9 +489,13 @@ namespace NTUT.CSIE.GameDev.Monster
             {
                 var myPos = this.transform.localPosition;
                 query = query.Where(
-                            m => m && this && InRange(m.transform.position, range)
+                            h =>
+                            h &&
+                            this &&
+                            InRange(h.transform.position, range) &&
+                            h.Alive &&
+                            h.Type != HouseInfo.HouseType.Master
                         )
-                        .Where(m => m.Alive)
                         ;
             }
 
@@ -520,12 +526,6 @@ namespace NTUT.CSIE.GameDev.Monster
 
             foreach (var i in items)
                 i.Collect();
-        }
-
-        private bool InRange(Vector3 v, float range)
-        {
-            var d = Vector3.Distance(this.transform.localPosition, v);
-            return Helper.CompareFloat(d, range) <= 0;
         }
 
         public bool IsAllowAttack(HurtableObject m)

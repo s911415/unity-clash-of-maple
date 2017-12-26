@@ -1,4 +1,5 @@
-﻿using NTUT.CSIE.GameDev.Scene;
+﻿using NTUT.CSIE.GameDev.Helpers;
+using NTUT.CSIE.GameDev.Scene;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,6 +13,12 @@ namespace NTUT.CSIE.GameDev.Game
         {
             GetManager();
             Random.InitState(System.Guid.NewGuid().GetHashCode());
+        }
+
+        protected bool InRange(Vector3 v, float range)
+        {
+            var d = Vector3.Distance(this.transform.localPosition, v);
+            return Helper.CompareFloat(d, range) <= 0;
         }
 
         #region manage getter

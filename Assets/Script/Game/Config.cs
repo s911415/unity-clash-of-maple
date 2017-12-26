@@ -14,6 +14,6 @@
         public const int PLAYER_MAX_MONEY = 2000000000;
         public const float PLAYER_UNIQUE_REQUIRE_HP = .5f;
         public const uint PLAYER_UNIQUE_SKILL_TIME = 30 * 1000;
-        public const float PLAYER_ATTACK_INTERVAL = 2;
+        public const float PLAYER_ATTACK_INTERVAL = 4;
     }
 }
