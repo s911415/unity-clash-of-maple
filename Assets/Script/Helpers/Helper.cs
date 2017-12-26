@@ -40,5 +40,10 @@ namespace NTUT.CSIE.GameDev.Helpers
             return 1;
         }
 
+        public static int GetRandomValueBaseOnValue(float baseVal, float p)
+        {
+            float offset = baseVal * p;
+            return (int)(baseVal + Random.Range(-offset, offset));
+        }
     }
 }

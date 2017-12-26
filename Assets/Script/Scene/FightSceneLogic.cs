@@ -96,7 +96,9 @@ namespace NTUT.CSIE.GameDev.Scene
             newLocPos.y = 0;
             newLocPos.z -= 5f;
             mob.transform.localPosition = newLocPos;
-            mob.OnMonsterKilled += _players[playerID].OnMonsterKilled;
+            //
+            // Bind to Rival's player event
+            mob.OnMonsterKilled += _players[1 - playerID].OnRivalMonsterKilled;
 
             if (playerID == Manager.DEFAULT_PLAYER_ID)
             {

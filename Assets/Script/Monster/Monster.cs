@@ -89,6 +89,12 @@ namespace NTUT.CSIE.GameDev.Monster
 
         protected virtual void FixedUpdate()
         {
+            if (_died || _hp < 0)
+            {
+                Die();
+                return;
+            }
+
             if (_freeze)
             {
                 _action = Action.Walk;
@@ -118,11 +124,6 @@ namespace NTUT.CSIE.GameDev.Monster
             }
 
             if (_target && IsAllowAttack(_target)) Attack();
-
-            if (_died || _hp < 0)
-            {
-                Die();
-            }
         }
 
         public override int HP => _hp;
@@ -220,7 +221,7 @@ namespace NTUT.CSIE.GameDev.Monster
             if (_isArrival)
             {
                 int opponentID = Math.Abs(_playerID - 1);
-                GetSceneLogic<FightSceneLogic>().GetPlayerAt(opponentID).Damage(CalcDamageValue());
+                DamageOneTarget(_scene.GetPlayerAt(opponentID));
             }
             else
             {
@@ -280,8 +281,7 @@ namespace NTUT.CSIE.GameDev.Monster
             if (Random.value < MISS_RATE)
                 return 0;
 
-            var offset = _attack * 0.15f;
-            return (int)(_attack + Random.Range(-offset, offset));
+            return Helper.GetRandomValueBaseOnValue(_attack, 0.15f);
         }
 
         public virtual void SetPoisoning(int hurt, uint timeout, uint interval)
@@ -411,8 +411,8 @@ namespace NTUT.CSIE.GameDev.Monster
             var container = GameObject.Find("PendingRemoveMonster");
             this.transform.parent = container.transform;
             OnMonsterKilled?.Invoke(this._monsterID);
-            var rival = _scene.GetPlayerAt(1 - _playerID);
-            rival.KilledMonster(_monsterID);
+            // var rival = _scene.GetPlayerAt(1 - _playerID);
+            // rival.KilledMonster(_monsterID);
         }
 
         public bool IsGodMode => _scene.GetPlayerAt(_playerID).IsGodMode;
