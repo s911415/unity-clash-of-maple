@@ -2,9 +2,8 @@
 using NTUT.CSIE.GameDev.Component.Map;
 using NTUT.CSIE.GameDev.Component.Numbers;
 using NTUT.CSIE.GameDev.Game;
+using NTUT.CSIE.GameDev.Helpers;
 using NTUT.CSIE.GameDev.Scene;
-using NTUT.CSIE.GameDev.UI;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -16,7 +15,7 @@ namespace NTUT.CSIE.GameDev.Player
         public enum UniqueSkill { Attack, Defense }
         public delegate void ValueChangedEventHandler<T>(T value);
         public delegate void ModelChangedEventHandler();
-        public delegate void MonsterKilledEventHandler(int monsterID, IReadOnlyDictionary<int, int> monsterKilledSummary);
+        // public delegate void MonsterKilledEventHandler(int monsterID, IReadOnlyDictionary<int, int> monsterKilledSummary);
         public delegate void HouseCreatedEventHandler(HouseInfo house);
         private const int INIT_HOUSES = 6;
         [SerializeField]
@@ -51,6 +50,8 @@ namespace NTUT.CSIE.GameDev.Player
         [SerializeField]
         protected AudioClip _protectBySeafoodClip;
 
+        private float _lastAttackTime;
+
         public event ValueChangedEventHandler<int> OnHPChanged;
         public event ValueChangedEventHandler<int> OnMoneyChanged;
         public event ModelChangedEventHandler OnHonorsChanged;
@@ -59,7 +60,7 @@ namespace NTUT.CSIE.GameDev.Player
         public event MonsterKilledEventHandler OnKilledMonster;
 
         [SerializeField]
-        private Dictionary<int, int> _beenKilledMonsterCount;
+        private Dictionary<int, int> _killedMonsterCount;
         [SerializeField]
         private int _houseDestroyedCount, _builtHouseCount;
 
@@ -83,6 +84,7 @@ namespace NTUT.CSIE.GameDev.Player
             InitHouses();
             ResetCounter();
             _protectedBySeaFood = false;
+            _lastAttackTime = 0;
             Attached();
         }
 
@@ -94,10 +96,12 @@ namespace NTUT.CSIE.GameDev.Player
             OnHonorsChanged?.Invoke();
         }
 
+        /*
         public void KilledMonster(int monsterID)
         {
             OnKilledMonster?.Invoke(monsterID, this.MyKilledMonsterInfo);
         }
+        */
 
         public Info Info
         {
@@ -166,6 +170,43 @@ namespace NTUT.CSIE.GameDev.Player
             return this;
         }
 
+        protected void FixedUpdate()
+        {
+            float now = Time.time;
+
+            if (now  - _lastAttackTime > Config.PLAYER_ATTACK_INTERVAL)
+            {
+                var mobList = GetNearMobs();
+
+                if (mobList.Length > 0)
+                {
+                    foreach (var mob in mobList)
+                    {
+                        var damage = Helper.GetRandomValueBaseOnValue(2300, 0.2f);
+                        mob.Damage(damage);
+                    }
+
+                    _lastAttackTime = now;
+                }
+            }
+        }
+
+        protected Monster.Monster[] GetNearMobs()
+        {
+            var x = _scene
+                    .GetAllMonsterInfo()
+                    .Where(m => m.PlayerID != _playerID);
+            return x
+                   .Where(m => InRange(m.transform.localPosition, 15))
+                   .ToArray();
+        }
+
+        private bool InRange(Vector3 v, float range)
+        {
+            var d = Vector3.Distance(this.transform.localPosition, v);
+            return Helper.CompareFloat(d, range) <= 0;
+        }
+
         public void DoUniqueSkill(UniqueSkill type)
         {
             if (_uniqueSkillUsed)
@@ -201,6 +242,16 @@ namespace NTUT.CSIE.GameDev.Player
                     m.Die();
             };
             SetTimeout(killAll, 3500);
+            SetTimeout(() =>
+            {
+                foreach (var h in rivalHouseArray)
+                {
+                    if (h)
+                    {
+                        h.Damage(h.HP - 10);
+                    }
+                }
+            }, 3500);
             killAll();
             _scene.SetTerroristAttack(true);
             SetTimeout(() =>
@@ -294,9 +345,12 @@ namespace NTUT.CSIE.GameDev.Player
             _houseDestroyedCount++;
         }
 
-        public void OnMonsterKilled(int monsterID)
+        /// <summary>   當對手的怪物被殺掉時 </summary>
+        ///
+        /// <param name="monsterID">    Identifier for the monster. </param>
+        public void OnRivalMonsterKilled(int monsterID)
         {
-            _beenKilledMonsterCount[monsterID]++;
+            _killedMonsterCount[monsterID]++;
             var originalBouns = this.Manager.MonsterInfoCollection[monsterID].Bonus;
             int offset = (int)(originalBouns * .2f);
             var bouns = Random.Range(originalBouns - offset, originalBouns + offset);
@@ -379,13 +433,13 @@ namespace NTUT.CSIE.GameDev.Player
 
         public void ResetCounter()
         {
-            _beenKilledMonsterCount = new Dictionary<int, int>();
+            _killedMonsterCount = new Dictionary<int, int>();
             _houseDestroyedCount = 0;
             _builtHouseCount = 0;
 
             foreach (var m in this.Manager.MonsterInfoCollection.GetAllMonsterId())
             {
-                _beenKilledMonsterCount.Add(m, 0);
+                _killedMonsterCount.Add(m, 0);
             }
         }
 
@@ -426,22 +480,10 @@ namespace NTUT.CSIE.GameDev.Player
 
         public bool IsUniqueSkillUsed => _uniqueSkillUsed;
 
-        public IReadOnlyDictionary<int, int> BeenKilledByRivalMonsterCount => _beenKilledMonsterCount;
-
         public IReadOnlyCollection<Honors.Honor> Honors => _honors;
 
         private IReadOnlyDictionary<int, int> _rivalMonsterKilled;
-        public IReadOnlyDictionary<int, int> MyKilledMonsterInfo
-        {
-            get
-            {
-                if (_rivalMonsterKilled == null)
-                {
-                    _rivalMonsterKilled = _scene.GetPlayerAt(1 - _playerID)._beenKilledMonsterCount;
-                }
 
-                return _rivalMonsterKilled;
-            }
-        }
+        public IReadOnlyDictionary<int, int> MyKilledMonsterInfo => _killedMonsterCount;
     }
 }

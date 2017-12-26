@@ -17,6 +17,7 @@ namespace NTUT.CSIE.GameDev.Monster
     [Serializable]
     public class Monster : HurtableObject
     {
+        private const float FIND_TARGET_DELTA = 1.5f;
         protected static ulong _monsterCounter = 0;
         [SerializeField]
         protected Action _action = Action.Walk;
@@ -56,6 +57,7 @@ namespace NTUT.CSIE.GameDev.Monster
         public delegate void MonsterKilledEvent(int monsterID);
         public event MonsterKilledEvent OnMonsterKilled;
         private uint _failAttackCount = 0;
+        private float _lastFindTargetTime = 0;
 
         // finalTartget 敵方主堡
         private Vector3 _finalTarget;
@@ -87,6 +89,12 @@ namespace NTUT.CSIE.GameDev.Monster
 
         protected virtual void FixedUpdate()
         {
+            if (_died || _hp < 0)
+            {
+                Die();
+                return;
+            }
+
             if (_freeze)
             {
                 _action = Action.Walk;
@@ -116,11 +124,6 @@ namespace NTUT.CSIE.GameDev.Monster
             }
 
             if (_target && IsAllowAttack(_target)) Attack();
-
-            if (_died || _hp < 0)
-            {
-                Die();
-            }
         }
 
         public override int HP => _hp;
@@ -163,7 +166,7 @@ namespace NTUT.CSIE.GameDev.Monster
             }
 
             if (
-                (!_target || !_target.Alive)
+                (!_target || !_target.Alive || Time.time - _lastFindTargetTime > FIND_TARGET_DELTA)
             )
             {
                 _target = null;
@@ -179,6 +182,7 @@ namespace NTUT.CSIE.GameDev.Monster
                 if (enemiesList[minDistanceIndex] != this)
                 {
                     _target = enemiesList[minDistanceIndex];
+                    _lastFindTargetTime = Time.time;
                 }
             }
             else
@@ -217,7 +221,7 @@ namespace NTUT.CSIE.GameDev.Monster
             if (_isArrival)
             {
                 int opponentID = Math.Abs(_playerID - 1);
-                GetSceneLogic<FightSceneLogic>().GetPlayerAt(opponentID).Damage(CalcDamageValue());
+                DamageOneTarget(_scene.GetPlayerAt(opponentID));
             }
             else
             {
@@ -277,8 +281,7 @@ namespace NTUT.CSIE.GameDev.Monster
             if (Random.value < MISS_RATE)
                 return 0;
 
-            var offset = _attack * 0.15f;
-            return (int)(_attack + Random.Range(-offset, offset));
+            return Helper.GetRandomValueBaseOnValue(_attack, 0.15f);
         }
 
         public virtual void SetPoisoning(int hurt, uint timeout, uint interval)
@@ -408,8 +411,8 @@ namespace NTUT.CSIE.GameDev.Monster
             var container = GameObject.Find("PendingRemoveMonster");
             this.transform.parent = container.transform;
             OnMonsterKilled?.Invoke(this._monsterID);
-            var rival = _scene.GetPlayerAt(1 - _playerID);
-            rival.KilledMonster(_monsterID);
+            // var rival = _scene.GetPlayerAt(1 - _playerID);
+            // rival.KilledMonster(_monsterID);
         }
 
         public bool IsGodMode => _scene.GetPlayerAt(_playerID).IsGodMode;
