@@ -55,6 +55,17 @@ namespace NTUT.CSIE.GameDev.Game
             }
 
             if (
+                (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) &&
+                (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) &&
+                Input.GetKeyDown(KeyCode.End)
+            )
+            {
+                var pos = Camera.main.transform.localPosition;
+                pos.y = 0;
+                _scene.SkillGenerator.UseSkill(pos, 2, -1);
+            }
+
+            if (
                 Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)
             )
             {

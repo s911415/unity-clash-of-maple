@@ -10,11 +10,11 @@ using UnityEngine;
 
 namespace NTUT.CSIE.GameDev.Skills
 {
-    public class MasterSkill : Skill
+    public class GodAngrySkill : Skill
     {
-        private const float ATTACK_RANGE = 25;
+        private const float ATTACK_RANGE = 10;
         private static int _instanceCount = 0;
-        private const float MAX_SOUND_COUNT = 10;
+        private const float MAX_SOUND_COUNT = 15;
         public override void SkillFinish()
         {
             _instanceCount--;
@@ -27,7 +27,6 @@ namespace NTUT.CSIE.GameDev.Skills
             _instanceCount++;
         }
 
-
         public override void SkillTime()
         {
             var mList = GetNearMobs(ATTACK_RANGE);
@@ -37,7 +36,7 @@ namespace NTUT.CSIE.GameDev.Skills
                 if (_instanceCount < MAX_SOUND_COUNT && _hitClip)
                     _audio.PlayOneShot(_hitClip);
 
-                var dmg = Helper.GetRandomValueBaseOnValue(3000, 0.25f);
+                var dmg = Helper.GetRandomValueBaseOnValue(5000, 0.2f);
                 m.Damage(dmg);
             }
         }
