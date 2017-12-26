@@ -195,35 +195,21 @@ namespace NTUT.CSIE.GameDev.Player
 
             if (this.Alive && now  - _lastAttackTime > Config.PLAYER_ATTACK_INTERVAL)
             {
-                var mobList = GetNearMobs();
+                var mobCount = GetNearMobCount();
 
-                if (mobList.Length > 0)
+                if (mobCount > 0)
                 {
-                    foreach (var mob in mobList)
-                    {
-                        var damage = Helper.GetRandomValueBaseOnValue(2300, 0.2f);
-                        mob.Damage(damage);
-                    }
-
+                    _scene.SkillGenerator.UseSkill(this.transform.localPosition, 0, _playerID);
                     _lastAttackTime = now;
                 }
             }
         }
 
-        protected Monster.Monster[] GetNearMobs()
+        protected int GetNearMobCount()
         {
-            var x = _scene
-                    .GetAllMonsterInfo()
-                    .Where(m => m.PlayerID != _playerID);
-            return x
-                   .Where(m => InRange(m.transform.localPosition, 15))
-                   .ToArray();
-        }
-
-        private bool InRange(Vector3 v, float range)
-        {
-            var d = Vector3.Distance(this.transform.localPosition, v);
-            return Helper.CompareFloat(d, range) <= 0;
+            return _scene
+                   .GetAllMonsterInfo()
+                   .Where(m => m.PlayerID != _playerID && InRange(m.transform.localPosition, 25)).Count();
         }
 
         public void DoUniqueSkill(UniqueSkill type)
