@@ -53,7 +53,7 @@ namespace NTUT.CSIE.GameDev.Monster
         protected uint _freezeTimer = 0;
         protected uint _poisonTimerInterval, _poisonTimerTimeout;
         protected int _poisonValue;
-        private FightSceneLogic _scene;
+        protected FightSceneLogic _scene;
         public delegate void MonsterKilledEvent(int monsterID);
         public event MonsterKilledEvent OnMonsterKilled;
         private uint _failAttackCount = 0;
@@ -101,14 +101,9 @@ namespace NTUT.CSIE.GameDev.Monster
                 return;
             }
 
-            if (_isArrival)
-            {
-                _action = Action.Attack;
-                return;
-            }
-
             if (_action == Action.Walk)
             {
+                CollectItem();
                 FindNearestTarget();
                 Walk();
             }
@@ -218,28 +213,20 @@ namespace NTUT.CSIE.GameDev.Monster
             if (_attackAudioClip != null)
                 _audio.PlayOneShot(_attackAudioClip);
 
-            if (_isArrival)
-            {
-                int opponentID = Math.Abs(_playerID - 1);
-                DamageOneTarget(_scene.GetPlayerAt(opponentID));
-            }
+            var nearAttackableObject = GetAttackableObject(this._info.AttackRange);
+
+            if (nearAttackableObject.Count == 0)
+                _failAttackCount++;
             else
+                _failAttackCount = 0;
+
+            if (_failAttackCount > FAIL_COUNT)
             {
-                var nearAttackableObject = GetAttackableObject(this._info.AttackRange);
-
-                if (nearAttackableObject.Count == 0)
-                    _failAttackCount++;
-                else
-                    _failAttackCount = 0;
-
-                if (_failAttackCount > FAIL_COUNT)
-                {
-                    _target = null;
-                    _action = Action.Walk;
-                }
-
-                DamageTargets(nearAttackableObject);
+                _target = null;
+                _action = Action.Walk;
             }
+
+            DamageTargets(nearAttackableObject);
         }
         protected virtual void DamageOneTarget(HurtableObject target)
         {
@@ -397,6 +384,7 @@ namespace NTUT.CSIE.GameDev.Monster
             }
         }
 
+        private static GameObject _pendingRemoveMonsterContainer;
         public virtual void Die()
         {
             _action = Action.Die;
@@ -408,11 +396,18 @@ namespace NTUT.CSIE.GameDev.Monster
             if (_dieAudioClip != null)
                 _audio.PlayOneShot(_dieAudioClip);
 
-            var container = GameObject.Find("PendingRemoveMonster");
-            this.transform.parent = container.transform;
+            if (_pendingRemoveMonsterContainer == null || !_pendingRemoveMonsterContainer)
+                _pendingRemoveMonsterContainer = GameObject.Find("PendingRemoveMonster");
+
+            this.transform.parent = _pendingRemoveMonsterContainer.transform;
+            DropItem();
             OnMonsterKilled?.Invoke(this._monsterID);
             // var rival = _scene.GetPlayerAt(1 - _playerID);
             // rival.KilledMonster(_monsterID);
+        }
+
+        protected virtual void DropItem()
+        {
         }
 
         public bool IsGodMode => _scene.GetPlayerAt(_playerID).IsGodMode;
@@ -510,10 +505,21 @@ namespace NTUT.CSIE.GameDev.Monster
             list.AddRange(monsterList);
             var p = _scene.GetPlayerAt(1 - _playerID);
 
-            if (InRange(p.gameObject.transform.localPosition, range))
+            if (_isArrival || InRange(p.gameObject.transform.localPosition, range))
                 list.Add(p);
 
             return list;
+        }
+
+        protected void CollectItem()
+        {
+            var items = _scene.ItemGenerator.AllItems
+                        .Where(i => i.PlayerID != _playerID)
+                        .Where(i => InRange(i.gameObject.transform.localPosition, _info.AttackRange))
+                        .ToArray();
+
+            foreach (var i in items)
+                i.Collect();
         }
 
         private bool InRange(Vector3 v, float range)

@@ -20,6 +20,11 @@ namespace NTUT.CSIE.GameDev.Monster
             }, 1000);
         }
 
+        protected override void DropItem()
+        {
+            _scene.ItemGenerator.DropItem(this.transform.localPosition, 3, _playerID);
+        }
+
         protected override void CleanUp()
         {
             base.CleanUp();

@@ -14,6 +14,11 @@ namespace NTUT.CSIE.GameDev.Monster
         {
         }
 
+        protected override void DropItem()
+        {
+            _scene.ItemGenerator.DropItem(this.transform.localPosition, 1, _playerID);
+        }
+
         protected override void DamageTargets(IEnumerable<HurtableObject> targetList)
         {
             base.DamageTargets(targetList);
