@@ -17,6 +17,7 @@ namespace NTUT.CSIE.GameDev.Monster
     [Serializable]
     public class Monster : HurtableObject
     {
+        private const float FIND_TARGET_DELTA = 1.5f;
         protected static ulong _monsterCounter = 0;
         [SerializeField]
         protected Action _action = Action.Walk;
@@ -56,6 +57,7 @@ namespace NTUT.CSIE.GameDev.Monster
         public delegate void MonsterKilledEvent(int monsterID);
         public event MonsterKilledEvent OnMonsterKilled;
         private uint _failAttackCount = 0;
+        private float _lastFindTargetTime = 0;
 
         // finalTartget 敵方主堡
         private Vector3 _finalTarget;
@@ -163,7 +165,7 @@ namespace NTUT.CSIE.GameDev.Monster
             }
 
             if (
-                (!_target || !_target.Alive)
+                (!_target || !_target.Alive || Time.time - _lastFindTargetTime > FIND_TARGET_DELTA)
             )
             {
                 _target = null;
@@ -179,6 +181,7 @@ namespace NTUT.CSIE.GameDev.Monster
                 if (enemiesList[minDistanceIndex] != this)
                 {
                     _target = enemiesList[minDistanceIndex];
+                    _lastFindTargetTime = Time.time;
                 }
             }
             else

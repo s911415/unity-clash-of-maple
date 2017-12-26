@@ -201,6 +201,16 @@ namespace NTUT.CSIE.GameDev.Player
                     m.Die();
             };
             SetTimeout(killAll, 3500);
+            SetTimeout(() =>
+            {
+                foreach (var h in rivalHouseArray)
+                {
+                    if (h)
+                    {
+                        h.Damage(h.HP - 10);
+                    }
+                }
+            }, 3500);
             killAll();
             _scene.SetTerroristAttack(true);
             SetTimeout(() =>
