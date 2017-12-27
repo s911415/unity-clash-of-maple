@@ -76,7 +76,10 @@ namespace NTUT.CSIE.GameDev.Game
             keyClone.AddRange(_timerList.Keys);
 
             foreach (var t in keyClone)
-                _timerList[t].Check();
+            {
+                if (_timerList.ContainsKey(t))
+                    _timerList[t].Check();
+            }
         }
 
         public uint _SetTimeout(Action action, uint timeoutMS)

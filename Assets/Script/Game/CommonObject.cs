@@ -94,14 +94,24 @@ namespace NTUT.CSIE.GameDev.Game
 
         protected void ClearTimeout(uint timerId)
         {
-            if (Manager)
+            try
+            {
                 Manager._ClearTimeout(timerId);
+            }
+            catch (System.Exception)
+            {
+            }
         }
 
         protected void ClearInterval(uint timerId)
         {
-            if (Manager)
+            try
+            {
                 Manager._ClearTimeout(timerId);
+            }
+            catch (System.Exception)
+            {
+            }
         }
     }
 }
