@@ -19,7 +19,7 @@ namespace NTUT.CSIE.GameDev.UI
         public GameObject cardPrefab;
         [SerializeField]
         Sprite[] _buildingLevel = new Sprite[3];
-        public Text upgradeAttackText, upgradeHPText, upgradeSpeedText;
+        public Text upgradeAttackText, upgradeHPText, upgradeSpeedText, upAttackText, upHpText, upSpeedText, disCard;
 
         [SerializeField]
         protected Button _buyOK, _buyCancel, _upgAtt, _upgHP, _upgSpeed, _disCard, _uniAttBtn, _uniDefBtn;
@@ -257,6 +257,7 @@ namespace NTUT.CSIE.GameDev.UI
 
         public void Upgrade()
         {
+            var player = _scene.GetPlayerAt(Manager.DEFAULT_PLAYER_ID);
             var houseInfo = _scene.MapGridGenerator.CurHouseInfo;
             this.CloseDescribePanel();
             _upgradePanel.SetActive(true);
@@ -264,6 +265,10 @@ namespace NTUT.CSIE.GameDev.UI
             upgradeAttackText.text = string.Format("攻擊：{0}", houseInfo.RealAttack);
             upgradeHPText.text = string.Format("血量：{0}", houseInfo.RealHP);
             upgradeSpeedText.text = string.Format("速度：{0}", houseInfo.RealSpeed);
+            upAttackText.text = string.Format("提升攻擊({0:C0})", player.GetUpgradePrice(_scene.MapGridGenerator.CurPoint, HouseInfo.UpgradeType.Attack));
+            upHpText.text = string.Format("提升血量({0:C0})", player.GetUpgradePrice(_scene.MapGridGenerator.CurPoint, HouseInfo.UpgradeType.HP));
+            upSpeedText.text = string.Format("提升移速({0:C0})", player.GetUpgradePrice(_scene.MapGridGenerator.CurPoint, HouseInfo.UpgradeType.Speed));
+            disCard.text = string.Format("解除卡片({0:C0})", Config.DISCARD_MONSTER_PUNISH);
             _mode = Mode.Upgrade;
         }
 

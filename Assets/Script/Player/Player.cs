@@ -403,6 +403,14 @@ namespace NTUT.CSIE.GameDev.Player
                 return null;
             }
         }
+        public int GetUpgradePrice(Point p, HouseInfo.UpgradeType type)
+        {
+            var scene = GetSceneLogic<FightSceneLogic>();
+            var house = scene.HouseGenerator[p.Row, p.Column];
+            var price = CalcUpgradePrice(type, house.GetUpgradeCount(type));
+
+            return price;
+        }
 
         public bool IsGodMode
         {
