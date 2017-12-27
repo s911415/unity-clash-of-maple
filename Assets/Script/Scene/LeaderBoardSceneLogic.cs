@@ -64,7 +64,7 @@ namespace NTUT.CSIE.GameDev.Scene
         private void RestartGame()
         {
             Destroy(this.Manager.gameObject);
-            SceneManager.LoadScene("Splash");
+            SceneManager.LoadScene("PrepareUI");
         }
 
         private void PromptQuitGame()
