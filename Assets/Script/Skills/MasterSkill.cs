@@ -27,6 +27,22 @@ namespace NTUT.CSIE.GameDev.Skills
             _instanceCount++;
         }
 
+        protected int GetAttackByDifficult()
+        {
+            switch (this.Manager.Difficulty)
+            {
+                case Difficulty.Level.Easy:
+                    return 1000;
+
+                case Difficulty.Level.Normal:
+                    return 2200;
+
+                case Difficulty.Level.Hard:
+                    return 3300;
+            }
+
+            return 3000;
+        }
 
         public override void SkillTime()
         {
@@ -37,7 +53,7 @@ namespace NTUT.CSIE.GameDev.Skills
                 if (_instanceCount < MAX_SOUND_COUNT && _hitClip)
                     _audio.PlayOneShot(_hitClip);
 
-                var dmg = Helper.GetRandomValueBaseOnValue(3000, 0.25f);
+                var dmg = Helper.GetRandomValueBaseOnValue(GetAttackByDifficult(), 0.25f);
                 m.Damage(dmg);
             }
         }

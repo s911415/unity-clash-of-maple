@@ -105,7 +105,8 @@ namespace NTUT.CSIE.GameDev.Game
 
         public void _ClearTimeout(uint timerId)
         {
-            _timerList.Remove(timerId);
+            if (_timerList.ContainsKey(timerId))
+                _timerList.Remove(timerId);
         }
 
         protected virtual void OnDestroy()

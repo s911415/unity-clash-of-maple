@@ -18,6 +18,7 @@ namespace NTUT.CSIE.GameDev.Item
         protected int _playerID;
         protected int _itemID;
         public ItemCollectedEventHandler OnCollected;
+        private uint _cleanUpTimer = 0;
 
         public void Init(Sprite sp, int itemID, int pid)
         {
@@ -25,6 +26,7 @@ namespace NTUT.CSIE.GameDev.Item
             this._itemID = itemID;
             this._playerID = pid;
             this.name = $"Item #{itemID}";
+            _cleanUpTimer = SetTimeout(() => Destroy(this.gameObject), Config.ITEM_CLEAN_UP_TIME);
         }
 
         public override void Damage(int damage)
@@ -40,6 +42,11 @@ namespace NTUT.CSIE.GameDev.Item
 
         public override void Recovery(int recover)
         {
+        }
+
+        protected void OnDestroy()
+        {
+            ClearTimeout(_cleanUpTimer);
         }
 
         public int ItemID => _itemID;

@@ -322,8 +322,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         public void UpgradeAttack()
         {
-            _extraAttack++;
             _upgAttackCnt++;
+            _extraAttack = Mathf.CeilToInt(100f * (1f - Mathf.Exp(-_upgAttackCnt / 10f)));
         }
 
         public void UpgradeSpeed()
@@ -334,8 +334,8 @@ namespace NTUT.CSIE.GameDev.Component.Map
 
         public void UpgradeHP()
         {
-            _extraHp += 10;
             _upgHpCnt++;
+            _extraHp = Mathf.CeilToInt(500f * (1f - Mathf.Exp(-_upgHpCnt / 10f)));
         }
 
         public int RealAttack => MonsterInfo == null ? 0 : (MonsterInfo.Attack + _extraAttack);

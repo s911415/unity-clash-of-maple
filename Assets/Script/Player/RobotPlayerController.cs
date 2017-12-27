@@ -29,8 +29,8 @@ namespace NTUT.CSIE.GameDev.Player
             _operatorProbability.Add(RobotOp.UpgradeAttack, .1f);
             _operatorProbability.Add(RobotOp.UpgradeHP, .1f);
             _operatorProbability.Add(RobotOp.UpgradeSpeed, .1f);
-            _operatorProbability.Add(RobotOp.UniAttack, .9f);
-            _operatorProbability.Add(RobotOp.UniProtect, .7f);
+            _operatorProbability.Add(RobotOp.UniAttack, .5f);
+            _operatorProbability.Add(RobotOp.UniProtect, .4f);
         }
 
         protected override void Awake()
@@ -101,7 +101,7 @@ namespace NTUT.CSIE.GameDev.Player
         {
             var allowOpList = new List<RobotOp>();
 
-            if (Money > 20e3)
+            if (Money > 20e3 && GetAvailableEmptyGrid().Count > 0)
                 allowOpList.Add(RobotOp.BuyHouse);
 
             if (GetMyHouses(HouseType.Building).Length > 0)

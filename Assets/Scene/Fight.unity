@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4437017, g: 0.49303907, b: 0.5725845, a: 1}
+  m_IndirectSpecularColor: {r: 0.4437018, g: 0.4930389, b: 0.5725847, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -2646,7 +2646,7 @@ MonoBehaviour:
   curRow: 0
   curCol: 0
   y: 0.25
-  ShowGridText: 1
+  ShowGridText: 0
   _houseGenerator: {fileID: 692475477}
 --- !u!1 &771237834
 GameObject:
