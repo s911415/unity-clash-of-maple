@@ -335,6 +335,7 @@ namespace NTUT.CSIE.GameDev.Player
             {
                 var houseInfo = houseGen.AddHouse(p.Row, p.Column, this._playerID);
                 _builtHouseCount++;
+                houseInfo.OnHouseDestroy += _scene.GetPlayerAt(1 - _playerID).OnRivalHouseDestory;
                 houseInfo.OnHouseDestroy += this.OnHouseDestroyed;
                 OnHouseCreated?.Invoke(houseInfo);
                 return houseInfo;
@@ -343,6 +344,14 @@ namespace NTUT.CSIE.GameDev.Player
             {
                 return null;
             }
+        }
+
+        /// <summary>   當對手的房子被毀掉時 </summary>
+        ///
+        /// <param name="monsterID">    Identifier for the monster. </param>
+        private void OnRivalHouseDestory(Point p)
+        {
+            this.AddMoney(Config.HOUSE_DESTORY_BOUNS);
         }
 
         private void OnHouseDestroyed(Point p)
