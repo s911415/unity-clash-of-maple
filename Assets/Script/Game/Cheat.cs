@@ -1,4 +1,5 @@
-﻿using NTUT.CSIE.GameDev.Component.Numbers;
+﻿using NTUT.CSIE.GameDev.Component;
+using NTUT.CSIE.GameDev.Component.Numbers;
 using NTUT.CSIE.GameDev.Scene;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,6 +27,9 @@ namespace NTUT.CSIE.GameDev.Game
         protected void Update()
         {
             if (_scene == null) return;
+
+            bool CTRL_KEY = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
+            bool ALT_KEY = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
 
             //For Test
             if (Input.GetKeyUp(KeyCode.F3))
@@ -55,8 +59,7 @@ namespace NTUT.CSIE.GameDev.Game
             }
 
             if (
-                (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) &&
-                (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) &&
+                (CTRL_KEY && ALT_KEY) &&
                 Input.GetKeyDown(KeyCode.End)
             )
             {
@@ -65,9 +68,7 @@ namespace NTUT.CSIE.GameDev.Game
                 _scene.SkillGenerator.UseSkill(pos, 2, -1);
             }
 
-            if (
-                Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)
-            )
+            if (CTRL_KEY)
             {
                 var player = _scene.GetPlayerAt(0);
 
@@ -79,6 +80,9 @@ namespace NTUT.CSIE.GameDev.Game
 
                 if (Input.GetKeyUp(KeyCode.V))
                     ResetAllSpawnCounter();
+
+                if (Input.GetKeyUp(KeyCode.A))
+                    BuildHouseAtAllAvailableSpace(player);
             }
         }
 
@@ -98,6 +102,31 @@ namespace NTUT.CSIE.GameDev.Game
             {
                 info._ResetSpawnCounter();
             }
+        }
+
+        private void BuildHouseAtAllAvailableSpace(Player.Player player)
+        {
+            foreach (var p in GetAvailableEmptyGrid())
+            {
+                player.BuyHouse(p, true);
+            }
+        }
+
+        private IReadOnlyList<Point> GetAvailableEmptyGrid()
+        {
+            var result = new List<Point>();
+            const int MIN_COL = 0, MAX_COL = 19;
+
+            for (var r = 0; r < 10; r++)
+            {
+                for (var c = MIN_COL; c <= MAX_COL; c++)
+                {
+                    if (_scene.HouseGenerator[r, c] == null)
+                        result.Add(new Point(r, c));
+                }
+            }
+
+            return result;
         }
     }
 }

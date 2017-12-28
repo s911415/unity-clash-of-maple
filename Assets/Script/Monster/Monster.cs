@@ -17,8 +17,10 @@ namespace NTUT.CSIE.GameDev.Monster
     [Serializable]
     public class Monster : HurtableObject
     {
-        private const float FIND_TARGET_DELTA = 1.5f;
+        private const float FIND_TARGET_DELTA = 1f;
         protected static ulong _monsterCounter = 0;
+
+        protected static GameObject _statusDizzy = null, _statusPoison = null;
         [SerializeField]
         protected Action _action = Action.Walk;
         [SerializeField]
@@ -50,12 +52,16 @@ namespace NTUT.CSIE.GameDev.Monster
         protected bool _died;
         [SerializeField]
         protected bool _freeze, _poisoning;
+        [SerializeField]
+        protected GameObject _statusObj;
         protected uint _freezeTimer = 0;
         protected uint _poisonTimerInterval, _poisonTimerTimeout;
         protected int _poisonValue;
         protected FightSceneLogic _scene;
         public delegate void MonsterKilledEvent(int monsterID);
         public event MonsterKilledEvent OnMonsterKilled;
+        public delegate void StatusChangeEventHandler();
+        public event StatusChangeEventHandler OnStatusChanged;
         private uint _failAttackCount = 0;
         private float _lastFindTargetTime = 0;
 
@@ -275,22 +281,26 @@ namespace NTUT.CSIE.GameDev.Monster
         {
             ClearTimeout(_poisonTimerTimeout);
 
-            if (IsGodMode) return;
-
-            if (!_poisoning)
+            if (!IsGodMode)
             {
-                _poisoning = true;
-                _poisonTimerInterval = SetInterval(() =>
+                if (!_poisoning)
                 {
-                    this.Damage(hurt, true);
-                }, interval);
+                    _poisoning = true;
+                    _poisonTimerInterval = SetInterval(() =>
+                    {
+                        this.Damage(hurt, true);
+                    }, interval);
+                }
+
+                _poisonTimerTimeout = SetTimeout(() =>
+                {
+                    _poisoning = false;
+                    ClearInterval(_poisonTimerInterval);
+                    OnStatusChanged?.Invoke();
+                }, timeout);
             }
 
-            _poisonTimerTimeout = SetTimeout(() =>
-            {
-                _poisoning = false;
-                ClearInterval(_poisonTimerInterval);
-            }, timeout);
+            OnStatusChanged?.Invoke();
         }
 
         protected virtual bool CheckOutOfMap()
@@ -328,23 +338,28 @@ namespace NTUT.CSIE.GameDev.Monster
             this._hp = _maxHP;
             this._died = false;
             this._freeze = false;
+            this.OnStatusChanged += StatusChanged;
         }
 
         public virtual void Freeze(uint ms)
         {
-            if (IsGodMode) return;
-
-            this._freeze = true;
-            ClearTimeout(_freezeTimer);
-            _freezeTimer = SetTimeout(() => this._freeze = false, ms);
-            Debug.Log(string.Format("{0}被暈眩了", this.name));
+            if (!IsGodMode)
+            {
+                this._freeze = true;
+                OnStatusChanged?.Invoke();
+                ClearTimeout(_freezeTimer);
+                _freezeTimer = SetTimeout(() =>
+                {
+                    this._freeze = false;
+                    OnStatusChanged?.Invoke();
+                }, ms);
+            }
         }
-
 
         public virtual void Freeze()
         {
             this._freeze = true;
-            Debug.Log(string.Format("{0}被暈眩了", this.name));
+            OnStatusChanged?.Invoke();
         }
 
         public virtual void Damage(int damage, bool silence)
@@ -569,6 +584,56 @@ namespace NTUT.CSIE.GameDev.Monster
         public override void Damage(int damage)
         {
             Damage(damage, false);
+        }
+
+        protected virtual void StatusChanged()
+        {
+            InitStatus();
+            var dizzy = _statusObj.transform.Find("StatusDizzy");
+            var poison = _statusObj.transform.Find("StatusPoison");
+            Action<GameObject> setStatusObj = (obj) =>
+            {
+                Vector3 v = obj.transform.localPosition;
+                v.x = 0;
+                v.y = .0625f;
+                obj.transform.localPosition = v;
+                obj.name = obj.name.Substring(0, obj.name.LastIndexOf("(Clone)")).Trim();
+            };
+
+            if (_poisoning)
+            {
+                if (!poison)
+                    setStatusObj(GameObject.Instantiate(_statusPoison, _statusObj.transform));
+            }
+            else
+            {
+                if (poison)
+                    Destroy(poison.gameObject);
+            }
+
+            if (_freeze)
+            {
+                _animator.enabled = false;
+
+                if (!dizzy)
+                    setStatusObj(GameObject.Instantiate(_statusDizzy, _statusObj.transform));
+            }
+            else
+            {
+                _animator.enabled = true;
+
+                if (dizzy)
+                    Destroy(dizzy.gameObject);
+            }
+        }
+
+        protected static void InitStatus()
+        {
+            if (!_statusDizzy)
+                _statusDizzy = Resources.Load<GameObject>("Prefab/Monster/StatusDizzy");
+
+            if (!_statusPoison)
+                _statusPoison = Resources.Load<GameObject>("Prefab/Monster/StatusPoison");
         }
 
         protected bool IsInRange(HurtableObject obj)

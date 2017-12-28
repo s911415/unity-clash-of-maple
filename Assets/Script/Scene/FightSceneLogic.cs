@@ -56,6 +56,7 @@ namespace NTUT.CSIE.GameDev.Scene
         [SerializeField]
         protected ResultController _gameResultController;
         protected bool _isOver;
+        private Dictionary<string, GameObject> _monsterPrefabCache = null;
 
         public Player.Player GetPlayerAt(int i) => _players[i];
 
@@ -91,14 +92,14 @@ namespace NTUT.CSIE.GameDev.Scene
         public void SpawnMonster(Monster.Info monsterInfo, int playerID, HouseInfo houseInfo)
         {
             //var houseHeight = houseInfo.gameObject.GetComponent<>
-            var objPrefab = Resources.Load<GameObject>(string.Format(MONSTER_PREFAB_PATH, monsterInfo.IDStr));
+            var objPrefab = GetMonsterObject(monsterInfo.IDStr);
             var obj = Instantiate(objPrefab, _monsterListObject.transform);
             var mob = obj.GetComponent<Monster.Monster>();
             var offset = (playerID == Manager.DEFAULT_PLAYER_ID) ? 1 : -1;
             mob.SetInfo(playerID, houseInfo.RealHP, houseInfo.RealAttack, houseInfo.RealSpeed).Initialize();
             var newPos = houseInfo.transform.position + offset * new Vector3(4, 0, 0);
             mob.transform.position = newPos;
-            var newLocPos = Helper.Clone(mob.transform.localPosition);
+            var newLocPos = mob.transform.localPosition;
             newLocPos.y = 0;
             newLocPos.z -= 5f;
             mob.transform.localPosition = newLocPos;
@@ -116,6 +117,20 @@ namespace NTUT.CSIE.GameDev.Scene
             }
 
             mob.Walk();
+        }
+
+        private GameObject GetMonsterObject(string mobID)
+        {
+            if (_monsterPrefabCache == null) _monsterPrefabCache = new Dictionary<string, GameObject>();
+
+            if (!_monsterPrefabCache.ContainsKey(mobID))
+            {
+                var obj = Resources.Load<GameObject>(string.Format(MONSTER_PREFAB_PATH, mobID));
+                _monsterPrefabCache.Add(mobID, obj);
+                return obj;
+            }
+
+            return _monsterPrefabCache[mobID];
         }
 
         public void ShowInfoOnPanel(Point p)
