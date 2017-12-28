@@ -10,6 +10,8 @@ namespace NTUT.CSIE.GameDev.Component.Numbers
     public class NumberContainer : CommonObject
     {
         private Vector3 _targetPosition = Vector3.zero;
+        public delegate void NumberDisappearEventHandler();
+        public event NumberDisappearEventHandler OnNumbersDisappear;
 
         private void Start()
         {
@@ -18,8 +20,13 @@ namespace NTUT.CSIE.GameDev.Component.Numbers
 
         public void SetTargetPosition(Vector3 p)
         {
-            _targetPosition = Helper.Clone(p);
+            _targetPosition = p;
             UpdatePosition();
+        }
+
+        protected void OnDestroy()
+        {
+            OnNumbersDisappear?.Invoke();
         }
 
         protected void Update()
@@ -29,7 +36,8 @@ namespace NTUT.CSIE.GameDev.Component.Numbers
 
         protected void UpdatePosition()
         {
-            this.transform.position = Camera.main.WorldToScreenPoint(_targetPosition);
+            var p = Camera.main.WorldToScreenPoint(_targetPosition);
+            this.transform.position = p;
         }
     }
 }

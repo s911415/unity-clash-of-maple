@@ -13,21 +13,45 @@ namespace NTUT.CSIE.GameDev.Component.Numbers
         private readonly static int[] NumbersWidth = { 31, 22, 29, 28, 31, 29, 31, 29, 31, 31, 98 };
         private readonly static int[] NumbersHeight = { 33, 32, 33, 32, 33, 32, 33, 32, 33, 33, 38 };
         private const int MISS_IDX = 10;
+        private const int NUMBERS_MAX_COUNT = 256;
+        private int _numberCount = 0;
+        private Camera _mainCamera;
 
         [SerializeField]
-        private GameObject _numberContainer;
+        private GameObject _numberContainer = null;
         [SerializeField]
-        private GameObject _numberTemplate;
+        private GameObject _numberTemplate = null;
 
         public enum Type
         {
             Blue, Red, Violet
         }
 
+        protected void Start()
+        {
+            _mainCamera = Camera.main;
+        }
+
         public void ShowNumber(GameObject target, Type type, uint number)
         {
-            if (!target) return;
+            if (!target || _numberCount > NUMBERS_MAX_COUNT) return;
 
+            if (_numberCount > NUMBERS_MAX_COUNT / 2 && Random.value < .6f) return;
+
+            if (_numberCount > 3 * NUMBERS_MAX_COUNT / 4 && Random.value < .7f) return;
+
+            if (_numberCount > 4 * NUMBERS_MAX_COUNT / 5 && Random.value < .85f) return;
+
+            if (_numberCount > 5 * NUMBERS_MAX_COUNT / 6 && Random.value < .9f) return;
+
+            {
+                Plane[] planes = GeometryUtility.CalculateFrustumPlanes(_mainCamera);
+
+                if (!GeometryUtility.TestPlanesAABB(planes, new Bounds(target.transform.position, new Vector3(1, 1, 1))))
+                {
+                    return;
+                }
+            }
             const int NUMBER_OFFSET = -5;
             const int MARGIN_WIDTH = -5;
             int[] numbers = number.ToString().Select(n => (int)System.Char.GetNumericValue(n)).ToArray<int>();
@@ -44,9 +68,12 @@ namespace NTUT.CSIE.GameDev.Component.Numbers
             var containerRectT = container.GetComponent<RectTransform>();
             var sr = target.GetComponentInChildren<SpriteRenderer>() ?? target.GetComponent<SpriteRenderer>();
             var targetHeight = sr != null ? sr.size.y : 0;
-            container.GetComponent<NumberContainer>().SetTargetPosition(
+            var nContainer = container.GetComponent<NumberContainer>();
+            nContainer.SetTargetPosition(
                 target.transform.position + new Vector3(0, 0, targetHeight)
             );
+            _numberCount++;
+            nContainer.OnNumbersDisappear += () => _numberCount--;
             containerRectT.sizeDelta = new Vector2(totalWidth, containerRectT.sizeDelta.y);
             container.name = number.ToString();
 

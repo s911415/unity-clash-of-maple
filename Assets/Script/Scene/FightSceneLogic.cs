@@ -99,7 +99,7 @@ namespace NTUT.CSIE.GameDev.Scene
             mob.SetInfo(playerID, houseInfo.RealHP, houseInfo.RealAttack, houseInfo.RealSpeed).Initialize();
             var newPos = houseInfo.transform.position + offset * new Vector3(4, 0, 0);
             mob.transform.position = newPos;
-            var newLocPos = Helper.Clone(mob.transform.localPosition);
+            var newLocPos = mob.transform.localPosition;
             newLocPos.y = 0;
             newLocPos.z -= 5f;
             mob.transform.localPosition = newLocPos;

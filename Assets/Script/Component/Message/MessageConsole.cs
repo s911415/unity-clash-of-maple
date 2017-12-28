@@ -9,6 +9,7 @@ namespace NTUT.CSIE.GameDev.Component.Message
     {
         [SerializeField]
         protected GameObject _textTemplate;
+        protected uint _updateTextTimer = 0;
 
         public MessageConsole Show(Color color, string text)
         {
@@ -16,7 +17,8 @@ namespace NTUT.CSIE.GameDev.Component.Message
             var textObj = obj.GetComponent<MessageText>();
             textObj.Text = text;
             textObj.Color = color;
-            UpdateTextPosition();
+            ClearTimeout(_updateTextTimer);
+            _updateTextTimer = SetTimeout(UpdateTextPosition, 100);
             return this;
         }
 
@@ -25,8 +27,9 @@ namespace NTUT.CSIE.GameDev.Component.Message
             return Show(Color.white, text);
         }
 
-        protected void Update()
+        protected void OnDestroy()
         {
+            ClearTimeout(_updateTextTimer);
         }
 
         private void UpdateTextPosition()
@@ -47,11 +50,23 @@ namespace NTUT.CSIE.GameDev.Component.Message
             for (int i = textObjArray.Count - 1; i >= 0; i--)
             {
                 var textObj = textObjArray[i];
-                var rectTrans = textObj.GetComponent<RectTransform>();
-                var pos = rectTrans.localPosition;
-                pos.y = lastY;
-                rectTrans.localPosition = pos;
-                lastY += height;
+
+                if (textObj)
+                {
+                    if (lastY > Screen.height)
+                    {
+                        Destroy(textObj.gameObject);
+                    }
+                    else
+                    {
+                        var rectTrans = textObj.GetComponent<RectTransform>();
+                        var pos = rectTrans.localPosition;
+                        pos.y = lastY;
+                        rectTrans.localPosition = pos;
+                    }
+
+                    lastY += height;
+                }
             }
         }
     }

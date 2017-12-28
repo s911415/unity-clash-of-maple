@@ -17,7 +17,7 @@ namespace NTUT.CSIE.GameDev.Monster
     [Serializable]
     public class Monster : HurtableObject
     {
-        private const float FIND_TARGET_DELTA = 1.5f;
+        private const float FIND_TARGET_DELTA = 1f;
         protected static ulong _monsterCounter = 0;
 
         protected static GameObject _statusDizzy = null, _statusPoison = null;

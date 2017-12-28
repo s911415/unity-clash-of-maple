@@ -165,7 +165,7 @@ namespace NTUT.CSIE.GameDev.Component.Map
         {
             this.name = string.Format("House #{0} ({1}, {2})", _houseId, _position.Row, _position.Column);
             var gen = _scene.MapGridGenerator;
-            var pos = Helper.Clone(gen[_position.Row, _position.Column].gameObject.transform.localPosition);
+            var pos = gen[_position.Row, _position.Column].gameObject.transform.localPosition;
             pos.y = 0;
             gameObject.transform.localPosition = pos;
             _houseRenderer.sprite = _houseImages[_playerID][(int)type];

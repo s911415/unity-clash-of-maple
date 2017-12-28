@@ -51,7 +51,7 @@ namespace NTUT.CSIE.GameDev.Component.Numbers
 
         private void SetImageYOffset(float y)
         {
-            var p = Helper.Clone(transform.localPosition);
+            var p = transform.localPosition;
             p.y = y;
             _trans.localPosition = p;
         }
