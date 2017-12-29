@@ -1,0 +1,357 @@
+fileFormatVersion: 2
+guid: 983ef2ff2f5d6b44ca282518c62b7cf6
+timeCreated: 1514019710
+licenseType: Pro
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: lose_0
+    21300002: lose_1
+    21300004: lose_2
+    21300006: lose_3
+    21300008: lose_4
+    21300010: lose_5
+    21300012: lose_6
+    21300014: lose_7
+    21300016: lose_8
+    21300018: lose_9
+    21300020: lose_10
+    21300022: lose_11
+    21300024: lose_12
+    21300026: lose_13
+    21300028: lose_14
+    21300030: lose_15
+    21300032: lose_16
+    21300034: lose_17
+  externalObjects: {}
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 16
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - buildTarget: Standalone
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: lose_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 518
+        width: 372
+        height: 259
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35135135}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lose_1
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 518
+        width: 372
+        height: 259
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35135135}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lose_2
+      rect:
+        serializedVersion: 2
+        x: 744
+        y: 518
+        width: 372
+        height: 259
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35135135}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lose_3
+      rect:
+        serializedVersion: 2
+        x: 1116
+        y: 518
+        width: 372
+        height: 259
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35135135}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lose_4
+      rect:
+        serializedVersion: 2
+        x: 1488
+        y: 518
+        width: 372
+        height: 259
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35135135}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lose_5
+      rect:
+        serializedVersion: 2
+        x: 1860
+        y: 518
+        width: 372
+        height: 259
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35135135}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lose_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 259
+        width: 372
+        height: 259
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35135135}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lose_7
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 259
+        width: 372
+        height: 259
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35135135}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lose_8
+      rect:
+        serializedVersion: 2
+        x: 744
+        y: 259
+        width: 372
+        height: 259
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35135135}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lose_9
+      rect:
+        serializedVersion: 2
+        x: 1116
+        y: 259
+        width: 372
+        height: 259
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35135135}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lose_10
+      rect:
+        serializedVersion: 2
+        x: 1488
+        y: 259
+        width: 372
+        height: 259
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35135135}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lose_11
+      rect:
+        serializedVersion: 2
+        x: 1860
+        y: 259
+        width: 372
+        height: 259
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35135135}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lose_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 372
+        height: 259
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35135135}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lose_13
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 0
+        width: 372
+        height: 259
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35135135}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lose_14
+      rect:
+        serializedVersion: 2
+        x: 744
+        y: 0
+        width: 372
+        height: 259
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35135135}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lose_15
+      rect:
+        serializedVersion: 2
+        x: 1116
+        y: 0
+        width: 372
+        height: 259
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35135135}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lose_16
+      rect:
+        serializedVersion: 2
+        x: 1488
+        y: 0
+        width: 372
+        height: 259
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35135135}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lose_17
+      rect:
+        serializedVersion: 2
+        x: 1860
+        y: 0
+        width: 372
+        height: 259
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35135135}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    outline: []
+    physicsShape: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

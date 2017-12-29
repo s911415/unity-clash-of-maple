@@ -4,4 +4,19 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scene/Splash.unity
+    guid: f8b033f6bf5ef024d8fa2d3c3af13f6e
+  - enabled: 1
+    path: Assets/Scene/PrepareUI.unity
+    guid: c453d9308169c3d4fb0e2fc1c1b3bfd5
+  - enabled: 1
+    path: Assets/Scene/ChooseCard.unity
+    guid: 816edbb9563b71c4394a5b901468c21d
+  - enabled: 1
+    path: Assets/Scene/Fight.unity
+    guid: ec0d0e82ae16de34896befe782568ce3
+  - enabled: 1
+    path: Assets/Scene/Leaderboard.unity
+    guid: 7ede3beadeb0f2b4e9614722e910df8a

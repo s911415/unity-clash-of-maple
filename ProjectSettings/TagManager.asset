@@ -3,7 +3,24 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - GameCore
+  - ff
+  - Startbtn
+  - difficultBtn
+  - CreateBtn
+  - canvas
+  - Card
+  - MapStatus
+  - Dialog
+  - SceneLogic
+  - Win
+  - Lose
+  - Name
+  - Achievement
+  - Number_of_buildings
+  - Kill_monster
+  - 'Total_amount '
   layers:
   - Default
   - TransparentFX
@@ -13,7 +30,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - UI2
   - 
   - 
   - 
@@ -40,4 +57,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UI2
+    uniqueID: 1606051889
+    locked: 0
+  - name: UI
+    uniqueID: 2971675455
     locked: 0
