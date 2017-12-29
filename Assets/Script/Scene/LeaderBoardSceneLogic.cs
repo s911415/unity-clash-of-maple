@@ -63,8 +63,8 @@ namespace NTUT.CSIE.GameDev.Scene
 
         private void RestartGame()
         {
-            Destroy(this.Manager.gameObject);
-            SceneManager.LoadScene("PrepareUI");
+            Manager.GetPlayerAt(0).SetStatus(Player.Info.STATUS.READY);
+            SceneManager.LoadScene("ChooseCard");
         }
 
         private void PromptQuitGame()
