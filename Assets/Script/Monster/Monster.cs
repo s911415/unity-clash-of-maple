@@ -360,6 +360,7 @@ namespace NTUT.CSIE.GameDev.Monster
         {
             this._freeze = true;
             OnStatusChanged?.Invoke();
+            _statusObj.SetActive(false);
         }
 
         public virtual void Damage(int damage, bool silence)
