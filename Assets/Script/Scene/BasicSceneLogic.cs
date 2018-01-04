@@ -15,5 +15,14 @@ namespace NTUT.CSIE.GameDev.Scene
         protected virtual void Update()
         {
         }
+
+        public void QuitGame()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+        }
     }
 }

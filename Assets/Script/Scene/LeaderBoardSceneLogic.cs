@@ -87,27 +87,6 @@ namespace NTUT.CSIE.GameDev.Scene
             return -1;
         }
 
-        private void QuitGame()
-        {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit();
-#endif
-        }
-
-        public int GetLoser()
-        {
-            var playerInfo = this.Manager.Players.Where(p => p.Result.HP <= 0).FirstOrDefault();
-
-            if (playerInfo)
-            {
-                return playerInfo.id;
-            }
-
-            return -1;
-        }
-
         #region Check Members
         private void CheckDiff()
         {
