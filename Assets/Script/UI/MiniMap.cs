@@ -22,20 +22,24 @@ namespace NTUT.CSIE.GameDev.UI
         public GameObject _miniMap;
         [SerializeField]
         public GameObject _bigWindow;
+        [SerializeField]
+        public GameObject _rect;
         const int GRID_SIZE = 10;
-        private RectTransform _rectTrans, _bigWinRect;
+        private RectTransform _rectTrans, _bigWinRect, _rectRect;
 
         protected void Start()
         {
             _rectTrans = _miniMap.GetComponent<RectTransform>();
             _bigWinRect = _bigWindow.GetComponent<RectTransform>();
+            _rectRect = _rect.GetComponent<RectTransform>();
         }
 
         private void Update()
         {
-            var onGUI = IsMouseOnGUI;
             float w = Camera.main.pixelWidth;
             float h = Camera.main.pixelHeight;
+
+            _rectRect.anchoredPosition = new Vector2(_rectTrans.rect.width * (Camera.main.transform.position.x / 200), _rectTrans.rect.height * (Camera.main.transform.position.z / 100));
 
             if (Input.GetMouseButton(0) && IsMouseOnGUI)
             {
@@ -49,17 +53,18 @@ namespace NTUT.CSIE.GameDev.UI
                 computePos.x = ((clickPos.x / w) - (1 - wPercent)) / wPercent;
                 computePos.y = ((clickPos.y / h) - (1 - hPercent)) / hPercent;
                 computePos.z = clickPos.z;
+                //Debug.Log("x = " + computePos.x + "y = " + computePos.y);
                 ScreenMove(computePos.x, computePos.y);
             }
         }
 
         protected void ScreenMove(float destinationX, float destinationY)
         {
-            if (destinationX >= 0 && destinationX <= 1 && destinationY >= 0 && destinationY <= 1)
+            if (destinationX >= 0f && destinationX <= 1f && destinationY >= 0f && destinationY <= 1f)
             {
                 Vector3 cameraBase = new Vector3(_generator.col * GRID_SIZE, Camera.main.transform.position.y, _generator.row * GRID_SIZE);
-                cameraBase.x *= destinationX;
-                cameraBase.z *= destinationY;
+                cameraBase.x *= (destinationX < 0.22f) ? 0.22f : ((destinationX > 0.78f) ? 0.78f : destinationX);
+                cameraBase.z *= (destinationY < 0.25f) ? 0.25f : ((destinationY > 0.75f) ? 0.74f : destinationY);
                 cameraBase.z = _generator.row * GRID_SIZE - cameraBase.z;
                 Camera.main.transform.position = cameraBase;
             }
