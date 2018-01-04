@@ -13,6 +13,7 @@ namespace NTUT.CSIE.GameDev.CardSelect
         private GameObject _difficultBtn;
         private Image _image;
         private Button _button;
+        private Text _btnText;
 
         // Use this for initialization
         void Start()
@@ -20,6 +21,7 @@ namespace NTUT.CSIE.GameDev.CardSelect
             _difficultBtn = GameObject.FindGameObjectWithTag("CreateBtn");
             _image = GetComponent<Image>();
             _button = gameObject.GetComponent<Button>();
+            _btnText = _button.GetComponentInChildren<Text>();
             ResetCardSet();
         }
 
@@ -64,11 +66,13 @@ namespace NTUT.CSIE.GameDev.CardSelect
             {
                 _image.color = Color.white;
                 _button.interactable = true;
+                _btnText.text = $"開始遊戲";
             }
             else
             {
                 _image.color = Color.gray;
                 _button.interactable = false;
+                _btnText.text = $"再選{Manager.REQUIRE_START_CARD_COUNT - _selectCardSet.Count}張卡牌";
             }
         }
 

@@ -34,8 +34,8 @@ namespace NTUT.CSIE.GameDev.Game
             //For Test
             if (Input.GetKeyUp(KeyCode.F3))
             {
-                _scene.GetPlayerAt(1).Damage(Random.Range(150, 1500));
-                _scene.Console.Show("Text");
+                _scene.GetPlayerAt(1).Damage(Random.Range(100, 15000));
+                _scene.Console.Show("God");
             }
 
             //For Test
