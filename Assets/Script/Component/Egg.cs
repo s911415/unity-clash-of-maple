@@ -14,7 +14,7 @@ namespace NTUT.CSIE.GameDev.Component
         private Text _text = null;
         [SerializeField]
         private Image _image = null;
-        private float _startTime = 0, _startRotateTime;
+        private float _startTime = 0;
         private int _curStage = -1;
         private Transform _trans;
         [SerializeField]
@@ -61,7 +61,6 @@ namespace NTUT.CSIE.GameDev.Component
                         break;
 
                     case 3:
-                        _startRotateTime = Time.time;
                         break;
 
                     case 4:
