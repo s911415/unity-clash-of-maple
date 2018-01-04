@@ -27,31 +27,41 @@ namespace NTUT.CSIE.GameDev.CardSelect
         public void SelectCard()
         {
             GameObject[] allCard = null;
+            var startBtn = _startButton.GetComponent<StartButton>();
 
-            if (flag == 1)
+            if (flag == 1) //Is Big Card
             {
                 allCard = GameObject.FindGameObjectsWithTag("Card");
 
                 foreach (GameObject go in allCard)
                 {
-                    if (go.GetComponent<Select>().GetNumber() == _number && go.GetComponent<Select>().flag == 0)
+                    var select = go.GetComponent<Select>();
+
+                    if (select.GetNumber() == _number && select.flag == 0)
                     {
-                        go.GetComponent<Select>().selected = !selected;
+                        if (startBtn.IsAllowAddCard && !select.selected)
+                            select.selected = true;
+                        else if (startBtn.IsAllowRemoveCard && select.selected)
+                            select.selected = false;
                     }
                 }
             }
 
-            var startBtn = _startButton.GetComponent<StartButton>();
-
             if (selected)
             {
-                selected = false;
-                startBtn.RemoveCard(_number);
+                if (startBtn.IsAllowRemoveCard)
+                {
+                    selected = false;
+                    startBtn.RemoveCard(_number);
+                }
             }
             else
             {
-                selected = true;
-                startBtn.AddCard(_number);
+                if (startBtn.IsAllowAddCard)
+                {
+                    startBtn.AddCard(_number);
+                    selected = true;
+                }
             }
         }
 
@@ -72,7 +82,7 @@ namespace NTUT.CSIE.GameDev.CardSelect
             if (selected)
                 this.GetComponent<Image>().color = Color.white;
             else
-                this.GetComponent<Image>().color = new Color(0.6f, 0.6f, 0.6f);            
+                this.GetComponent<Image>().color = new Color(0.6f, 0.6f, 0.6f);
         }
 
 
@@ -99,7 +109,6 @@ namespace NTUT.CSIE.GameDev.CardSelect
             //else if (parameter == 1 && flag == 0)
             //{
             //    GameObject[] allcard = GameObject.FindGameObjectsWithTag("Card");
-
             //    foreach (GameObject redundancy in allcard)
             //    {
             //        if (redundancy.GetComponent<Select>().flag == 1 && redundancy.GetComponent<Select>()._number == this._number)

@@ -134,7 +134,6 @@ namespace NTUT.CSIE.GameDev.Scene
                         if (t <= 0) t = 0;
                         else if (t >= 1) t = 1;
 
-                        Debug.Log($"{i}: {t}, endTime: {endTime}, currTime: {curTime}");
                         _cardObj[i].transform.localPosition = Vector3.Lerp(_cardObjStartPos[i], destPos, t);
                     }
                 }

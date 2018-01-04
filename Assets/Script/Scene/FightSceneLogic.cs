@@ -239,6 +239,7 @@ namespace NTUT.CSIE.GameDev.Scene
         protected void OnDestroy()
         {
             ClearInterval(_godReward);
+            Time.timeScale = 1;
         }
 
         protected void GameOver()
