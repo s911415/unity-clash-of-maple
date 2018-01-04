@@ -51,7 +51,7 @@ namespace NTUT.CSIE.GameDev.CardSelect
             GameObject startbtn = GameObject.FindGameObjectWithTag("Startbtn");
             startbtn.GetComponent<StartButton>().ResetCardSet();
             var list = Manager.MonsterInfoCollection.GetInfoListLessOrEqualToLevel(gameDifficult);
-            list = list.OrderBy(x => x.Level).OrderBy(x => x.ID).ToArray();
+            list = list.OrderBy(x => x.Level).ToArray();
 
             foreach (Monster.Info info in list)
             {
