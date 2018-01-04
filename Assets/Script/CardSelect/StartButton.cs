@@ -34,9 +34,15 @@ namespace NTUT.CSIE.GameDev.CardSelect
 
         public void AddCard(int cardNumber)
         {
+            if (_selectCardSet.Count >= Manager.REQUIRE_START_CARD_COUNT)
+                throw new System.Exception("Too many card");
+
             _selectCardSet.Add(cardNumber);
             OnCardListChanged();
         }
+
+        public bool IsAllowAddCard => _selectCardSet.Count < Manager.REQUIRE_START_CARD_COUNT;
+        public bool IsAllowRemoveCard => _selectCardSet.Count > 0;
 
         public int GetCard(int index)
         {
@@ -72,7 +78,12 @@ namespace NTUT.CSIE.GameDev.CardSelect
             {
                 _image.color = Color.gray;
                 _button.interactable = false;
-                _btnText.text = $"再選{Manager.REQUIRE_START_CARD_COUNT - _selectCardSet.Count}張卡牌";
+                int rem = Manager.REQUIRE_START_CARD_COUNT - _selectCardSet.Count;
+
+                if (rem > 0)
+                {
+                    _btnText.text = $"再選{rem}張卡牌";
+                }
             }
         }
 
