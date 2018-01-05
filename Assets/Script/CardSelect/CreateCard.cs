@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 namespace NTUT.CSIE.GameDev.CardSelect
 {
@@ -49,8 +50,10 @@ namespace NTUT.CSIE.GameDev.CardSelect
         {
             GameObject startbtn = GameObject.FindGameObjectWithTag("Startbtn");
             startbtn.GetComponent<StartButton>().ResetCardSet();
+            var list = Manager.MonsterInfoCollection.GetInfoListLessOrEqualToLevel(gameDifficult);
+            list = list.OrderBy(x => x.Level).ToArray();
 
-            foreach (Monster.Info info in Manager.MonsterInfoCollection.GetInfoListLessOrEqualToLevel(gameDifficult))
+            foreach (Monster.Info info in list)
             {
                 GameObject btn = (GameObject)Instantiate(prefab);
                 btn.GetComponent<Select>().SetNumber(info.ID);

@@ -57,6 +57,8 @@ namespace NTUT.CSIE.GameDev.Scene
         protected ResultController _gameResultController;
         protected bool _isOver;
         private Dictionary<string, GameObject> _monsterPrefabCache = null;
+        [SerializeField]
+        private GameObject _menuContainer;
 
         public Player.Player GetPlayerAt(int i) => _players[i];
 
@@ -87,6 +89,18 @@ namespace NTUT.CSIE.GameDev.Scene
             {
                 p.OnDied += GameOver;
             }
+        }
+
+        public void ShowMenu()
+        {
+            _menuContainer.SetActive(true);
+            Time.timeScale = 0;
+        }
+
+        public void HideMenu()
+        {
+            _menuContainer.SetActive(false);
+            Time.timeScale = 1;
         }
 
         public void SpawnMonster(Monster.Info monsterInfo, int playerID, HouseInfo houseInfo)
@@ -196,13 +210,36 @@ namespace NTUT.CSIE.GameDev.Scene
 
             if (Input.GetKeyUp(KeyCode.Escape))
             {
-                _controlPanel.Hide();
+                if (_controlPanel.gameObject.activeSelf)
+                {
+                    _controlPanel.Hide();
+                }
+                else
+                {
+                    if (!_menuContainer.activeSelf)
+                    {
+                        ShowMenu();
+                    }
+                    else
+                    {
+                        HideMenu();
+                    }
+                }
             }
+        }
+
+        public void RestartGame()
+        {
+            foreach (var player in Manager.Players)
+                player.SetStatus(Player.Info.STATUS.SELECTING_CARD);
+
+            SceneManager.LoadScene("ChooseCard");
         }
 
         protected void OnDestroy()
         {
             ClearInterval(_godReward);
+            Time.timeScale = 1;
         }
 
         protected void GameOver()
