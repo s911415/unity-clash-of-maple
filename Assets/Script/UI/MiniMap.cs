@@ -63,8 +63,8 @@ namespace NTUT.CSIE.GameDev.UI
             if (destinationX >= 0f && destinationX <= 1f && destinationY >= 0f && destinationY <= 1f)
             {
                 Vector3 cameraBase = new Vector3(_generator.col * GRID_SIZE, Camera.main.transform.position.y, _generator.row * GRID_SIZE);
-                cameraBase.x *= (destinationX < 0.22f) ? 0.22f : ((destinationX > 0.78f) ? 0.78f : destinationX);
-                cameraBase.z *= (destinationY < 0.25f) ? 0.25f : ((destinationY > 0.75f) ? 0.74f : destinationY);
+                cameraBase.x *= (destinationX < 0.23f) ? 0.23f : ((destinationX > 0.77f) ? 0.77f : destinationX);
+                cameraBase.z *= (destinationY < 0.25f) ? 0.25f : ((destinationY > 0.74f) ? 0.74f : destinationY);
                 cameraBase.z = _generator.row * GRID_SIZE - cameraBase.z;
                 Camera.main.transform.position = cameraBase;
             }
